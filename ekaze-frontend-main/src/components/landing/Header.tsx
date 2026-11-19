@@ -286,10 +286,12 @@ const Header = () => {
                 onClick={(e) => handleNavClick(e, "#features")}
                 className={`font-semibold whitespace-nowrap transition-colors cursor-pointer drop-shadow-xs ${
                   isActiveLink("#features")
-                    ? "text-[#FFCC00]"
+                    ? isHomePage
+                      ? "text-white underline underline-offset-4"
+                      : "text-slate-900 underline underline-offset-4"
                     : isHomePage
-                      ? "text-white/95 hover:text-[#FFCC00]"
-                      : "text-slate-800 hover:text-[#C29300]"
+                      ? "text-white/90 hover:text-white"
+                      : "text-slate-700 hover:text-slate-950"
                 }`}
               >
                 {language === "kin" ? "Abashoferi" : "Fleet & Drivers"}
@@ -298,7 +300,7 @@ const Header = () => {
                 type="button"
                 onClick={() => navigate("/who-we-are")}
                 className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${
-                  isHomePage ? "text-white/95 hover:text-[#FFCC00]" : "text-slate-800 hover:text-[#C29300]"
+                  isHomePage ? "text-white/90 hover:text-white" : "text-slate-700 hover:text-slate-950"
                 }`}
               >
                 {language === "kin" ? "Ibiciro" : "Pricing"}
@@ -307,7 +309,7 @@ const Header = () => {
                 type="button"
                 onClick={() => setIsHelpOpen(true)}
                 className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${
-                  isHomePage ? "text-white/95 hover:text-[#FFCC00]" : "text-slate-800 hover:text-[#C29300]"
+                  isHomePage ? "text-white/90 hover:text-white" : "text-slate-700 hover:text-slate-950"
                 }`}
               >
                 {language === "kin" ? "Ubufasha" : "Support"}
@@ -320,15 +322,15 @@ const Header = () => {
                 widthClass="w-28 min-w-[7rem]"
                 trigger={
                   <button
-                    className={`bg-transparent hover:text-[#FFCC00] transition-all cursor-pointer flex items-center gap-1.5 px-2 py-0.5 border-0 shadow-none outline-none drop-shadow-xs ${
+                    className={`bg-transparent hover:opacity-80 transition-all cursor-pointer flex items-center gap-1.5 px-2 py-0.5 border-0 shadow-none outline-none drop-shadow-xs ${
                       isHomePage ? "text-white" : "text-slate-800"
                     }`}
                   >
-                    <Languages className="w-3.5 h-3.5 text-[#FFCC00]" />
+                    <Languages className="w-3.5 h-3.5" />
                     <span className="text-xs font-bold tracking-tight">
                       {currentLanguage?.short || (language === "kin" ? "KIN" : "EN")}
                     </span>
-                    <span className="text-[#FFCC00] text-[9px] transform scale-y-75 font-bold">▼</span>
+                    <span className="text-[9px] transform scale-y-75 font-bold opacity-80">▼</span>
                   </button>
                 }
                 items={languages.map((lang) => ({
@@ -341,19 +343,17 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Tier 2: Floating Rounded Yellow Pill Navbar (#FFCC00 with crisp black text) */}
+        {/* Tier 2: Floating Rounded White Pill Navbar */}
         <div className={`container mx-auto max-w-6xl px-4 sm:px-6 pointer-events-auto transition-all duration-300 ${scrolled ? "py-2.5" : "pb-3 pt-1"}`}>
-          <div className="w-full h-[60px] sm:h-[64px] bg-[#FFCC00] text-[#111111] rounded-xl sm:rounded-2xl shadow-lg px-4 sm:px-7 flex items-center justify-between">
-            {/* Left Group: Oval Brand Logo + Navigation Links */}
+          <div className="w-full h-[60px] sm:h-[64px] bg-white/95 backdrop-blur-md text-[#111111] rounded-xl sm:rounded-2xl shadow-lg border border-slate-200/70 px-4 sm:px-7 flex items-center justify-between">
+            {/* Left Group: Brand Logo + Navigation Links */}
             <div className="flex items-center gap-5 lg:gap-8">
               <a
                 href="/"
                 onClick={(e) => handleNavClick(e, "#hero")}
                 className="flex items-center shrink-0 hover:opacity-85 transition-opacity cursor-pointer"
               >
-                <div className="flex items-center gap-2 border-2 border-[#111111] rounded-full px-3 py-1 bg-[#FFCC00]">
-                  <img src={logo} alt="Ekaze" className="h-5 md:h-6 w-auto brightness-0" />
-                </div>
+                <img src={logo} alt="Ekaze" className="h-7 md:h-8 w-auto" />
               </a>
 
               {/* Desktop Nav Links */}
@@ -367,8 +367,8 @@ const Header = () => {
                       onClick={(e) => handleNavClick(e, link.href)}
                       className={`relative px-3.5 py-2 text-sm md:text-[14.5px] rounded-xl transition-all duration-200 cursor-pointer inline-flex items-center gap-1 ${
                         active
-                          ? "bg-[#111111]/12 text-[#111111] font-bold"
-                          : "text-[#111111]/85 hover:text-[#111111] hover:bg-[#111111]/8 font-semibold"
+                          ? "bg-slate-100 text-[#111111] font-bold"
+                          : "text-slate-700 hover:text-[#111111] hover:bg-slate-100/70 font-semibold"
                       }`}
                     >
                       <span>{link.label}</span>
@@ -388,11 +388,11 @@ const Header = () => {
                       variant="ghost"
                       className="h-9 gap-2 px-3 rounded-full transition-all shadow-none bg-[#111111] hover:bg-neutral-800 text-white cursor-pointer"
                     >
-                      <div className="h-6 w-6 rounded-full bg-[#FFCC00] flex items-center justify-center">
+                      <div className="h-6 w-6 rounded-full bg-white flex items-center justify-center">
                         <span className="text-[10px] font-bold text-[#111111]">{getUserInitials()}</span>
                       </div>
                       <span className="text-xs font-semibold">{user?.name}</span>
-                      <ChevronDown className="h-3.5 w-3.5 text-[#FFCC00]" />
+                      <ChevronDown className="h-3.5 w-3.5 text-white/80" />
                     </Button>
                   }
                   items={[
@@ -415,14 +415,14 @@ const Header = () => {
                     <button
                       type="button"
                       onClick={() => setIsLoginDropdownOpen(!isLoginDropdownOpen)}
-                      className="border border-[#111111] bg-[#111111] hover:bg-neutral-800 text-[#FFCC00] font-bold text-sm px-4 py-2 rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                      className="border border-[#111111] bg-[#111111] hover:bg-neutral-800 text-white font-bold text-sm px-4 py-2 rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm"
                     >
-                      <div className="w-5 h-5 rounded-full bg-[#FFCC00] text-[#111111] flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full bg-white text-[#111111] flex items-center justify-center">
                         <User className="w-3 h-3 fill-[#111111]" />
                       </div>
                       <span className="text-white">Log In</span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 text-[#FFCC00] transition-transform duration-200 ${
+                        className={`w-3.5 h-3.5 text-white/80 transition-transform duration-200 ${
                           isLoginDropdownOpen ? "rotate-180" : ""
                         }`}
                       />
@@ -454,7 +454,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden h-9 w-9 rounded-lg bg-[#111111] text-[#FFCC00] hover:bg-neutral-800"
+              className="md:hidden h-9 w-9 rounded-lg bg-[#111111] text-white hover:bg-neutral-800"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -464,7 +464,7 @@ const Header = () => {
 
         {/* Mobile Dropdown */}
         {isMenuOpen && (
-          <div className="md:hidden pointer-events-auto border border-[#FFCC00]/30 mx-4 mb-3 rounded-xl p-4 space-y-2 bg-[#161618] text-white shadow-xl">
+          <div className="md:hidden pointer-events-auto border border-slate-200 mx-4 mb-3 rounded-xl p-4 space-y-2 bg-white text-[#111111] shadow-xl">
             {navLinks.map((link) => (
               <a
                 key={link.label}
@@ -472,19 +472,19 @@ const Header = () => {
                 onClick={(e) => handleNavClick(e, link.href)}
                 className={`block text-sm py-2 px-3.5 rounded-xl cursor-pointer transition-colors ${
                   isActiveLink(link.href)
-                    ? "bg-[#FFCC00] text-[#111111] font-bold"
-                    : "text-white/90 hover:text-[#FFCC00] hover:bg-white/10 font-medium"
+                    ? "bg-[#111111] text-white font-bold"
+                    : "text-slate-700 hover:text-[#111111] hover:bg-slate-100 font-medium"
                 }`}
               >
                 {link.label}
               </a>
             ))}
             {!isAuthenticated && (
-              <div className="pt-2 border-t border-white/15 flex flex-col gap-2">
+              <div className="pt-2 border-t border-slate-200 flex flex-col gap-2">
                 <button
                   type="button"
                   onClick={() => { setIsLoginDropdownOpen(true); setIsMenuOpen(false); }}
-                  className="text-center text-sm font-bold py-2.5 rounded-xl bg-[#FFCC00] text-[#111111] hover:bg-[#E6B800] cursor-pointer"
+                  className="text-center text-sm font-bold py-2.5 rounded-xl bg-[#111111] text-white hover:bg-neutral-800 cursor-pointer"
                 >
                   Log In
                 </button>
