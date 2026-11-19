@@ -263,84 +263,112 @@ const Header = () => {
     }
   };
 
+  const isHomePage = location.pathname === "/";
+
   return (
     <>
-      {/* MTN-Style Two-Tier Header: Dark Top Utility Bar + Floating Yellow Pill Navbar */}
+      {/* MTN-Style Two-Tier Floating Header: Transparent over Hero (No Black Background) */}
       <header
-        className={`sticky top-0 z-50 w-full bg-[#0B0B0D] text-white transition-all duration-300 ${
-          scrolled ? "shadow-xl bg-[#0B0B0D]/95 backdrop-blur-md" : ""
-        }`}
+        className={`${
+          isHomePage ? "fixed top-0 left-0 right-0" : "sticky top-0"
+        } z-50 w-full bg-transparent transition-all duration-300 pointer-events-none`}
       >
-        {/* Tier 1: Top Utility Bar (Personal / Business style links with active Yellow highlight) */}
-        <div className="container mx-auto max-w-6xl px-4 sm:px-6 pt-2.5 pb-1.5 flex items-center justify-between text-xs sm:text-[13px]">
-          <div className="flex items-center gap-4 sm:gap-7 overflow-x-auto no-scrollbar">
-            <a
-              href="#hero"
-              onClick={(e) => handleNavClick(e, "#hero")}
-              className={`font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-                isActiveLink("#hero") ? "text-[#FFCC00]" : "text-white/90 hover:text-[#FFCC00]"
-              }`}
-            >
-              {language === "kin" ? "Ahabanza" : "Personal"}
-            </a>
-            <a
-              href="#features"
-              onClick={(e) => handleNavClick(e, "#features")}
-              className={`font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-                isActiveLink("#features") ? "text-[#FFCC00]" : "text-white/90 hover:text-[#FFCC00]"
-              }`}
-            >
-              {language === "kin" ? "Abashoferi" : "Fleet & Drivers"}
-            </a>
-            <a
-              href="#services"
-              onClick={(e) => handleNavClick(e, "#services")}
-              className={`font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-                isActiveLink("#services") ? "text-[#FFCC00]" : "text-white/90 hover:text-[#FFCC00]"
-              }`}
-            >
-              {language === "kin" ? "Serivisi" : "Business"}
-            </a>
-            <button
-              type="button"
-              onClick={() => navigate("/who-we-are")}
-              className="font-semibold whitespace-nowrap text-white/90 hover:text-[#FFCC00] transition-colors cursor-pointer bg-transparent border-0 p-0"
-            >
-              {language === "kin" ? "Ibiciro" : "Pricing"}
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsHelpOpen(true)}
-              className="font-semibold whitespace-nowrap text-white/90 hover:text-[#FFCC00] transition-colors cursor-pointer bg-transparent border-0 p-0"
-            >
-              {language === "kin" ? "Ubufasha" : "Support"}
-            </button>
-          </div>
+        {/* Tier 1: Top Utility Bar (Transparent, hides cleanly on scroll so only the yellow pill floats) */}
+        <div
+          className={`container mx-auto max-w-6xl px-4 sm:px-6 transition-all duration-300 overflow-hidden pointer-events-auto ${
+            scrolled ? "max-h-0 opacity-0 py-0" : "max-h-14 opacity-100 pt-2.5 pb-1.5"
+          }`}
+        >
+          <div className="flex items-center justify-between text-xs sm:text-[13px]">
+            <div className="flex items-center gap-4 sm:gap-7 overflow-x-auto no-scrollbar">
+              <a
+                href="#hero"
+                onClick={(e) => handleNavClick(e, "#hero")}
+                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer drop-shadow-xs ${
+                  isActiveLink("#hero")
+                    ? "text-[#FFCC00]"
+                    : isHomePage
+                      ? "text-white/95 hover:text-[#FFCC00]"
+                      : "text-slate-800 hover:text-[#C29300]"
+                }`}
+              >
+                {language === "kin" ? "Ahabanza" : "Personal"}
+              </a>
+              <a
+                href="#features"
+                onClick={(e) => handleNavClick(e, "#features")}
+                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer drop-shadow-xs ${
+                  isActiveLink("#features")
+                    ? "text-[#FFCC00]"
+                    : isHomePage
+                      ? "text-white/95 hover:text-[#FFCC00]"
+                      : "text-slate-800 hover:text-[#C29300]"
+                }`}
+              >
+                {language === "kin" ? "Abashoferi" : "Fleet & Drivers"}
+              </a>
+              <a
+                href="#services"
+                onClick={(e) => handleNavClick(e, "#services")}
+                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer drop-shadow-xs ${
+                  isActiveLink("#services")
+                    ? "text-[#FFCC00]"
+                    : isHomePage
+                      ? "text-white/95 hover:text-[#FFCC00]"
+                      : "text-slate-800 hover:text-[#C29300]"
+                }`}
+              >
+                {language === "kin" ? "Serivisi" : "Business"}
+              </a>
+              <button
+                type="button"
+                onClick={() => navigate("/who-we-are")}
+                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${
+                  isHomePage ? "text-white/95 hover:text-[#FFCC00]" : "text-slate-800 hover:text-[#C29300]"
+                }`}
+              >
+                {language === "kin" ? "Ibiciro" : "Pricing"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsHelpOpen(true)}
+                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${
+                  isHomePage ? "text-white/95 hover:text-[#FFCC00]" : "text-slate-800 hover:text-[#C29300]"
+                }`}
+              >
+                {language === "kin" ? "Ubufasha" : "Support"}
+              </button>
+            </div>
 
-          {/* Right Side: Language Selector */}
-          <div className="flex items-center shrink-0 ml-3">
-            <CustomDropdown
-              widthClass="w-28 min-w-[7rem]"
-              trigger={
-                <button className="bg-transparent hover:text-[#FFCC00] transition-all cursor-pointer flex items-center gap-1.5 px-2 py-0.5 border-0 shadow-none outline-none text-white">
-                  <Languages className="w-3.5 h-3.5 text-[#FFCC00]" />
-                  <span className="text-xs font-bold tracking-tight">
-                    {currentLanguage?.short || (language === "kin" ? "KIN" : "EN")}
-                  </span>
-                  <span className="text-[#FFCC00] text-[9px] transform scale-y-75 font-bold">▼</span>
-                </button>
-              }
-              items={languages.map((lang) => ({
-                label: lang.short,
-                active: language === lang.code,
-                onClick: () => setLanguage(lang.code),
-              }))}
-            />
+            {/* Right Side: Language Selector */}
+            <div className="flex items-center shrink-0 ml-3">
+              <CustomDropdown
+                widthClass="w-28 min-w-[7rem]"
+                trigger={
+                  <button
+                    className={`bg-transparent hover:text-[#FFCC00] transition-all cursor-pointer flex items-center gap-1.5 px-2 py-0.5 border-0 shadow-none outline-none drop-shadow-xs ${
+                      isHomePage ? "text-white" : "text-slate-800"
+                    }`}
+                  >
+                    <Languages className="w-3.5 h-3.5 text-[#FFCC00]" />
+                    <span className="text-xs font-bold tracking-tight">
+                      {currentLanguage?.short || (language === "kin" ? "KIN" : "EN")}
+                    </span>
+                    <span className="text-[#FFCC00] text-[9px] transform scale-y-75 font-bold">▼</span>
+                  </button>
+                }
+                items={languages.map((lang) => ({
+                  label: lang.short,
+                  active: language === lang.code,
+                  onClick: () => setLanguage(lang.code),
+                }))}
+              />
+            </div>
           </div>
         </div>
 
         {/* Tier 2: Floating Rounded Yellow Pill Navbar (#FFCC00 with crisp black text) */}
-        <div className="container mx-auto max-w-6xl px-4 sm:px-6 pb-3 pt-1">
+        <div className={`container mx-auto max-w-6xl px-4 sm:px-6 pointer-events-auto transition-all duration-300 ${scrolled ? "py-2.5" : "pb-3 pt-1"}`}>
           <div className="w-full h-[60px] sm:h-[64px] bg-[#FFCC00] text-[#111111] rounded-xl sm:rounded-2xl shadow-lg px-4 sm:px-7 flex items-center justify-between">
             {/* Left Group: Oval Brand Logo + Navigation Links */}
             <div className="flex items-center gap-5 lg:gap-8">
@@ -469,7 +497,7 @@ const Header = () => {
 
         {/* Mobile Dropdown */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-[#FFCC00]/30 mx-4 mb-3 rounded-xl p-4 space-y-2 bg-[#161618] text-white shadow-xl">
+          <div className="md:hidden pointer-events-auto border border-[#FFCC00]/30 mx-4 mb-3 rounded-xl p-4 space-y-2 bg-[#161618] text-white shadow-xl">
             {navLinks.map((link) => (
               <a
                 key={link.label}
