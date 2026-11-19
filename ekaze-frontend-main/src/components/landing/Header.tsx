@@ -265,200 +265,221 @@ const Header = () => {
 
   return (
     <>
-      {/* Top Announcement Banner (Upper Navbar - #00509a matching #0062b8 palette) */}
-      <div className="bg-[#00509a] border-b border-white/15 text-white/90 text-xs sm:text-sm py-2 px-6 lg:px-10 flex items-center justify-between transition-colors">
-        {/* Left Side: Announcement Text */}
-        <div className="flex items-center gap-2 font-medium">
-          {/* PREVIOUS WORKER ANNOUNCEMENT:
-          <span>Ekaze's automated worker verification & domestic staffing platform is live across Rwanda.</span>
-          */}
-          <span>Ekaze's automated driver verification & commercial fleet staffing platform is live across Rwanda.</span>
-          <button
-            onClick={() => setIsHelpOpen(true)}
-            className="text-white hover:underline font-bold transition-colors cursor-pointer inline-flex items-center ml-1 underline decoration-white/60"
-          >
-            <span>Need Help & Support</span>
-          </button>
-        </div>
-
-        {/* Right Side: Language Selector in Upper Navbar */}
-        <div className="flex items-center">
-          <CustomDropdown
-            widthClass="w-28 min-w-[7rem]"
-            trigger={
-              <button className="bg-transparent hover:opacity-80 transition-all cursor-pointer flex items-center gap-1.5 px-2 py-1 border-0 shadow-none outline-none text-white">
-                <Languages className="w-4 h-4 text-white" />
-                <span className="text-sm font-semibold text-white tracking-tight">
-                  {currentLanguage?.short || (language === 'kin' ? 'KIN' : 'EN')}
-                </span>
-                <span className="text-white text-[10px] transform scale-y-75 font-bold">▼</span>
-              </button>
-            }
-            items={languages.map((lang) => ({
-              label: lang.short,
-              active: language === lang.code,
-              onClick: () => setLanguage(lang.code),
-            }))}
-          />
-        </div>
-      </div>
-
-      {/* Main Header Navbar - #0062b8 (Exact Who We Are Button Color) */}
+      {/* MTN-Style Two-Tier Header: Dark Top Utility Bar + Floating Yellow Pill Navbar */}
       <header
-        className={`sticky top-0 z-50 w-full bg-[#0062b8] border-b border-blue-900/30 text-white transition-all duration-300 ${scrolled ? "shadow-md" : "shadow-xs"
-          }`}
+        className={`sticky top-0 z-50 w-full bg-[#0B0B0D] text-white transition-all duration-300 ${
+          scrolled ? "shadow-xl bg-[#0B0B0D]/95 backdrop-blur-md" : ""
+        }`}
       >
-        <div className="container mx-auto flex h-[76px] items-center justify-between px-6 lg:px-10">
-
-          {/* Left Group: Logo + Navigation Links */}
-          <div className="flex items-center gap-6 lg:gap-8">
-            {/* Ekaze Logo (Inverted to clean white on blue navbar) */}
+        {/* Tier 1: Top Utility Bar (Personal / Business style links with active Yellow highlight) */}
+        <div className="container mx-auto max-w-6xl px-4 sm:px-6 pt-2.5 pb-1.5 flex items-center justify-between text-xs sm:text-[13px]">
+          <div className="flex items-center gap-4 sm:gap-7 overflow-x-auto no-scrollbar">
             <a
-              href="/"
+              href="#hero"
               onClick={(e) => handleNavClick(e, "#hero")}
-              className="flex items-center shrink-0 hover:opacity-90 transition-opacity cursor-pointer mr-2"
+              className={`font-semibold whitespace-nowrap transition-colors cursor-pointer ${
+                isActiveLink("#hero") ? "text-[#FFCC00]" : "text-white/90 hover:text-[#FFCC00]"
+              }`}
             >
-              <img src={logo} alt="Ekaze" className="h-8 md:h-9 w-auto brightness-0 invert" />
+              {language === "kin" ? "Ahabanza" : "Personal"}
             </a>
-
-            {/* Desktop Nav Links */}
-            <nav className="hidden md:flex items-center gap-1 lg:gap-2">
-              {navLinks.map((link) => {
-                const active = isActiveLink(link.href);
-                return (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
-                    className={`relative px-4 py-2 text-sm md:text-[15px] rounded-xl transition-all duration-300 ease-out cursor-pointer ${active
-                      ? "bg-white/20 text-white font-bold shadow-2xs scale-[1.02] border border-white/30"
-                      : "text-white/90 hover:text-white hover:bg-white/10 font-medium"
-                      }`}
-                  >
-                    <span>{link.label}</span>
-                  </a>
-                );
-              })}
-            </nav>
+            <a
+              href="#features"
+              onClick={(e) => handleNavClick(e, "#features")}
+              className={`font-semibold whitespace-nowrap transition-colors cursor-pointer ${
+                isActiveLink("#features") ? "text-[#FFCC00]" : "text-white/90 hover:text-[#FFCC00]"
+              }`}
+            >
+              {language === "kin" ? "Abashoferi" : "Fleet & Drivers"}
+            </a>
+            <a
+              href="#services"
+              onClick={(e) => handleNavClick(e, "#services")}
+              className={`font-semibold whitespace-nowrap transition-colors cursor-pointer ${
+                isActiveLink("#services") ? "text-[#FFCC00]" : "text-white/90 hover:text-[#FFCC00]"
+              }`}
+            >
+              {language === "kin" ? "Serivisi" : "Business"}
+            </a>
+            <button
+              type="button"
+              onClick={() => navigate("/who-we-are")}
+              className="font-semibold whitespace-nowrap text-white/90 hover:text-[#FFCC00] transition-colors cursor-pointer bg-transparent border-0 p-0"
+            >
+              {language === "kin" ? "Ibiciro" : "Pricing"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsHelpOpen(true)}
+              className="font-semibold whitespace-nowrap text-white/90 hover:text-[#FFCC00] transition-colors cursor-pointer bg-transparent border-0 p-0"
+            >
+              {language === "kin" ? "Ubufasha" : "Support"}
+            </button>
           </div>
 
-          {/* Right Group: Auth / Profile Controls */}
-          <div className="hidden md:flex items-center gap-3">
-            {isAuthenticated ? (
-              <CustomDropdown
-                widthClass="w-48"
-                trigger={
-                  <Button
-                    variant="ghost"
-                    className="h-9 gap-2 px-3 rounded-full transition-all shadow-none bg-white/15 hover:bg-white/25 text-white cursor-pointer"
-                  >
-                    <div className="h-6 w-6 rounded-full bg-white flex items-center justify-center">
-                      <span className="text-[10px] font-bold text-[#0062b8]">{getUserInitials()}</span>
-                    </div>
-                    <span className="text-xs font-semibold">{user?.name}</span>
-                    <ChevronDown className="h-3.5 w-3.5 opacity-80" />
-                  </Button>
-                }
-                items={[
-                  {
-                    label: t("auth.dashboard"),
-                    onClick: () => navigate(getDashboardRoute()),
-                  },
-                  "separator",
-                  {
-                    label: isLoggingOut ? t("auth.loggingOut") : t("auth.logout"),
-                    danger: true,
-                    disabled: isLoggingOut,
-                    onClick: () => logout(),
-                  },
-                ]}
-              />
-            ) : (
-              <div className="relative">
-                <div className="flex items-center gap-2.5">
-                  <button
-                    type="button"
-                    onClick={() => setIsLoginDropdownOpen(!isLoginDropdownOpen)}
-                    className="border border-white bg-white hover:bg-slate-100 text-[#0062b8] font-bold text-sm px-4 py-2 rounded-xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-                  >
-                    <div className="w-5 h-5 rounded-full bg-[#0062b8] text-white flex items-center justify-center">
-                      <User className="w-3 h-3 fill-white" />
-                    </div>
-                    <span>Log In</span>
-                    <ChevronDown
-                      className={`w-3.5 h-3.5 text-[#0062b8] transition-transform duration-200 ${isLoginDropdownOpen ? "rotate-180" : ""
-                        }`}
-                    />
-                  </button>
+          {/* Right Side: Language Selector */}
+          <div className="flex items-center shrink-0 ml-3">
+            <CustomDropdown
+              widthClass="w-28 min-w-[7rem]"
+              trigger={
+                <button className="bg-transparent hover:text-[#FFCC00] transition-all cursor-pointer flex items-center gap-1.5 px-2 py-0.5 border-0 shadow-none outline-none text-white">
+                  <Languages className="w-3.5 h-3.5 text-[#FFCC00]" />
+                  <span className="text-xs font-bold tracking-tight">
+                    {currentLanguage?.short || (language === "kin" ? "KIN" : "EN")}
+                  </span>
+                  <span className="text-[#FFCC00] text-[9px] transform scale-y-75 font-bold">▼</span>
+                </button>
+              }
+              items={languages.map((lang) => ({
+                label: lang.short,
+                active: language === lang.code,
+                onClick: () => setLanguage(lang.code),
+              }))}
+            />
+          </div>
+        </div>
 
-                  {/* Preserved Join Now button if needed later */}
-                  {/* {!location.pathname.startsWith("/auth/register") && (
-                    <button
-                      className="border border-white bg-white hover:bg-slate-100 text-[#0062b8] font-bold text-sm px-5 py-2 rounded-xl transition-all inline-flex items-center justify-center cursor-pointer shadow-sm"
-                      onClick={() => {
-                        setIsLoginDropdownOpen(false);
-                        setIsRegisterDropdownOpen(!isRegisterDropdownOpen);
-                      }}
-                    >
-                      <span>Join Now</span>
-                    </button>
-                  )} */}
+        {/* Tier 2: Floating Rounded Yellow Pill Navbar (#FFCC00 with crisp black text) */}
+        <div className="container mx-auto max-w-6xl px-4 sm:px-6 pb-3 pt-1">
+          <div className="w-full h-[60px] sm:h-[64px] bg-[#FFCC00] text-[#111111] rounded-xl sm:rounded-2xl shadow-lg px-4 sm:px-7 flex items-center justify-between">
+            {/* Left Group: Oval Brand Logo + Navigation Links */}
+            <div className="flex items-center gap-5 lg:gap-8">
+              <a
+                href="/"
+                onClick={(e) => handleNavClick(e, "#hero")}
+                className="flex items-center shrink-0 hover:opacity-85 transition-opacity cursor-pointer"
+              >
+                <div className="flex items-center gap-2 border-2 border-[#111111] rounded-full px-3 py-1 bg-[#FFCC00]">
+                  <img src={logo} alt="Ekaze" className="h-5 md:h-6 w-auto brightness-0" />
                 </div>
+              </a>
 
-                {/* RwandAir-Style Login Dropdown Card */}
-                <LoginDropdown
-                  isOpen={isLoginDropdownOpen}
-                  onClose={() => {
-                    setIsLoginDropdownOpen(false);
-                    if (location.search.includes("login=true")) {
-                      const params = new URLSearchParams(location.search);
-                      params.delete("login");
-                      const remaining = params.toString();
-                      navigate(remaining ? `${location.pathname}?${remaining}` : location.pathname, { replace: true });
-                    }
-                  }}
-                  onOpenRegister={() => {
-                    setIsLoginDropdownOpen(false);
-                    setIsRegisterDropdownOpen(true);
-                  }}
+              {/* Desktop Nav Links */}
+              <nav className="hidden md:flex items-center gap-1 lg:gap-2">
+                {navLinks.map((link) => {
+                  const active = isActiveLink(link.href);
+                  return (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      onClick={(e) => handleNavClick(e, link.href)}
+                      className={`relative px-3.5 py-2 text-sm md:text-[14.5px] rounded-xl transition-all duration-200 cursor-pointer inline-flex items-center gap-1 ${
+                        active
+                          ? "bg-[#111111]/12 text-[#111111] font-bold"
+                          : "text-[#111111]/85 hover:text-[#111111] hover:bg-[#111111]/8 font-semibold"
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                    </a>
+                  );
+                })}
+                <button
+                  type="button"
+                  onClick={() => setIsHelpOpen(true)}
+                  className="px-3.5 py-2 text-sm md:text-[14.5px] rounded-xl text-[#111111]/85 hover:text-[#111111] hover:bg-[#111111]/8 font-semibold transition-all cursor-pointer bg-transparent border-0"
+                >
+                  {language === "kin" ? "Twandikire" : "Contact"}
+                </button>
+              </nav>
+            </div>
+
+            {/* Right Group: Auth / Profile Controls */}
+            <div className="hidden md:flex items-center gap-3">
+              {isAuthenticated ? (
+                <CustomDropdown
+                  widthClass="w-48"
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      className="h-9 gap-2 px-3 rounded-full transition-all shadow-none bg-[#111111] hover:bg-neutral-800 text-white cursor-pointer"
+                    >
+                      <div className="h-6 w-6 rounded-full bg-[#FFCC00] flex items-center justify-center">
+                        <span className="text-[10px] font-bold text-[#111111]">{getUserInitials()}</span>
+                      </div>
+                      <span className="text-xs font-semibold">{user?.name}</span>
+                      <ChevronDown className="h-3.5 w-3.5 text-[#FFCC00]" />
+                    </Button>
+                  }
+                  items={[
+                    {
+                      label: t("auth.dashboard"),
+                      onClick: () => navigate(getDashboardRoute()),
+                    },
+                    "separator",
+                    {
+                      label: isLoggingOut ? t("auth.loggingOut") : t("auth.logout"),
+                      danger: true,
+                      disabled: isLoggingOut,
+                      onClick: () => logout(),
+                    },
+                  ]}
                 />
+              ) : (
+                <div className="relative">
+                  <div className="flex items-center gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => setIsLoginDropdownOpen(!isLoginDropdownOpen)}
+                      className="border border-[#111111] bg-[#111111] hover:bg-neutral-800 text-[#FFCC00] font-bold text-sm px-4 py-2 rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                    >
+                      <div className="w-5 h-5 rounded-full bg-[#FFCC00] text-[#111111] flex items-center justify-center">
+                        <User className="w-3 h-3 fill-[#111111]" />
+                      </div>
+                      <span className="text-white">Log In</span>
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 text-[#FFCC00] transition-transform duration-200 ${
+                          isLoginDropdownOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
 
-                {/* Preserved Register Dropdown Card if needed later */}
-                {/* <RegisterDropdown
-                  isOpen={isRegisterDropdownOpen}
-                  onClose={() => setIsRegisterDropdownOpen(false)}
-                  onOpenLogin={() => {
-                    setIsRegisterDropdownOpen(false);
-                    setIsLoginDropdownOpen(true);
-                  }}
-                /> */}
-              </div>
-            )}
+                  {/* Login Dropdown Card */}
+                  <LoginDropdown
+                    isOpen={isLoginDropdownOpen}
+                    onClose={() => {
+                      setIsLoginDropdownOpen(false);
+                      if (location.search.includes("login=true")) {
+                        const params = new URLSearchParams(location.search);
+                        params.delete("login");
+                        const remaining = params.toString();
+                        navigate(remaining ? `${location.pathname}?${remaining}` : location.pathname, { replace: true });
+                      }
+                    }}
+                    onOpenRegister={() => {
+                      setIsLoginDropdownOpen(false);
+                      setIsRegisterDropdownOpen(true);
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden h-9 w-9 rounded-lg bg-[#111111] text-[#FFCC00] hover:bg-neutral-800"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
           </div>
-
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden h-9 w-9 rounded-md bg-white/15 text-white hover:bg-white/25"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
         </div>
 
         {/* Mobile Dropdown */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-white/15 p-4 space-y-3 bg-[#00509a] text-white shadow-xl">
+          <div className="md:hidden border-t border-[#FFCC00]/30 mx-4 mb-3 rounded-xl p-4 space-y-2 bg-[#161618] text-white shadow-xl">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`block text-sm py-2 px-3.5 rounded-xl cursor-pointer transition-colors ${isActiveLink(link.href)
-                  ? "bg-white/20 text-white font-semibold"
-                  : "text-white/90 hover:text-white hover:bg-white/10 font-medium"
-                  }`}
+                className={`block text-sm py-2 px-3.5 rounded-xl cursor-pointer transition-colors ${
+                  isActiveLink(link.href)
+                    ? "bg-[#FFCC00] text-[#111111] font-bold"
+                    : "text-white/90 hover:text-[#FFCC00] hover:bg-white/10 font-medium"
+                }`}
               >
                 {link.label}
               </a>
@@ -468,21 +489,10 @@ const Header = () => {
                 <button
                   type="button"
                   onClick={() => { setIsLoginDropdownOpen(true); setIsMenuOpen(false); }}
-                  className="text-center text-sm font-semibold py-2 text-white hover:text-white/80 cursor-pointer"
+                  className="text-center text-sm font-bold py-2.5 rounded-xl bg-[#FFCC00] text-[#111111] hover:bg-[#E6B800] cursor-pointer"
                 >
                   Log In
                 </button>
-                {/* Preserved Mobile Join Now button if needed later */}
-                {/* <button
-                  className="border border-white bg-white hover:bg-slate-100 text-[#0062b8] font-bold text-sm w-full py-2.5 rounded-xl transition-all inline-flex items-center justify-center cursor-pointer shadow-sm"
-                  onClick={() => {
-                    setIsLoginDropdownOpen(false);
-                    setIsRegisterDropdownOpen(true);
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  <span>Join Now</span>
-                </button> */}
               </div>
             )}
           </div>
@@ -526,7 +536,7 @@ const Header = () => {
                     onChange={(e) => setHelpContact(e.target.value)}
                     placeholder={language === "kin" ? "Injiza imeri yawe" : "Enter your email address"}
                     style={{ fontSize: "17px", fontFamily: "Arial, Helvetica, sans-serif", lineHeight: "24px", height: "50px" }}
-                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#005a9c] focus:outline-none transition-colors bg-white"
+                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#E6B800] focus:outline-none transition-colors bg-white"
                     required
                   />
                 </div>
@@ -546,7 +556,7 @@ const Header = () => {
                         : "Describe your question, request, or issue in detail here..."
                     }
                     style={{ fontSize: "17px", fontFamily: "Arial, Helvetica, sans-serif", lineHeight: "24px", height: "auto", minHeight: "115px" }}
-                    className="login-dropdown-input w-full p-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#005a9c] focus:outline-none transition-colors bg-white leading-relaxed resize-none"
+                    className="login-dropdown-input w-full p-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#E6B800] focus:outline-none transition-colors bg-white leading-relaxed resize-none"
                     required
                   />
                 </div>
@@ -556,7 +566,7 @@ const Header = () => {
                   <button
                     type="submit"
                     disabled={isSubmittingHelp}
-                    className="w-full h-11 bg-[#005a9c] hover:bg-[#004780] text-white font-semibold text-base rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                    className="w-full h-11 bg-[#FFCC00] hover:bg-[#E6B800] text-[#111111] font-bold text-base rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
                   >
                     {isSubmittingHelp ? (
                       <span>{language === "kin" ? "Kohereza..." : "Submitting..."}</span>
@@ -600,22 +610,22 @@ const Header = () => {
                 {/* Bullet Points with Checkmarks */}
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-center gap-3 text-[#333333] text-[14px]">
-                    <Check className="w-5 h-5 text-[#005a9c] stroke-[3.5] shrink-0" />
+                    <Check className="w-5 h-5 text-[#C29300] stroke-[3.5] shrink-0" />
                     <span>{language === "kin" ? "Ubufasha bwa telefoni: 0783202922" : "Phone & WhatsApp: 0783202922"}</span>
                   </li>
 
                   <li className="flex items-center gap-3 text-[#333333] text-[14px]">
-                    <Check className="w-5 h-5 text-[#005a9c] stroke-[3.5] shrink-0" />
+                    <Check className="w-5 h-5 text-[#C29300] stroke-[3.5] shrink-0" />
                     <span>{language === "kin" ? "Igisubizo mu minota 15" : "Quick response within 15 minutes"}</span>
                   </li>
 
                   <li className="flex items-center gap-3 text-[#333333] text-[14px]">
-                    <Check className="w-5 h-5 text-[#005a9c] stroke-[3.5] shrink-0" />
+                    <Check className="w-5 h-5 text-[#C29300] stroke-[3.5] shrink-0" />
                     <span>{language === "kin" ? "Igenzura ry'abakozi & amasezerano" : "Worker verification & contracts"}</span>
                   </li>
 
                   <li className="flex items-center gap-3 text-[#333333] text-[14px]">
-                    <Check className="w-5 h-5 text-[#005a9c] stroke-[3.5] shrink-0" />
+                    <Check className="w-5 h-5 text-[#C29300] stroke-[3.5] shrink-0" />
                     <span>{language === "kin" ? "Ubufasha bwihuse bwa 24/7" : "24/7 dedicated platform support"}</span>
                   </li>
                 </ul>
@@ -625,14 +635,14 @@ const Header = () => {
               <div className="pt-2 select-none">
                 <div className="flex items-baseline gap-1.5">
                   <span
-                    className="text-2xl font-bold italic tracking-tight text-[#005a9c]"
+                    className="text-2xl font-bold italic tracking-tight text-[#C29300]"
                     style={{ fontFamily: "'Brush Script MT', 'Dancing Script', 'Segoe Script', cursive, sans-serif" }}
                   >
                     Ekaze
                   </span>
                   <span className="text-[10px] text-slate-400 font-sans font-semibold">™</span>
                 </div>
-                <p className="text-[11px] text-[#005a9c] font-medium tracking-tight">
+                <p className="text-[11px] text-[#C29300] font-medium tracking-tight">
                   {language === "kin" ? "Genzura n'uhembe abakozi bo mu rugo igihe cyose" : "Earn trust whenever you manage with us"}
                 </p>
               </div>
@@ -652,7 +662,7 @@ const Header = () => {
               href="https://wa.me/250783202922"
               target="_blank"
               rel="noopener noreferrer"
-              className="h-9 px-5 bg-[#005a9c] hover:bg-[#004780] text-white font-semibold text-xs sm:text-sm rounded-[6px] transition-colors cursor-pointer shadow-xs inline-flex items-center justify-center gap-2"
+              className="h-9 px-5 bg-[#FFCC00] hover:bg-[#E6B800] text-[#111111] font-bold text-xs sm:text-sm rounded-[6px] transition-colors cursor-pointer shadow-xs inline-flex items-center justify-center gap-2"
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                 <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.18-.544-1.898-.788-3.13-2.73-3.224-2.856-.095-.126-.774-1.031-.774-1.968 0-.936.491-1.396.666-1.587.175-.19.382-.238.509-.238.127 0 .254.002.366.007.119.006.277-.045.433.328.16.381.545 1.332.593 1.43.048.098.08.212.016.339-.064.127-.096.207-.191.318-.095.111-.2.248-.286.333-.095.096-.195.2-.084.391.111.191.494.814 1.059 1.318.729.648 1.343.85 1.534.945.191.096.302.08.414-.047.111-.127.476-.556.603-.746.127-.19.254-.159.429-.095.175.064 1.11.523 1.301.618.191.096.318.143.366.223.048.079.048.461-.096.866zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.174L2 22l4.981-1.306C8.423 21.532 10.15 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.273c-1.636 0-3.161-.489-4.439-1.328l-.318-.21-2.955.775.789-2.879-.231-.368C3.93 14.938 3.4 13.513 3.4 12c0-4.742 3.858-8.6 8.6-8.6 4.743 0 8.6 3.858 8.6 8.6 0 4.742-3.857 8.273-8.6 8.273z"/>

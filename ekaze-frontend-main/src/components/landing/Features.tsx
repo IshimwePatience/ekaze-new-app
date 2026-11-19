@@ -324,8 +324,8 @@ const Features = () => {
           {/* Right Column: Eyebrow, Big Title, Body Description (Exact match to User's Image 1) */}
           <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
             
-            {/* Blue Eyebrow text */}
-            <p className="text-[#005a9c] font-semibold text-sm sm:text-base tracking-normal">
+            {/* Yellow Eyebrow text */}
+            <p className="text-[#C29300] font-bold text-sm sm:text-base tracking-normal">
               {isRw ? current.eyebrowRw : current.eyebrow}
             </p>
 
@@ -359,7 +359,7 @@ const Features = () => {
               {/* PREVIOUS WORKER BUTTONS:
               <button
                 onClick={() => navigate(`/search-worker?category=${current.categoryFilter}`)}
-                className="bg-[#005a9c] hover:bg-[#00487c] text-white font-bold text-xs sm:text-sm px-7 py-3 rounded-xl transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2 cursor-pointer border-0"
+                className="bg-[#FFCC00] hover:bg-[#E6B800] text-[#111111] font-bold text-xs sm:text-sm px-7 py-3 rounded-xl transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2 cursor-pointer border-0"
               >
                 <span>{isRw ? "Shaka Uyu Mukozi" : `Find ${current.title.split(",")[0]}`}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -374,7 +374,7 @@ const Features = () => {
               */}
               <button
                 onClick={() => navigate(`/search-worker?category=${current.categoryFilter}`)}
-                className="bg-[#005a9c] hover:bg-[#00487c] text-white font-bold text-xs sm:text-sm px-7 py-3 rounded-xl transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2 cursor-pointer border-0"
+                className="bg-[#FFCC00] hover:bg-[#E6B800] text-[#111111] font-bold text-xs sm:text-sm px-7 py-3 rounded-xl transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2 cursor-pointer border-0"
               >
                 <span>{isRw ? "Shaka Uyu Mushoferi" : `Find ${current.title.split(",")[0]}`}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -418,9 +418,9 @@ const Features = () => {
               aria-valuemin={0}
               aria-valuemax={100}
             >
-              {/* Sliding black progress thumb */}
+              {/* Sliding brand yellow progress thumb */}
               <div
-                className="h-full bg-black rounded-full transition-all duration-300 ease-out"
+                className="h-full bg-[#FFCC00] rounded-full transition-all duration-300 ease-out"
                 style={{
                   width: `${thumbWidthPercent}%`,
                   transform: `translateX(${thumbOffsetPercent * (100 / thumbWidthPercent)}%)`,
@@ -431,7 +431,7 @@ const Features = () => {
             <button
               onClick={handleNext}
               aria-label="Next Worker"
-              className="w-9 h-9 rounded-full bg-black text-white hover:bg-slate-800 flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95"
+              className="w-9 h-9 rounded-full bg-[#FFCC00] text-[#111111] hover:bg-[#E6B800] flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -445,7 +445,7 @@ const Features = () => {
                 onClick={() => setCurrentIndex(idx)}
                 aria-label={`Go to ${slide.title}`}
                 className={`h-2 rounded-full transition-all duration-300 cursor-pointer border-0 ${
-                  currentIndex === idx ? "w-7 bg-black" : "w-2 bg-slate-300 hover:bg-slate-400"
+                  currentIndex === idx ? "w-7 bg-[#FFCC00]" : "w-2 bg-slate-300 hover:bg-slate-400"
                 }`}
               />
             ))}

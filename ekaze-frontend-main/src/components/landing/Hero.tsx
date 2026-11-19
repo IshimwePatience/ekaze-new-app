@@ -108,12 +108,12 @@ const Hero = () => {
               {isRw ? (
                 <>
                   Ha Akazi <br />
-                  <span className="text-white">Abakozi b'Umwuga kandi Bizewe</span>
+                  <span className="text-[#FFCC00]">Abakozi b'Umwuga kandi Bizewe</span>
                 </>
               ) : (
                 <>
                   Hire Verified Drivers <br />
-                  <span className="text-white">with Confidence</span>
+                  <span className="text-[#FFCC00]">with Confidence</span>
                 </>
               )}
             </h1>
@@ -205,12 +205,12 @@ const Hero = () => {
             </p>
             */}
 
-            {/* 5. Pill Button with "Pricing" text + White Right Arrow */}
+            {/* 5. Pill Button with "Pricing" text + Yellow Brand Styling */}
             <button
               type="button"
               onClick={() => navigate("/who-we-are")}
               style={{ borderRadius: "9999px" }}
-              className="inline-flex items-center justify-center gap-2.5 rounded-full border border-white text-white font-medium text-sm sm:text-base px-7 py-2.5 bg-black hover:bg-neutral-900 transition-all cursor-pointer shadow-md group mt-3"
+              className="inline-flex items-center justify-center gap-2.5 rounded-full border-0 text-[#111111] font-bold text-sm sm:text-base px-7 py-2.5 bg-[#FFCC00] hover:bg-[#E6B800] transition-all cursor-pointer shadow-md group mt-3"
               title={isRw ? "Ibiciro" : "Pricing"}
               aria-label={isRw ? "Ibiciro" : "Pricing"}
             >
