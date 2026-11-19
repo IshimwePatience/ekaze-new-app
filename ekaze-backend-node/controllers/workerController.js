@@ -1451,7 +1451,7 @@ National ID: ${wrkNid}
 Digital Stamp: [✓ NIDA SMS OTP VERIFIED & AUTHENTICATED]
 `;
 
-    const baseUrl = process.env.BACKEND_URL || 'https://ihirwepay.benofinance.rw';
+    const baseUrl = process.env.BACKEND_URL || 'https://ekaze.benofinance.rw';
     const webContractUrl = `${baseUrl}/contract/${employment.id}`;
 
     return res.status(200).json({

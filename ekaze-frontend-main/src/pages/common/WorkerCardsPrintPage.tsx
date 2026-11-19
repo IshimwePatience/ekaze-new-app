@@ -13,7 +13,7 @@ const getFullPhotoUrl = (photoUrl?: string) => {
     return photoUrl;
   }
   const apiBase = import.meta.env.MODE === 'production'
-    ? (import.meta.env.VITE_API_URL || 'https://ihirwepay.benofinance.rw/api/v1')
+    ? (import.meta.env.VITE_API_URL || 'https://ekaze.benofinance.rw/api/v1')
     : (import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1');
   const origin = apiBase.replace(/\/api\/v1\/?$/, '');
   return `${origin}${photoUrl.startsWith('/') ? '' : '/'}${photoUrl}`;

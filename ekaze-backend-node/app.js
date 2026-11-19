@@ -16,8 +16,8 @@ app.set('trust proxy', 1);
 // 2. CORS Policy
 const allowedOrigins = [
   env.FRONTEND_URL,
-  'https://ihirwepay.benofinance.rw',
-  'http://ihirwepay.benofinance.rw',
+  'https://ekaze.benofinance.rw',
+  'http://ekaze.benofinance.rw',
   'http://localhost:5173',
   'http://localhost:8080',
   'http://localhost:3000',

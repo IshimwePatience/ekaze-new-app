@@ -7,8 +7,8 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 
-ARG VITE_API_URL=https://ihirwepay.benofinance.rw/api/v1
-ARG VITE_STORAGE_URL=https://ihirwepay.benofinance.rw
+ARG VITE_API_URL=https://ekaze.benofinance.rw/api/v1
+ARG VITE_STORAGE_URL=https://ekaze.benofinance.rw
 ARG VITE_GOOGLE_CLIENT_ID=851412910623-cqq5dj652m3qmu71c56ak4626rop4jka.apps.googleusercontent.com
 
 ENV VITE_API_URL=$VITE_API_URL

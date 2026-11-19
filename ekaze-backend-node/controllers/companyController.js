@@ -736,7 +736,7 @@ const getWorkersCardsData = async (req, res, next) => {
       reqCompany = await Company.findOne({ where: { user_id: req.user.id } });
     }
 
-    const host = req.get('host') || 'ihirwepay.benofinance.rw';
+    const host = req.get('host') || 'ekaze.benofinance.rw';
     const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
     const frontendUrl = process.env.FRONTEND_URL || `${protocol}://${host}`;
 
