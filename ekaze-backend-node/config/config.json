@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "Patience123@",
+    "database": "ihirwe_db",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "Patience123@",
+    "database": "ihirwe_db_test",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "Patience123@",
+    "database": "ihirwe_db",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}

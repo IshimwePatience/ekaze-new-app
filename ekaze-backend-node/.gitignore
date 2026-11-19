@@ -1,0 +1,21 @@
+# Environment & Secrets (DO NOT REMOVE)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+
+# Node modules & Logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Uploads & Temp
+uploads/
+tmp/
+temp/
+

@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3e8ff" />
+      <stop offset="100%" stop-color="#e0e7ff" />
+    </linearGradient>
+    
+    <linearGradient id="suitGradCenter" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#4c1d95" />
+    </linearGradient>
+
+    <linearGradient id="suitGradLeft" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#1e3a8a" />
+    </linearGradient>
+
+    <linearGradient id="suitGradRight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#064e3b" />
+    </linearGradient>
+
+    <linearGradient id="skinCenter" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffdbac" />
+      <stop offset="100%" stop-color="#f1c27d" />
+    </linearGradient>
+
+    <linearGradient id="skinLeft" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0ac69" />
+      <stop offset="100%" stop-color="#c68642" />
+    </linearGradient>
+
+    <linearGradient id="skinRight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f1c27d" />
+      <stop offset="100%" stop-color="#e0ac69" />
+    </linearGradient>
+
+    <linearGradient id="tieGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#4c1d95" flood-opacity="0.15" />
+    </filter>
+
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.1" />
+    </filter>
+  </defs>
+
+  <!-- Ground Glow -->
+  <ellipse cx="200" cy="285" rx="140" ry="18" fill="#e9d5ff" opacity="0.7" />
+
+  <!-- LEFT CHARACTER (Female Executive / Manager) -->
+  <g filter="url(#shadow)" transform="translate(-10, 10)">
+    <!-- Body / Suit -->
+    <path d="M 95 190 Q 130 170 165 190 L 175 300 L 85 300 Z" fill="url(#suitGradLeft)" />
+    <!-- White Collared Shirt -->
+    <polygon points="120,185 130,225 140,185" fill="#ffffff" />
+    <!-- Neck -->
+    <rect x="123" y="165" width="14" height="25" rx="5" fill="url(#skinLeft)" />
+    <!-- Face / Head -->
+    <circle cx="130" cy="140" r="32" fill="url(#skinLeft)" />
+    <!-- Hair -->
+    <path d="M 96 142 C 95 95 165 95 164 142 C 160 115 100 115 96 142 Z" fill="#292524" />
+    <circle cx="130" cy="100" r="14" fill="#292524" /> <!-- Bun -->
+    <!-- Eyes -->
+    <circle cx="118" cy="138" r="4.5" fill="#1c1917" />
+    <circle cx="142" cy="138" r="4.5" fill="#1c1917" />
+    <circle cx="119.5" cy="136.5" r="1.5" fill="#ffffff" />
+    <circle cx="143.5" cy="136.5" r="1.5" fill="#ffffff" />
+    <!-- Cheeks -->
+    <circle cx="112" cy="146" r="4" fill="#f43f5e" opacity="0.3" />
+    <circle cx="148" cy="146" r="4" fill="#f43f5e" opacity="0.3" />
+    <!-- Smile -->
+    <path d="M 122 149 Q 130 157 138 149" fill="none" stroke="#1c1917" stroke-width="2.5" stroke-linecap="round" />
+    <!-- Waving Arm Left -->
+    <path d="M 96 195 Q 75 165 65 145" stroke="url(#suitGradLeft)" stroke-width="16" stroke-linecap="round" fill="none" />
+    <circle cx="63" cy="142" r="10" fill="url(#skinLeft)" />
+  </g>
+
+  <!-- RIGHT CHARACTER (Tech Lead / Operations Executive) -->
+  <g filter="url(#shadow)" transform="translate(10, 10)">
+    <!-- Body / Suit -->
+    <path d="M 235 190 Q 270 170 305 190 L 315 300 L 225 300 Z" fill="url(#suitGradRight)" />
+    <!-- Shirt -->
+    <polygon points="260,185 270,225 280,185" fill="#ffffff" />
+    <!-- Neck -->
+    <rect x="263" y="165" width="14" height="25" rx="5" fill="url(#skinRight)" />
+    <!-- Head -->
+    <circle cx="270" cy="140" r="32" fill="url(#skinRight)" />
+    <!-- Hair -->
+    <path d="M 238 135 C 238 98 302 98 302 135 Q 270 110 238 135 Z" fill="#451a03" />
+    <!-- Glasses -->
+    <rect x="250" y="132" width="16" height="12" rx="3" fill="none" stroke="#1c1917" stroke-width="2" />
+    <rect x="274" y="132" width="16" height="12" rx="3" fill="none" stroke="#1c1917" stroke-width="2" />
+    <line x1="266" y1="138" x2="274" y2="138" stroke="#1c1917" stroke-width="2" />
+    <!-- Eyes behind glasses -->
+    <circle cx="258" cy="138" r="3" fill="#1c1917" />
+    <circle cx="282" cy="138" r="3" fill="#1c1917" />
+    <!-- Smile -->
+    <path d="M 262 150 Q 270 158 278 150" fill="none" stroke="#1c1917" stroke-width="2.5" stroke-linecap="round" />
+    <!-- Waving Arm Right -->
+    <path d="M 304 195 Q 325 165 335 145" stroke="url(#suitGradRight)" stroke-width="16" stroke-linecap="round" fill="none" />
+    <circle cx="337" cy="142" r="10" fill="url(#skinRight)" />
+  </g>
+
+  <!-- CENTER MAIN CHARACTER (CEO / Director in Purple Suit) -->
+  <g filter="url(#shadow)">
+    <!-- Body / Suit -->
+    <path d="M 160 175 Q 200 155 240 175 L 255 310 L 145 310 Z" fill="url(#suitGradCenter)" />
+    <!-- White Collared Shirt -->
+    <polygon points="188,170 200,225 212,170" fill="#ffffff" />
+    <!-- Yellow Tie -->
+    <polygon points="196,175 204,175 206,230 200,238 194,230" fill="url(#tieGrad)" />
+    <!-- Neck -->
+    <rect x="192" y="148" width="16" height="28" rx="5" fill="url(#skinCenter)" />
+    <!-- Face / Head -->
+    <circle cx="200" cy="125" r="36" fill="url(#skinCenter)" />
+    <!-- Hair -->
+    <path d="M 164 122 C 160 70 240 70 236 122 Q 200 92 164 122 Z" fill="#1c1917" />
+    <!-- Eyes -->
+    <circle cx="186" cy="122" r="5" fill="#1c1917" />
+    <circle cx="214" cy="122" r="5" fill="#1c1917" />
+    <circle cx="188" cy="120" r="1.8" fill="#ffffff" />
+    <circle cx="216" cy="120" r="1.8" fill="#ffffff" />
+    <!-- Cheeks -->
+    <circle cx="178" cy="130" r="4.5" fill="#f43f5e" opacity="0.3" />
+    <circle cx="222" cy="130" r="4.5" fill="#f43f5e" opacity="0.3" />
+    <!-- Open Happy Smile -->
+    <path d="M 188 133 Q 200 148 212 133 Z" fill="#991b1b" />
+    <path d="M 191 133 Q 200 140 209 133" fill="#ffffff" />
+    <!-- Arms Open Welcoming -->
+    <path d="M 160 185 Q 135 205 120 220" stroke="url(#suitGradCenter)" stroke-width="18" stroke-linecap="round" fill="none" />
+    <circle cx="115" cy="225" r="11" fill="url(#skinCenter)" />
+    <path d="M 240 185 Q 265 205 280 220" stroke="url(#suitGradCenter)" stroke-width="18" stroke-linecap="round" fill="none" />
+    <circle cx="285" cy="225" r="11" fill="url(#skinCenter)" />
+  </g>
+
+</svg>

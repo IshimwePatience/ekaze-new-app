@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ihirwe-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-Patience123@}
+      POSTGRES_DB: ${DB_NAME:-ihirwe_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ihirwe-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-ihirwe_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ihirwe-redis
+    restart: always
+    volumes:
+      - redis_data:/data
+    networks:
+      - ihirwe-network
+
+  backend:
+    build:
+      context: ./ihirwe-backend-node
+      dockerfile: Dockerfile
+    container_name: ihirwe-backend
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    env_file:
+      - ./ihirwe-backend-node/.env
+    environment:
+      PORT: 5000
+      NODE_ENV: production
+      DB_HOST: postgres
+      DB_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      FRONTEND_URL: https://ihirwepay.benofinance.rw
+      GOOGLE_CALLBACK_URL: https://ihirwepay.benofinance.rw/api/v1/auth/google/callback
+    volumes:
+      - backend_uploads:/app/uploads
+    ports:
+      - "5000:5000"
+    networks:
+      - ihirwe-network
+
+  frontend:
+    build:
+      context: ./ihirwe-frontend-main
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: https://ihirwepay.benofinance.rw/api/v1
+        VITE_STORAGE_URL: https://ihirwepay.benofinance.rw
+        VITE_GOOGLE_CLIENT_ID: 851412910623-cqq5dj652m3qmu71c56ak4626rop4jka.apps.googleusercontent.com
+    container_name: ihirwe-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    networks:
+      - ihirwe-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  backend_uploads:
+
+networks:
+  ihirwe-network:
+    driver: bridge
+
