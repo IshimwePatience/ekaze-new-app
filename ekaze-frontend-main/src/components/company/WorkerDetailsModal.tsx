@@ -178,7 +178,7 @@ const WorkerDetailsModal: React.FC<WorkerDetailsModalProps> = ({
           <div className="flex items-center gap-3">
             <img
               src={logo}
-              alt="Ihirwe"
+              alt="Ekaze"
               className="h-9 w-auto object-contain cursor-pointer"
               onClick={onClose}
             />

@@ -891,7 +891,7 @@ useEffect(() => {
                       +{Number(statistics?.transactions?.total_revenue || 115000).toLocaleString()} <span className="text-2xl font-bold text-white/80">RWF</span>
                     </div>
                     <p className="text-[13.5px] text-white/90 font-normal leading-[1.65]">
-                      Total platform funds processed through the Ihirwe payment gateway and completed settlements.
+                      Total platform funds processed through the Ekaze payment gateway and completed settlements.
                     </p>
                   </div>
 

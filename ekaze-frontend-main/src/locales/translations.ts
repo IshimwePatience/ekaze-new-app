@@ -37,7 +37,7 @@ export const translations = {
       title: "Personal Information",
       firstName: "First Name",
       firstNameRequired: "First name is required",
-      firstNamePlaceholder: "Ihirwe",
+      firstNamePlaceholder: "Ekaze",
       lastName: "Last Name",
       lastNameRequired: "Last name is required",
       lastNamePlaceholder: "Jean",
@@ -81,7 +81,7 @@ export const translations = {
       phonePlaceholder: "0781234567",
       email: "Email",
       emailRequired: "Email is required",
-      emailPlaceholder: "user@ihirwe.pay",
+      emailPlaceholder: "user@ekaze.pay",
       password: "Password",
       passwordRequired: "Password is required",
       passwordLength: "Password must be at least 8 characters",
@@ -150,7 +150,7 @@ export const translations = {
     title: "Personal Information",
     fullName: "Full Name",
     nameRequired: "Full name is required",
-    namePlaceholder: "Ihirwe Jean",
+    namePlaceholder: "Ekaze Jean",
     gender: "Gender",
     genderRequired: "Gender is required",
     selectGender: "Select gender",
@@ -188,7 +188,7 @@ export const translations = {
     phonePlaceholder: "0781234567",
     email: "Email",
     emailRequired: "Email is required",
-    emailPlaceholder: "user@ihirwe.pay"
+    emailPlaceholder: "user@ekaze.pay"
   },
   
   location: {
@@ -562,7 +562,7 @@ otp: {
     badge: "Join Rwanda's #1 Worker Platform",
     title1: "Ready to Transform",
     title2: "Worker Management?",
-    subtitle: "Join thousands of companies, workers, and employers already using Ihirwe Pay for secure, verified hiring in Rwanda.",
+    subtitle: "Join thousands of companies, workers, and employers already using Ekaze for secure, verified hiring in Rwanda.",
     primaryBtn: "Get Started Today",
     secondaryBtn: "Login to Portal",
     trustNote: "No credit card required  •  Free for workers to browse  •  Setup in minutes",
@@ -1825,7 +1825,7 @@ resetPassword: {
     
     // Worker fields
     firstName: "First Name",
-    firstNamePlaceholder: "Ihirwe",
+    firstNamePlaceholder: "Ekaze",
     lastName: "Last Name",
     lastNamePlaceholder: "Jean",
     workerEmailPlaceholder: "worker@example.com",
@@ -2617,7 +2617,7 @@ employer: {
     insuranceDetails: "Insurance Details",
     insuranceHint: "Insurance coverage",
     registration: "Registration",
-    registrationHint: "Registered on Ihirwe Pay platform",
+    registrationHint: "Registered on Ekaze platform",
     
     // Hiring Dialog
     hireTitle: "Hire {firstName} {lastName}",
@@ -4589,7 +4589,7 @@ company: {
       
       // Personal Information Step
       firstName: "First Name *",
-      firstNamePlaceholder: "Ihirwe",
+      firstNamePlaceholder: "Ekaze",
       lastName: "Last Name *",
       lastNamePlaceholder: "Jean",
       gender: "Gender *",
@@ -6341,7 +6341,7 @@ supervisor: {
       title: "Amakuru y'Umuntu",
       firstName: "Izina",
       firstNameRequired: "Izina rirakenewe",
-      firstNamePlaceholder: "Ihirwe",
+      firstNamePlaceholder: "Ekaze",
       lastName: "Iry'umuryango",
       lastNameRequired: "Iry'umuryango rirakenewe",
       lastNamePlaceholder: "Jean",
@@ -6384,7 +6384,7 @@ supervisor: {
       phonePlaceholder: "0781234567",
       email: "Imeyili",
       emailRequired: "Imeyili irakenewe",
-      emailPlaceholder: "user@ihirwe.pay",
+      emailPlaceholder: "user@ekaze.pay",
       password: "Ijambo ryibanga",
       passwordRequired: "Ijambo ryibanga rirakenewe",
       passwordLength: "Ijambo ryibanga rigomba kuba byibura 8 inyuguti",
@@ -6454,7 +6454,7 @@ supervisor: {
     title: "Amakuru y'Umuntu",
     fullName: "Izina Ryuzuye",
     nameRequired: "Izina ryuzuye rirakenewe",
-    namePlaceholder: "Ihirwe Jean",
+    namePlaceholder: "Ekaze Jean",
     gender: "Igitsina",
     genderRequired: "Igitsina girakenewe",
     selectGender: "Hitamo igitsina",
@@ -6491,7 +6491,7 @@ supervisor: {
     phonePlaceholder: "0781234567",
     email: "Imeyili",
     emailRequired: "Imeyili irakenewe",
-    emailPlaceholder: "user@ihirwe.pay"
+    emailPlaceholder: "user@ekaze.pay"
   },
   
   location: {
@@ -7664,7 +7664,7 @@ adminHeader: {
       inactive: "Ntakora",
       
       firstName: "Izina",
-      firstNamePlaceholder: "Ihirwe",
+      firstNamePlaceholder: "Ekaze",
       lastName: "Iry'umuryango",
       lastNamePlaceholder: "Jean",
       workerEmailPlaceholder: "umukozi@example.com",
@@ -8382,7 +8382,7 @@ employer: {
       insuranceDetails: "Amakuru y'Ubwishingizi",
       insuranceHint: "Ubwishingizi",
       registration: "Iyandikwa",
-      registrationHint: "Yanditswe kuri Ihirwe Pay",
+      registrationHint: "Yanditswe kuri Ekaze",
       
       hireTitle: "Gukoresha {firstName} {lastName}",
       companyHireHint: "Ohereza icyifuzo cyo gukoresha mu sosiyete y'umukozi. Bazareba bakagusubiza.",
@@ -10161,7 +10161,7 @@ company: {
         stepInsurance: "Ubwishingizi",
         
         firstName: "Izina *",
-        firstNamePlaceholder: "Ihirwe",
+        firstNamePlaceholder: "Ekaze",
         lastName: "Iry'umuryango *",
         lastNamePlaceholder: "Jean",
         gender: "Igitsina *",
@@ -11847,7 +11847,7 @@ supervisor: {
   badge: "Injira ku Urubuga #1 rw'Abakozi mu Rwanda",
   title1: "Witeguye Guhindura",
   title2: "Imicungire y'Abakozi?",
-  subtitle: "Jya mu miryango y'ibihumbi by'amasosiyete, abakozi, n'abashyira akazi bakoresha Ihirwe Pay mu Rwanda.",
+  subtitle: "Jya mu miryango y'ibihumbi by'amasosiyete, abakozi, n'abashyira akazi bakoresha Ekaze mu Rwanda.",
   primaryBtn: "Tangira Ubu",
   secondaryBtn: "Injira ku Rubuga",
   trustNote: "Nta karita ya banki isabwa  •  Ubuntu kubakozi  •  Igenwa mu minota mike",

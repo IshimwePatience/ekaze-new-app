@@ -37,7 +37,7 @@ export const NotificationPreferencesModal = ({
   // Load preferences from localStorage or use defaults
   const [prefs, setPrefs] = useState(() => {
     try {
-      const saved = localStorage.getItem("ihirwe_notification_preferences");
+      const saved = localStorage.getItem("ekaze_notification_preferences");
       if (saved) return JSON.parse(saved);
     } catch (e) {}
 
@@ -59,7 +59,7 @@ export const NotificationPreferencesModal = ({
 
   const handleSave = () => {
     try {
-      localStorage.setItem("ihirwe_notification_preferences", JSON.stringify(prefs));
+      localStorage.setItem("ekaze_notification_preferences", JSON.stringify(prefs));
       toast.success("Notification preferences saved successfully");
       onOpenChange(false);
     } catch (e) {

@@ -270,7 +270,7 @@ const Header = () => {
         {/* Left Side: Announcement Text */}
         <div className="flex items-center gap-2 font-medium">
           {/* PREVIOUS WORKER ANNOUNCEMENT:
-          <span>Ihirwe's automated worker verification & domestic staffing platform is live across Rwanda.</span>
+          <span>Ekaze's automated worker verification & domestic staffing platform is live across Rwanda.</span>
           */}
           <span>Ekaze's automated driver verification & commercial fleet staffing platform is live across Rwanda.</span>
           <button
@@ -312,13 +312,13 @@ const Header = () => {
 
           {/* Left Group: Logo + Navigation Links */}
           <div className="flex items-center gap-6 lg:gap-8">
-            {/* Ihirwe Logo (Inverted to clean white on blue navbar) */}
+            {/* Ekaze Logo (Inverted to clean white on blue navbar) */}
             <a
               href="/"
               onClick={(e) => handleNavClick(e, "#hero")}
               className="flex items-center shrink-0 hover:opacity-90 transition-opacity cursor-pointer mr-2"
             >
-              <img src={logo} alt="Ihirwe Pay" className="h-8 md:h-9 w-auto brightness-0 invert" />
+              <img src={logo} alt="Ekaze" className="h-8 md:h-9 w-auto brightness-0 invert" />
             </a>
 
             {/* Desktop Nav Links */}
@@ -628,7 +628,7 @@ const Header = () => {
                     className="text-2xl font-bold italic tracking-tight text-[#005a9c]"
                     style={{ fontFamily: "'Brush Script MT', 'Dancing Script', 'Segoe Script', cursive, sans-serif" }}
                   >
-                    Ihirwe Pay
+                    Ekaze
                   </span>
                   <span className="text-[10px] text-slate-400 font-sans font-semibold">™</span>
                 </div>

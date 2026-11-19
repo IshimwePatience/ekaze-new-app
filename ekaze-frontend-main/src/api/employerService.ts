@@ -64,7 +64,7 @@ export const employerApi = {
                 user: emp.user || {
                   id: emp.id || id,
                   name: emp.name || "Test Employer",
-                  email: emp.email || "employer@ihirwe.rw",
+                  email: emp.email || "employer@ekaze.rw",
                   phone: emp.phone || "+250 788 000 004",
                   district: emp.district || "Kigali",
                   sector: emp.sector || "Nyarugenge",
@@ -101,7 +101,7 @@ export const employerApi = {
               user: {
                 id: id,
                 name: "Test Employer",
-                email: "employer@ihirwe.rw",
+                email: "employer@ekaze.rw",
                 phone: "+250 788 000 004",
                 district: "Kigali",
                 sector: "Nyarugenge",

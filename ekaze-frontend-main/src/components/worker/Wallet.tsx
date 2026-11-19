@@ -109,7 +109,7 @@ const DEFAULT_SAVINGS_CONFIG: SavingsConfig = {
   type: "fixed",
   amount: 0,
   percentage: 0,
-  goal_name: "Ihirwe Wallet Savings",
+  goal_name: "Ekaze Wallet Savings",
   total_accumulated: 0,
   updated_at: new Date().toISOString(),
 };
@@ -399,12 +399,12 @@ const Wallet = () => {
         time: isValid(d) ? format(d, "hh:mm a") : undefined,
         salary_cycle: isValid(d) ? format(d, "MMMM yyyy") : "Monthly",
         employer_name: tx.metadata?.employer_name || employerName || "Employer",
-        account: "Ihirwe Wallet Savings",
+        account: "Ekaze Wallet Savings",
         phone: tx.payment_phone || user?.phone || "",
-        goal: savingsConfig.goal_name || "Ihirwe Wallet Savings",
+        goal: savingsConfig.goal_name || "Ekaze Wallet Savings",
         amount: amt,
         balance_after: runningSav,
-        status: "Secured in Ihirwe Wallet" as any,
+        status: "Secured in Ekaze Wallet" as any,
       });
     }
     return list;
@@ -598,7 +598,7 @@ const Wallet = () => {
         type: "fixed",
         amount: num,
         percentage: baseSalary > 0 ? Math.round((num / baseSalary) * 100) : 0,
-        goal_name: "Ihirwe Wallet Savings",
+        goal_name: "Ekaze Wallet Savings",
         total_accumulated: Number(currentSavingsBalance || savingsConfig.total_accumulated || 0),
         updated_at: new Date().toISOString(),
       };
@@ -617,13 +617,13 @@ const Wallet = () => {
       queryClient.invalidateQueries({ queryKey: ["worker", "wallet"] });
       setShowSavingsModal(false);
       toast({
-        title: "Ihirwe Wallet Savings Set",
-        description: `Each month, ${formatCurrency(num)} will be automatically saved into your Ihirwe Wallet savings account.`,
+        title: "Ekaze Wallet Savings Set",
+        description: `Each month, ${formatCurrency(num)} will be automatically saved into your Ekaze Wallet savings account.`,
       });
     } catch (err: any) {
       toast({
         title: "Save Failed",
-        description: err?.response?.data?.message || "Failed to update Ihirwe Wallet savings setting.",
+        description: err?.response?.data?.message || "Failed to update Ekaze Wallet savings setting.",
         variant: "destructive",
       });
     } finally {
@@ -657,7 +657,7 @@ const Wallet = () => {
       setShowSavingsModal(false);
       toast({
         title: "Savings Stopped",
-        description: "Automatic Ihirwe Wallet savings deduction has been stopped.",
+        description: "Automatic Ekaze Wallet savings deduction has been stopped.",
       });
     } catch (err: any) {
       toast({
@@ -677,10 +677,10 @@ const Wallet = () => {
         date: rec.date,
         type: "saving",
         transaction_type: "saving",
-        description: `Automatic Salary Deduction deposited into Ihirwe Wallet (${rec.goal})`,
+        description: `Automatic Salary Deduction deposited into Ekaze Wallet (${rec.goal})`,
         amount: rec.amount,
         direction: "out",
-        payment_method: "Ihirwe Wallet",
+        payment_method: "Ekaze Wallet",
         sender_name: rec.employer_name || "Employer Salary",
         sender_phone: rec.phone || withdrawPhone,
         worker_name: user?.name,
@@ -890,7 +890,7 @@ const Wallet = () => {
                 className="bg-[#2478b8] hover:bg-[#1b6296] text-white text-xs font-semibold px-3 py-1.5 rounded shadow-2xs flex items-center gap-1.5 cursor-pointer"
               >
                 <PiggyBank className="w-3.5 h-3.5" />
-                <span>Set Ihirwe Wallet Savings</span>
+                <span>Set Ekaze Wallet Savings</span>
               </Button>
             ) : (
               <Button
@@ -1168,7 +1168,7 @@ const Wallet = () => {
                 label: "Status",
                 options: [
                   { value: "all", label: "All Statuses" },
-                  { value: "Secured in Ihirwe Wallet", label: "Secured in Ihirwe Wallet" },
+                  { value: "Secured in Ekaze Wallet", label: "Secured in Ekaze Wallet" },
                   { value: "Pending Transfer", label: "Pending Transfer" },
                 ],
               },
@@ -1207,8 +1207,8 @@ const Wallet = () => {
           {displayedSavingsRecords.length === 0 ? (
             <CharacterIllustration
               type="transactions"
-              title="No Ihirwe Wallet savings yet"
-              description="No automatic deductions saved to your Ihirwe Wallet account have been recorded yet."
+              title="No Ekaze Wallet savings yet"
+              description="No automatic deductions saved to your Ekaze Wallet account have been recorded yet."
             />
           ) : (
             <div className="overflow-x-auto w-full">
@@ -1233,7 +1233,7 @@ const Wallet = () => {
                       Deduction Ref
                     </TableHead>
                     <TableHead className="text-xs font-semibold text-slate-600">
-                      Ihirwe Wallet
+                      Ekaze Wallet
                     </TableHead>
                     <TableHead className="text-xs font-semibold text-slate-600">
                       Savings Purpose
@@ -1416,7 +1416,7 @@ const Wallet = () => {
                 Confirm Withdrawal
               </h3>
               <p className="text-xs text-white/80 mt-1 font-normal">
-                {withdrawSource === "savings" ? "Savings Balance (Ihirwe Wallet)" : "Account Balance (Ihirwe Wallet)"} • {formatCurrency(activeWithdrawBalance)}
+                {withdrawSource === "savings" ? "Savings Balance (Ekaze Wallet)" : "Account Balance (Ekaze Wallet)"} • {formatCurrency(activeWithdrawBalance)}
               </p>
             </div>
 
@@ -1526,7 +1526,7 @@ const Wallet = () => {
               <div className="px-5 py-4 space-y-3.5 bg-[#226e9f] text-white">
                 {/* Source Selector: Get Money from Account or Savings */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-white">Get Money From (Ihirwe Wallet) *</label>
+                  <label className="text-xs font-bold text-white">Get Money From (Ekaze Wallet) *</label>
                   <div className="grid grid-cols-2 gap-2.5">
                     <button
                       type="button"
@@ -1619,7 +1619,7 @@ const Wallet = () => {
                     />
                   </div>
                   <p className="text-xs text-white/80 font-normal">
-                    Withdraw directly from {withdrawSource === "savings" ? "your Ihirwe Wallet Savings" : "your Ihirwe Wallet Account"} to any MTN number. An SMS OTP confirmation will be sent.
+                    Withdraw directly from {withdrawSource === "savings" ? "your Ekaze Wallet Savings" : "your Ekaze Wallet Account"} to any MTN number. An SMS OTP confirmation will be sent.
                   </p>
                   {withdrawError && (
                     <p className="text-xs text-rose-200 font-semibold">{withdrawError}</p>
@@ -1677,7 +1677,7 @@ const Wallet = () => {
                 <X className="w-5 h-5 stroke-[2.5] text-white" />
               </button>
               <h3 className="text-xl font-bold text-white tracking-tight">
-                Set Ihirwe Wallet Savings
+                Set Ekaze Wallet Savings
               </h3>
               <p className="text-xs text-white/80 mt-1 font-normal">
                 Monthly Salary • {formatCurrency(baseSalary)}
@@ -1734,7 +1734,7 @@ const Wallet = () => {
 
               {/* MTN MoKash Phone */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-white">Ihirwe Wallet Account *</label>
+                <label className="text-xs font-bold text-white">Ekaze Wallet Account *</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-white/80">🇷🇼</span>
                   <input
@@ -1745,7 +1745,7 @@ const Wallet = () => {
                   />
                 </div>
                 <p className="text-xs text-white/80 font-normal">
-                  All salary transactions happen in your Ihirwe Wallet. Funds are automatically deducted on salary payout and held in your Ihirwe Wallet savings.
+                  All salary transactions happen in your Ekaze Wallet. Funds are automatically deducted on salary payout and held in your Ekaze Wallet savings.
                 </p>
               </div>
 
@@ -1770,7 +1770,7 @@ const Wallet = () => {
                   <span>
                     {isSavingConfig
                       ? "Saving..."
-                      : `Save to Ihirwe Wallet${savingsInputAmount ? ` (${formatCurrency(savingsInputAmount)})` : ""}`}
+                      : `Save to Ekaze Wallet${savingsInputAmount ? ` (${formatCurrency(savingsInputAmount)})` : ""}`}
                   </span>
                 </button>
               </div>

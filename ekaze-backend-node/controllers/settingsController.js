@@ -30,7 +30,7 @@ const DEFAULT_API_SETTINGS = {
   },
   sms_api: {
     api_key: { value: '', is_active: true },
-    sender_id: { value: 'IHIRWE', is_active: true }
+    sender_id: { value: 'EKAZE', is_active: true }
   }
 };
 
@@ -220,7 +220,7 @@ const getApiSettings = async (req, res, next) => {
     const nida_api_key = await getSettingValue('nida_api_api_key', '');
     const nida_endpoint_url = await getSettingValue('nida_api_endpoint_url', 'https://api.nida.gov.rw');
     const sms_api_key = await getSettingValue('sms_api_api_key', '');
-    const sms_sender_id = await getSettingValue('sms_api_sender_id', 'IHIRWE');
+    const sms_sender_id = await getSettingValue('sms_api_sender_id', 'EKAZE');
 
     return res.status(200).json({
       success: true,

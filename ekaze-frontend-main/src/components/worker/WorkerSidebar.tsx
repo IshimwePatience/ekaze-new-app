@@ -47,10 +47,10 @@ const WorkerSidebar = ({ activeTab, setActiveTab }: WorkerSidebarProps) => {
     <Sidebar className="border-r border-border">
       <SidebarHeader className="p-4 border-b border-sidebar-border">
         <Link to="/" className="flex items-center gap-3">
-          <img src={logo} alt="Ihirwe Pay" className="h-10 w-auto" />
+          <img src={logo} alt="Ekaze" className="h-10 w-auto" />
           {/* {!isCollapsed && (
             <span className="font-display font-bold text-lg text-sidebar-foreground">
-              Ihirwe Pay
+              Ekaze
             </span>
           )} */}
         </Link>

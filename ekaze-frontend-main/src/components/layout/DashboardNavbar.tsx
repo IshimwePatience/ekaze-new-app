@@ -43,7 +43,7 @@ import {
 } from "@/components/ui/ConsoleSidebarIcons";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { AskIhirweRightSidebar } from "./AskIhirweRightSidebar";
+import { AskEkazeRightSidebar } from "./AskEkazeRightSidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -329,7 +329,7 @@ export const DashboardNavbar = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [internalIsAiOpen, setInternalIsAiOpen] = useState(() => {
-    return localStorage.getItem("ihirwe_ai_sidebar_open") === "true";
+    return localStorage.getItem("ekaze_ai_sidebar_open") === "true";
   });
   const [showAiTooltip, setShowAiTooltip] = useState(true);
   const [avatarError, setAvatarError] = useState(false);
@@ -415,7 +415,7 @@ export const DashboardNavbar = ({
           </div>
         </div>
 
-        {/* Right Section: Help, Notifications, Ask Ihirwe Pill, Profile Avatar */}
+        {/* Right Section: Help, Notifications, Ask Ekaze Pill, Profile Avatar */}
         <div className="flex items-center gap-2 md:gap-3 shrink-0">
 
           {/* HELP ICON BUTTON: DIRECTLY OPENS FEEDBACK & SCREENSHOT MODAL */}
@@ -592,9 +592,9 @@ export const DashboardNavbar = ({
                             <div className="flex items-center gap-1.5 mb-0.5">
                               <p className={cn("text-xs tracking-tight truncate", isUnread ? "font-bold text-slate-900" : "font-medium text-slate-700")}>
                                 {(n.title || '')
-                                  .replace(/by Administrator/gi, 'by Ihirwe')
-                                  .replace(/by Admin/gi, 'by Ihirwe')
-                                  .replace(/Administrator/gi, 'Ihirwe')}
+                                  .replace(/by Administrator/gi, 'by Ekaze')
+                                  .replace(/by Admin/gi, 'by Ekaze')
+                                  .replace(/Administrator/gi, 'Ekaze')}
                               </p>
                               {isUnread && (
                                 <span className="w-2 h-2 rounded-full bg-[#0C66E4] shrink-0" title="Unread" />
@@ -602,10 +602,10 @@ export const DashboardNavbar = ({
                             </div>
                             <p className="text-[11px] leading-relaxed text-slate-600 break-words font-normal">
                               {(n.message || '')
-                                .replace(/by Administrator/gi, 'by Ihirwe')
-                                .replace(/by Admin/gi, 'by Ihirwe')
-                                .replace(/Administrator/gi, 'Ihirwe')
-                                .replace(/Support response:/gi, 'Ihirwe Response:')}
+                                .replace(/by Administrator/gi, 'by Ekaze')
+                                .replace(/by Admin/gi, 'by Ekaze')
+                                .replace(/Administrator/gi, 'Ekaze')
+                                .replace(/Support response:/gi, 'Ekaze Response:')}
                             </p>
                             <span className="text-[10px] font-medium text-slate-400 mt-1.5 block">
                               {n.created_at && !isNaN(new Date(n.created_at).getTime())
@@ -635,7 +635,7 @@ export const DashboardNavbar = ({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* ASK IHIRWE PILL BUTTON WITH INTRO TOOLTIP CARD (Matching Image 1) */}
+          {/* ASK EKAZE PILL BUTTON WITH INTRO TOOLTIP CARD (Matching Image 1) */}
           <div
             className="relative flex items-center z-50"
             onMouseEnter={() => setShowAiTooltip(true)}
@@ -825,9 +825,9 @@ export const DashboardNavbar = ({
         }}
       />
 
-      {/* Ask Ihirwe Right Side AI Assistant Drawer (Fallback floating for standalone navbar) */}
+      {/* Ask Ekaze Right Side AI Assistant Drawer (Fallback floating for standalone navbar) */}
       {!onToggleAiSidebar && (
-        <AskIhirweRightSidebar
+        <AskEkazeRightSidebar
           isOpen={internalIsAiOpen}
           onClose={() => setInternalIsAiOpen(false)}
         />

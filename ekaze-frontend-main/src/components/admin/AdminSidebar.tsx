@@ -114,7 +114,7 @@ const AdminSidebar = ({
         <Link to="/" className="flex items-center gap-3">
           <img
             src={isCollapsed ? favicon : logo}
-            alt="Ihirwe Pay"
+            alt="Ekaze"
             className={cn(
               "transition-all duration-300",
               isCollapsed ? "h-8 w-8" : "h-10 w-auto"

@@ -524,7 +524,7 @@ export const RegisterFormPage: React.FC = () => {
               if (!res.success || !res.has_existing) return;
               const pd = res.data;
               if (pd.phone) handleChange("phone", pd.phone);
-              if (pd.email && !pd.email.endsWith("@ihirwe.rw")) handleChange("email", pd.email);
+              if (pd.email && !pd.email.endsWith("@ekaze.rw")) handleChange("email", pd.email);
             },
           });
         } else {
@@ -1422,7 +1422,7 @@ export const RegisterFormPage: React.FC = () => {
                   />
                   <span className="text-xs font-semibold text-slate-700 leading-relaxed">
                     I agree to use worker information solely for lawful domestic employment purposes
-                    and abide by Ihirwe terms of service.
+                    and abide by Ekaze terms of service.
                   </span>
                 </label>
               </div>

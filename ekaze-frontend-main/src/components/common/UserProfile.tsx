@@ -522,10 +522,10 @@ export const UserProfile = () => {
       const fullName =
         user.name ||
         `${user.first_name || user.firstName || ""} ${user.last_name || user.lastName || ""}`.trim() ||
-        "Ihirwe User";
+        "Ekaze User";
 
       const userHandle =
-        user.username || (user.email ? user.email.split("@")[0] : "ihirwe_user");
+        user.username || (user.email ? user.email.split("@")[0] : "ekaze_user");
 
       const compName =
         user.company?.company_name ||

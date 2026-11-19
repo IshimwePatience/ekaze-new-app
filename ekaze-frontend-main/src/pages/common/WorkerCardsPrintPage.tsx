@@ -74,7 +74,7 @@ interface WorkerCardData {
   id: number;
   name: string;
   card_number: string;
-  ihirwe_id?: string;
+  ekaze_id?: string;
   photo: string;
   phone: string;
   email: string;
@@ -94,7 +94,7 @@ const formatProfession = (prof?: string): string => {
   return prof.replace(/[•·]/g, ',').replace(/\s*,\s*/g, ', ');
 };
 
-const formatIhirweId = (id: number | string | undefined, existingId?: string): string => {
+const formatEkazeId = (id: number | string | undefined, existingId?: string): string => {
   if (existingId && /^\d{10}$/.test(existingId)) return existingId;
   const num = parseInt(String(id || '10').replace(/\D/g, ''), 10) || 10;
   return `100${String(num).padStart(7, '0')}`;
@@ -192,8 +192,8 @@ export const WorkerCardsPrintPage: React.FC = () => {
         : 'worker';
 
       const fileName = cards.length === 1
-        ? `ihirwe-${side}-${singleWorkerName}.pdf`
-        : `ihirwe-workers-${side}.pdf`;
+        ? `ekaze-${side}-${singleWorkerName}.pdf`
+        : `ekaze-workers-${side}.pdf`;
 
       pdf.save(fileName);
     } catch (err) {
@@ -219,7 +219,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
 
       <AwsCubesBackground />
 
-      {/* Top Header with Language Dropdown (English & Kinyarwanda) and Centered Ihirwe Logo */}
+      {/* Top Header with Language Dropdown (English & Kinyarwanda) and Centered Ekaze Logo */}
       <header className="relative z-10 w-full px-6 pt-5 pb-2 print:hidden">
         {/* Top Right Language Selector */}
         <div className="flex justify-end max-w-6xl mx-auto">
@@ -265,14 +265,14 @@ export const WorkerCardsPrintPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Centered Ihirwe Brand Logo */}
+        {/* Centered Ekaze Brand Logo */}
         <div className="flex flex-col items-center justify-center pt-2">
           <div
             className="flex flex-col items-center select-none cursor-pointer transition-transform hover:scale-105"
             onClick={() => navigate('/')}
-            title="Ihirwe Pay"
+            title="Ekaze"
           >
-            <img src={logo} alt="Ihirwe Pay" className="h-10 sm:h-12 w-auto object-contain" />
+            <img src={logo} alt="Ekaze" className="h-10 sm:h-12 w-auto object-contain" />
           </div>
         </div>
 
@@ -405,10 +405,10 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
 
                       <div className="card-face-front w-[460px] h-[280px] rounded-[14px] relative overflow-hidden bg-[#03142c] text-white shadow-xl border border-slate-800/80 select-none flex print:shadow-none">
-                        {/* Left Side: Photo, Logo, 10-digit Ihirwe ID */}
+                        {/* Left Side: Photo, Logo, 10-digit Ekaze ID */}
                         <div className="w-[160px] shrink-0 px-2 py-3.5 flex flex-col items-center justify-between z-10 border-r border-slate-700/60 bg-[#03142c]">
                           <div className="flex items-center">
-                            <img src={logo} alt="Ihirwe" className="h-[20px] w-auto object-contain" />
+                            <img src={logo} alt="Ekaze" className="h-[20px] w-auto object-contain" />
                           </div>
 
                           <div
@@ -430,7 +430,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                           </div>
 
                           <span className="text-[11px] font-sans font-bold text-white tracking-normal text-center whitespace-nowrap">
-                            Ihirwe ID Nº {formatIhirweId(worker.id, worker.ihirwe_id)}
+                            Ekaze ID Nº {formatEkazeId(worker.id, worker.ekaze_id)}
                           </span>
                         </div>
 
@@ -496,7 +496,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       {/* Left Side: Logo, Contact List & Notice */}
                       <div className="flex-1 p-5 flex flex-col justify-between z-10">
                         <div className="flex items-center">
-                          <img src={logo} alt="Ihirwe" className="h-[22px] w-auto object-contain" />
+                          <img src={logo} alt="Ekaze" className="h-[22px] w-auto object-contain" />
                         </div>
 
                         <div className="flex flex-col gap-2.5 text-[11.5px] text-slate-800">
@@ -529,7 +529,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                           </div>
 
                           <p className="text-[9.5px] text-slate-500 leading-snug">
-                            If found, please return to {worker.company} or any Ihirwe counter.
+                            If found, please return to {worker.company} or any Ekaze counter.
                           </p>
                         </div>
 
@@ -560,7 +560,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                             rel="noreferrer"
                             className="text-[10px] font-bold text-white tracking-tight hover:underline"
                           >
-                            www.ihirwe.rw
+                            www.ekaze.rw
                           </a>
                         </div>
                       </div>
@@ -584,7 +584,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
 
                     <div className="card-face-front w-[300px] h-[476px] rounded-[14px] relative overflow-hidden bg-[#03142c] text-white shadow-xl select-none print:shadow-none">
                       <div className="absolute top-5 left-5 z-10 flex items-center">
-                      <img src={logo} alt="Ihirwe" className="h-[22px] w-auto object-contain" />
+                      <img src={logo} alt="Ekaze" className="h-[22px] w-auto object-contain" />
                     </div>
 
                       <svg className="absolute top-0 left-0 w-full h-[170px] z-[1]" viewBox="0 0 300 170" preserveAspectRatio="none">
@@ -634,7 +634,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
 
                       <div className="absolute bottom-[54px] left-0 w-full flex flex-col items-center text-center px-5 z-[6]">
                         <span className="text-[12.5px] font-sans font-bold text-white tracking-normal whitespace-nowrap mb-1">
-                          Ihirwe ID Nº {formatIhirweId(worker.id, worker.ihirwe_id)}
+                          Ekaze ID Nº {formatEkazeId(worker.id, worker.ekaze_id)}
                         </span>
                         <h2 className="text-[19px] font-normal text-white uppercase tracking-wide leading-tight mb-1">
                           {worker.name}
@@ -678,7 +678,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       </div>
 
                       <div className="absolute top-[132px] left-1/2 -translate-x-1/2 z-[5] flex items-center justify-center">
-                        <img src={logo} alt="Ihirwe" className="h-[24px] w-auto object-contain" />
+                        <img src={logo} alt="Ekaze" className="h-[24px] w-auto object-contain" />
                       </div>
 
                       <div className="absolute top-[174px] left-0 w-full px-6 flex flex-col gap-2.5 z-[5]">
@@ -712,7 +712,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                         </div>
 
                         <p className="text-[9.5px] text-slate-500 leading-snug mt-1">
-                          If found, please return to {worker.company} or any Ihirwe counter.
+                          If found, please return to {worker.company} or any Ekaze counter.
                         </p>
                       </div>
 
@@ -775,7 +775,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                               rel="noreferrer"
                               className="text-[10px] font-bold text-white tracking-tight hover:underline"
                             >
-                              www.ihirwe.rw
+                              www.ekaze.rw
                             </a>
                           </div>
                         </div>
@@ -791,7 +791,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
 
       {/* Footer */}
       <footer className="relative z-10 w-full py-4 text-center text-[12px] text-[#545b64] print:hidden">
-        © 2026 Ihirwe Pay Ltd. All rights reserved. • Dual-Sided ID Badge Printing Service
+        © 2026 Ekaze Ltd. All rights reserved. • Dual-Sided ID Badge Printing Service
       </footer>
     </div>
   );

@@ -745,10 +745,10 @@ const getWorkersCardsData = async (req, res, next) => {
       const rawName = raw.user?.name || raw.full_name || '';
       const cleanName = rawName.replace(/\s*\(Worker\)\s*/gi, '').trim() || 'Worker Name';
       const cardNumber = `RW-CARD-${String(raw.id).padStart(6, '0')}`;
-      const ihirweId = `100${String(raw.id).padStart(7, '0')}`;
+      const ekazeId = `100${String(raw.id).padStart(7, '0')}`;
       const photo = raw.user?.profile_photo || raw.profile_photo || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';
       const phone = raw.user?.phone || raw.phone || '+250 788 000 000';
-      const email = raw.user?.email || raw.email || 'worker@ihirwe.rw';
+      const email = raw.user?.email || raw.email || 'worker@ekaze.rw';
       const nationalId = raw.user?.national_id || raw.national_id || '1199880012345678';
       const maskedNid = nationalId.length === 16
         ? `${nationalId.substring(0, 1)} ${nationalId.substring(1, 5)} ${nationalId.substring(5, 6)} ${nationalId.substring(6, 9)}**** * ${nationalId.substring(14)}`
@@ -764,7 +764,7 @@ const getWorkersCardsData = async (req, res, next) => {
         id: raw.id,
         name: cleanName,
         card_number: cardNumber,
-        ihirwe_id: ihirweId,
+        ekaze_id: ekazeId,
         photo,
         phone,
         email,
@@ -2855,7 +2855,7 @@ const createCompanyWorker = async (req, res, next) => {
     const resolvedFirstName = getVal('first_name', 'firstName') || (b.name ? b.name.split(' ')[0] : 'Driver');
     const resolvedLastName = getVal('last_name', 'lastName') || (b.name ? b.name.split(' ').slice(1).join(' ') : '');
     const fullName = (getVal('name') || `${resolvedFirstName} ${resolvedLastName}`).trim();
-    const finalPassword = getVal('password') || ('Ihirwe' + Math.random().toString(36).slice(-6) + '!');
+    const finalPassword = getVal('password') || ('Ekaze' + Math.random().toString(36).slice(-6) + '!');
 
     if (resolvedNationalId) {
       const existing = await User.findOne({ where: { national_id: resolvedNationalId } });

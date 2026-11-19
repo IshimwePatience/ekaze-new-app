@@ -1040,7 +1040,7 @@ const LoginPage = () => {
             </div>
 
             {/* ──────────────────────────────────────────────────────────────────
-              RIGHT COLUMN: EXACT RWANDAIR "REGISTER TO IHIRWE AND ENJOY:"
+              RIGHT COLUMN: EXACT RWANDAIR "REGISTER TO EKAZE AND ENJOY:"
           ────────────────────────────────────────────────────────────────── */}
             <div className="md:pl-8 pt-6 md:pt-0 relative flex flex-col justify-between">
 
@@ -1055,17 +1055,17 @@ const LoginPage = () => {
               </button>
 
               <div>
-                {/* Header: Welcome to Ihirwe */}
+                {/* Header: Welcome to Ekaze */}
                 <h3 className="text-[26px] font-bold text-[#222222] leading-tight mb-6 pr-8">
                   {isRw ? (
                     <>
                       Ikaze kuri <br />
-                      Ihirwe:
+                      Ekaze:
                     </>
                   ) : (
                     <>
                       Welcome to <br />
-                      Ihirwe:
+                      Ekaze:
                     </>
                   )}
                 </h3>
@@ -1106,14 +1106,14 @@ const LoginPage = () => {
                 </div> */}
               </div>
 
-              {/* Stylized DreamMiles-like Script Branding for Ihirwe */}
+              {/* Stylized DreamMiles-like Script Branding for Ekaze */}
               <div className="pt-2 select-none">
                 <div className="flex items-baseline gap-1.5">
                   <span
                     className="text-2xl font-bold italic tracking-tight text-[#005a9c]"
                     style={{ fontFamily: "'Brush Script MT', 'Dancing Script', 'Segoe Script', cursive, sans-serif" }}
                   >
-                    Ihirwe Pay
+                    Ekaze
                   </span>
                   <span className="text-[10px] text-slate-400 font-sans font-semibold">™</span>
                 </div>

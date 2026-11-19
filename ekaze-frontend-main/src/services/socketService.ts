@@ -11,7 +11,7 @@ const getSocketUrl = (): string => {
     return import.meta.env.VITE_API_URL.replace(/\/api\/v1\/?$/, '');
   }
   return import.meta.env.MODE === 'production'
-    ? 'https://api.ihirwepay.rw'
+    ? 'https://api.ekazepay.rw'
     : 'http://localhost:5000';
 };
 

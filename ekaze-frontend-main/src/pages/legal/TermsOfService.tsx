@@ -20,8 +20,8 @@ export const TermsOfService = () => {
           {/* Intro Description */}
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-8">
             {isRw
-              ? "Aya masezerano yo gukoresha urubuga rwa Ihirwe (ikirango cya Beno Finance Ltd) asobanura imikorere n'inshingano z'abakoresha n'abakozi mu gushaka no guha akazi abakozi bakora mu ngo n'inzobere mu Rwanda. Urubuga rwacu rwiyemeje gukora mu mucyo n'umutekano w'amakuru bishingiye ku mategeko y'u Rwanda."
-              : "This Terms of Service agreement outlines the commitment of Ihirwe (a Beno Finance Ltd brand) to maintaining the highest standards of platform usage, worker placement, and service reliability across Rwanda. Ihirwe provides digital verification, NIDA background authentication, and domestic staffing connection tools."}
+              ? "Aya masezerano yo gukoresha urubuga rwa Ekaze (ikirango cya Beno Finance Ltd) asobanura imikorere n'inshingano z'abakoresha n'abakozi mu gushaka no guha akazi abakozi bakora mu ngo n'inzobere mu Rwanda. Urubuga rwacu rwiyemeje gukora mu mucyo n'umutekano w'amakuru bishingiye ku mategeko y'u Rwanda."
+              : "This Terms of Service agreement outlines the commitment of Ekaze (a Beno Finance Ltd brand) to maintaining the highest standards of platform usage, worker placement, and service reliability across Rwanda. Ekaze provides digital verification, NIDA background authentication, and domestic staffing connection tools."}
           </p>
 
           <h2 className="text-xl font-bold text-slate-900 mb-6">
@@ -90,8 +90,8 @@ export const TermsOfService = () => {
                     {isRw ? "Guhagarika Konti: " : "Account Termination: "}
                   </strong>
                   {isRw
-                    ? "Ihirwe ifite uburenganzira bwo guhagarika konti iteza ibibazo cyangwa ikoresha amakuru y'ibinyoma."
-                    : "Ihirwe reserves the right to suspend any account violating safety guidelines or engaging in fraudulent activity."}
+                    ? "Ekaze ifite uburenganzira bwo guhagarika konti iteza ibibazo cyangwa ikoresha amakuru y'ibinyoma."
+                    : "Ekaze reserves the right to suspend any account violating safety guidelines or engaging in fraudulent activity."}
                 </li>
               </ul>
             </div>

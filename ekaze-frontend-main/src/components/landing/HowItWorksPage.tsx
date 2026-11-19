@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import ihirweChefHero from "@/assets/ihirwe_chef_hero.jpg";
+import ekazeChefHero from "@/assets/ekaze_chef_hero.jpg";
 import logo from "@/assets/reallogo.png";
 import { CheckCircle2, Smartphone, ShieldCheck, Zap, Globe, PhoneCall } from "lucide-react";
 
@@ -35,8 +35,8 @@ export const HowItWorksPage = () => {
 
           {/* Background Chef Photo (Pinned to Top to prevent head clipping) */}
           <img
-            src={ihirweChefHero}
-            alt="Chef seasoning food - Ihirwe Workforce"
+            src={ekazeChefHero}
+            alt="Chef seasoning food - Ekaze Workforce"
             className="absolute inset-0 w-full h-full object-cover object-[80%_top] sm:object-[78%_top] md:object-[82%_top] select-none pointer-events-none"
           />
 
@@ -95,7 +95,7 @@ export const HowItWorksPage = () => {
                   className="text-[11px] sm:text-xs font-bold text-white tracking-wider uppercase mb-2.5 opacity-95 drop-shadow-xs"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  {isRw ? "Kuramo porogaramu yawe ya Ihirwe" : "Download your Ihirwe app"}
+                  {isRw ? "Kuramo porogaramu yawe ya Ekaze" : "Download your Ekaze app"}
                 </p>
 
                 {/* Badges Row (Google Play / App Store / USSD) */}
@@ -194,7 +194,7 @@ export const HowItWorksPage = () => {
                   </strong>
                   {isRw
                     ? "Sisitemu ihura neza n'ibipimo bya MTN Open API Merchant Gateway na Airtel Money Open API gukora ihererekanya ryizewe."
-                    : "Ihirwe communicates via encrypted RESTful APIs with MTN Open API Merchant Gateway and Airtel Money Merchant APIs to process real-time payment approvals."}
+                    : "Ekaze communicates via encrypted RESTful APIs with MTN Open API Merchant Gateway and Airtel Money Merchant APIs to process real-time payment approvals."}
                 </li>
                 <li>
                   <strong className="text-slate-900 font-semibold">

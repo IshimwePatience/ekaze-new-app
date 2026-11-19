@@ -8,7 +8,7 @@ export const AppDownloadPage: React.FC = () => {
     if (typeof window !== "undefined") {
       return `${window.location.origin}/download`;
     }
-    return "https://ihirwepay.rw/download";
+    return "https://ekazepay.rw/download";
   }, []);
 
   return (
@@ -29,7 +29,7 @@ export const AppDownloadPage: React.FC = () => {
                 <div className="w-full h-full rounded-[18px] bg-white/95 flex items-center justify-center p-2.5 shadow-inner">
                   <img
                     src={logo}
-                    alt="Ihirwe Logo"
+                    alt="Ekaze Logo"
                     className="w-full h-full object-contain"
                   />
                 </div>
@@ -37,12 +37,12 @@ export const AppDownloadPage: React.FC = () => {
 
               {/* Subtitle Label */}
               <p className="text-[11px] font-bold tracking-widest text-slate-400 uppercase mb-1.5">
-                IHIRWE
+                EKAZE
               </p>
 
               {/* Title */}
               <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-snug max-w-[210px]">
-                Ihirwe - Apps on Google Play
+                Ekaze - Apps on Google Play
               </h2>
             </div>
           </div>

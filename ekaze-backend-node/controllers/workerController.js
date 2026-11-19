@@ -1002,8 +1002,8 @@ const requestWorkerTerminationOtp = async (req, res, next) => {
       const { sendSMS, resolveUserLanguage } = require('../services/smsService');
       const lang = resolveUserLanguage(req, employerUser);
       const otpMsg = lang === 'rw'
-        ? `Ihirwe Pay: Kode yawe ya OTP yo kwemeza gusesa amasezerano y'umukozi ni ${generatedOtp}. Izarangira mu minota 5.`
-        : `Ihirwe Pay: Your contract termination authorization OTP code is ${generatedOtp}. Valid for 5 minutes.`;
+        ? `Ekaze: Kode yawe ya OTP yo kwemeza gusesa amasezerano y'umukozi ni ${generatedOtp}. Izarangira mu minota 5.`
+        : `Ekaze: Your contract termination authorization OTP code is ${generatedOtp}. Valid for 5 minutes.`;
       await sendSMS(employerPhone, otpMsg).catch(() => {});
     } catch (_) {}
 
@@ -1184,7 +1184,7 @@ const resolveEmploymentRecord = async (id, userId) => {
       if (!user) {
         user = await User.create({
           name: 'Mukamana Jeannette',
-          email: 'worker@ihirwe.rw',
+          email: 'worker@ekaze.rw',
           phone: '0788123456',
           national_id: '1199580000000012',
           role: 'worker',
@@ -1208,7 +1208,7 @@ const resolveEmploymentRecord = async (id, userId) => {
       if (!empUser) {
         empUser = await User.create({
           name: 'Kwizera Patrick',
-          email: 'employer@ihirwe.rw',
+          email: 'employer@ekaze.rw',
           phone: '0788765432',
           national_id: '1198580000000034',
           role: 'employer',
@@ -1280,7 +1280,7 @@ const getWorkerEmploymentById = async (req, res, next) => {
     const salary = employment.monthly_salary;
     const startDate = employment.start_date || employment.created_at;
     const daysActive = Math.max(1, Math.floor((Date.now() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)));
-    const contractNumber = `IHIRWE-CTR-${employment.id.toString().padStart(6, '0')}`;
+    const contractNumber = `EKAZE-CTR-${employment.id.toString().padStart(6, '0')}`;
 
     return res.status(200).json({
       success: true,
@@ -1390,7 +1390,7 @@ const downloadWorkerEmploymentContract = async (req, res, next) => {
     const contractText = `===============================================================
 REPUBLIC OF RWANDA • DIGITAL EMPLOYMENT CONTRACT
 Regulated under Law N° 66/2018 of 30/08/2018 Regulating Labor in Rwanda
-Platform: IHIRWE DIGITAL ESCROW PAYROLL SYSTEM (Beno Finance Ltd.)
+Platform: EKAZE DIGITAL ESCROW PAYROLL SYSTEM (Beno Finance Ltd.)
 ===============================================================
 
 CONTRACT IDENTIFIER: ${contractNumber}
@@ -1417,7 +1417,7 @@ ARTICLE 1: OBJECT AND COMMENCEMENT OF EMPLOYMENT
 
 ARTICLE 2: AGREED REMUNERATION AND PAYMENT SCHEDULE
 2.1 Agreed Net Monthly Remuneration: The First Party shall pay the Second Party an agreed net monthly remuneration of ${salaryFormatted} (${salaryInWords}), payable without unauthorized deductions.
-2.2 Payment Schedule: Disbursed punctually on or before the 28th day of each calendar month via the Ihirwe Automated Digital Escrow platform.
+2.2 Payment Schedule: Disbursed punctually on or before the 28th day of each calendar month via the Ekaze Automated Digital Escrow platform.
 2.3 Payment Method: Disbursed directly to the Second Party's verified mobile money phone (${wrkPhone}) or registered bank account.
 
 ARTICLE 3: WORKING HOURS, REST PERIODS AND LEAVE
@@ -1433,7 +1433,7 @@ ARTICLE 5: DURATION, NOTICE AND TERMINATION
 5.2 Either party may terminate this agreement by providing thirty (30) days prior written statutory notice or payment of equivalent salary in lieu of notice.
 
 ARTICLE 6: DISPUTE RESOLUTION AND APPLICABLE LAW
-6.1 Any disagreement shall first be resolved through good-faith amicable negotiation or mediation facilitated through the Ihirwe Dispute Resolution Center.
+6.1 Any disagreement shall first be resolved through good-faith amicable negotiation or mediation facilitated through the Ekaze Dispute Resolution Center.
 6.2 If amicable settlement fails, the matter shall be submitted to the competent Labor Inspectorate or the courts of the Republic of Rwanda.
 
 ARTICLE 7: DIGITAL AUTHENTICATION AND LEGAL VALIDITY
@@ -1653,10 +1653,10 @@ const viewWorkerEmploymentContractHtml = async (req, res, next) => {
         <td>
           <div style="font-weight: bold; font-size: 14px;">REPUBLIC OF RWANDA</div>
           <div style="font-size: 12px;">REPUBULIKA Y'U RWANDA</div>
-          <div style="font-size: 11px; color: #4b5563;">Ministry of Public Service and Labour (MIFOTRA) • Ihirwe Labor Registry</div>
+          <div style="font-size: 11px; color: #4b5563;">Ministry of Public Service and Labour (MIFOTRA) • Ekaze Labor Registry</div>
         </td>
         <td style="text-align: right;">
-          <div style="font-size: 20px; font-weight: 900; color: #003366; letter-spacing: -0.5px;">ihirwe</div>
+          <div style="font-size: 20px; font-weight: 900; color: #003366; letter-spacing: -0.5px;">ekaze</div>
           <div style="font-size: 10px; color: #6b7280;">Digital Escrow Payroll System</div>
         </td>
       </tr>
@@ -1704,7 +1704,7 @@ const viewWorkerEmploymentContractHtml = async (req, res, next) => {
 
     <h3>ARTICLE 2: AGREED REMUNERATION AND PAYMENT SCHEDULE</h3>
     <p>2.1 <strong>Agreed Net Monthly Remuneration:</strong> The First Party shall pay the Second Party an agreed net monthly remuneration of <strong>${salaryFormatted} (${salaryInWords})</strong>, payable without unauthorized deductions.</p>
-    <p>2.2 <strong>Payment Schedule and Recurrence:</strong> Disbursed punctually on or before the 28th day of each calendar month via the Ihirwe Automated Digital Escrow platform.</p>
+    <p>2.2 <strong>Payment Schedule and Recurrence:</strong> Disbursed punctually on or before the 28th day of each calendar month via the Ekaze Automated Digital Escrow platform.</p>
     <p>2.3 <strong>Payment Method:</strong> Disbursed directly to the Second Party's verified mobile money phone (<strong>${wrkPhone}</strong>) or registered bank account.</p>
 
     <h3>ARTICLE 3: WORKING HOURS, REST PERIODS AND LEAVE</h3>
@@ -1720,7 +1720,7 @@ const viewWorkerEmploymentContractHtml = async (req, res, next) => {
     <p>5.2 Either party may terminate this agreement by providing thirty (30) days prior written statutory notice or payment of equivalent salary in lieu of notice, except in cases of gross misconduct as defined by law.</p>
 
     <h3>ARTICLE 6: DISPUTE RESOLUTION AND APPLICABLE LAW</h3>
-    <p>6.1 Any disagreement shall first be resolved through good-faith amicable negotiation or mediation facilitated through the Ihirwe Dispute Resolution Center.</p>
+    <p>6.1 Any disagreement shall first be resolved through good-faith amicable negotiation or mediation facilitated through the Ekaze Dispute Resolution Center.</p>
     <p>6.2 If amicable settlement fails, the matter shall be submitted to the competent Labor Inspectorate or the courts of the Republic of Rwanda.</p>
 
     <h3>ARTICLE 7: DIGITAL AUTHENTICATION AND LEGAL VALIDITY</h3>
@@ -2104,15 +2104,15 @@ const updateExtendedProfile = async (req, res, next) => {
         const userPhone = req.user?.phone || worker.phone || '';
 
         const title = lang === 'rw'
-          ? (isOn ? 'Ubwizigame bwa Ihirwe Wallet Bwashyizweho' : 'Ubwizigame Bwahagaritswe')
-          : (isOn ? 'Ihirwe Wallet Savings Updated' : 'Ihirwe Wallet Savings Paused');
+          ? (isOn ? 'Ubwizigame bwa Ekaze Wallet Bwashyizweho' : 'Ubwizigame Bwahagaritswe')
+          : (isOn ? 'Ekaze Wallet Savings Updated' : 'Ekaze Wallet Savings Paused');
         const msg = lang === 'rw'
           ? (isOn
-              ? `Ihirwe Pay: Ubwizigame bwawe bwa buri kwezi bwa ${savAmt.toLocaleString()} RWF bwashyizweho neza. Amafaranga azajya akatwa bwikora igihe uhembwe. Asigaye mu bwizigame: ${Number(worker.savings_balance || 0).toLocaleString()} RWF.`
-              : `Ihirwe Pay: Ubwizigame bwawe bwa buri kwezi bwikora bwahagaritswe. Ubwizigame bwose ufite ni ${Number(worker.savings_balance || 0).toLocaleString()} RWF.`)
+              ? `Ekaze: Ubwizigame bwawe bwa buri kwezi bwa ${savAmt.toLocaleString()} RWF bwashyizweho neza. Amafaranga azajya akatwa bwikora igihe uhembwe. Asigaye mu bwizigame: ${Number(worker.savings_balance || 0).toLocaleString()} RWF.`
+              : `Ekaze: Ubwizigame bwawe bwa buri kwezi bwikora bwahagaritswe. Ubwizigame bwose ufite ni ${Number(worker.savings_balance || 0).toLocaleString()} RWF.`)
           : (isOn
-              ? `Ihirwe Pay: Monthly automatic savings of ${savAmt.toLocaleString()} RWF has been activated. Funds will be saved on salary payout. Total savings balance: ${Number(worker.savings_balance || 0).toLocaleString()} RWF.`
-              : `Ihirwe Pay: Automatic monthly savings deduction has been paused. Total savings balance: ${Number(worker.savings_balance || 0).toLocaleString()} RWF.`);
+              ? `Ekaze: Monthly automatic savings of ${savAmt.toLocaleString()} RWF has been activated. Funds will be saved on salary payout. Total savings balance: ${Number(worker.savings_balance || 0).toLocaleString()} RWF.`
+              : `Ekaze: Automatic monthly savings deduction has been paused. Total savings balance: ${Number(worker.savings_balance || 0).toLocaleString()} RWF.`);
 
         await sendNotification({
           userId: req.user.id,
@@ -2699,8 +2699,8 @@ const requestWithdrawalOtp = async (req, res, next) => {
     const numAmt = Number(req.body.amount || 0);
     const amountNote = numAmt > 0 ? `${numAmt.toLocaleString()} RWF ` : '';
     const smsText = lang === 'rw'
-      ? `Ihirwe Pay: Kode yawe ya OTP yo kwemeza kubikuza ${amountNote}kuri MTN ${formattedPhone} ni ${otpCode}. Izarangira mu minota 5.`
-      : `Ihirwe Pay: Your OTP code to confirm withdrawal ${amountNote}to MTN ${formattedPhone} is ${otpCode}. Valid for 5 minutes.`;
+      ? `Ekaze: Kode yawe ya OTP yo kwemeza kubikuza ${amountNote}kuri MTN ${formattedPhone} ni ${otpCode}. Izarangira mu minota 5.`
+      : `Ekaze: Your OTP code to confirm withdrawal ${amountNote}to MTN ${formattedPhone} is ${otpCode}. Valid for 5 minutes.`;
 
     const smsResult = await sendSMS(formattedPhone, smsText);
     if (!smsResult?.success) {
@@ -2805,7 +2805,7 @@ const requestWorkerWithdrawal = async (req, res, next) => {
       if (curBalance < numAmount) {
         return res.status(400).json({
           success: false,
-          message: `Insufficient wallet balance. You have ${curBalance.toLocaleString()} RWF in your Ihirwe wallet, cannot withdraw ${numAmount.toLocaleString()} RWF.`
+          message: `Insufficient wallet balance. You have ${curBalance.toLocaleString()} RWF in your Ekaze wallet, cannot withdraw ${numAmount.toLocaleString()} RWF.`
         });
       }
     }
@@ -2839,7 +2839,7 @@ const requestWorkerWithdrawal = async (req, res, next) => {
       amount: numAmount,
       referenceId: ref,
       externalId: ref,
-      note: `Ihirwe Wallet Cashout (${source || 'account'})`
+      note: `Ekaze Wallet Cashout (${source || 'account'})`
     });
 
     if (!transferResult.success) {
@@ -2896,13 +2896,13 @@ const requestWorkerWithdrawal = async (req, res, next) => {
       if (lang === 'rw') {
         title = isSavings ? 'Kubikuza mu Bwizigame Byagenze Neza' : 'Kubikuza Amafaranga Byagenze Neza';
         msg = isSavings
-          ? `Ihirwe Pay: Wabikuje ${numAmount.toLocaleString()} RWF mu bwizigame bwawe kuri MTN MoMo (${formattedPhone}) kuwa ${dateStr} saa ${timeStr}. Ubwizigame busigaye: ${newSavingsAfter.toLocaleString()} RWF. Asigaye kuri konti: ${newBalanceAfter.toLocaleString()} RWF.`
-          : `Ihirwe Pay: Wabikuje ${numAmount.toLocaleString()} RWF kuri konti yawe ya MTN MoMo (${formattedPhone}) kuwa ${dateStr} saa ${timeStr}. Asigaye kuri konti: ${newBalanceAfter.toLocaleString()} RWF.`;
+          ? `Ekaze: Wabikuje ${numAmount.toLocaleString()} RWF mu bwizigame bwawe kuri MTN MoMo (${formattedPhone}) kuwa ${dateStr} saa ${timeStr}. Ubwizigame busigaye: ${newSavingsAfter.toLocaleString()} RWF. Asigaye kuri konti: ${newBalanceAfter.toLocaleString()} RWF.`
+          : `Ekaze: Wabikuje ${numAmount.toLocaleString()} RWF kuri konti yawe ya MTN MoMo (${formattedPhone}) kuwa ${dateStr} saa ${timeStr}. Asigaye kuri konti: ${newBalanceAfter.toLocaleString()} RWF.`;
       } else {
         title = isSavings ? 'Savings Withdrawal Completed' : 'MoMo Cash-Out Completed';
         msg = isSavings
-          ? `Ihirwe Pay: You successfully withdrew ${numAmount.toLocaleString()} RWF from your Savings to MTN MoMo (${formattedPhone}) on ${dateStr} at ${timeStr}. Remaining Savings: ${newSavingsAfter.toLocaleString()} RWF. Wallet Balance: ${newBalanceAfter.toLocaleString()} RWF.`
-          : `Ihirwe Pay: You successfully withdrew ${numAmount.toLocaleString()} RWF to MTN MoMo (${formattedPhone}) on ${dateStr} at ${timeStr}. Remaining Wallet Balance: ${newBalanceAfter.toLocaleString()} RWF.`;
+          ? `Ekaze: You successfully withdrew ${numAmount.toLocaleString()} RWF from your Savings to MTN MoMo (${formattedPhone}) on ${dateStr} at ${timeStr}. Remaining Savings: ${newSavingsAfter.toLocaleString()} RWF. Wallet Balance: ${newBalanceAfter.toLocaleString()} RWF.`
+          : `Ekaze: You successfully withdrew ${numAmount.toLocaleString()} RWF to MTN MoMo (${formattedPhone}) on ${dateStr} at ${timeStr}. Remaining Wallet Balance: ${newBalanceAfter.toLocaleString()} RWF.`;
       }
 
       sendNotification({
@@ -3859,7 +3859,7 @@ const renderVerificationSuccessHtml = (data) => `
           <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
         </svg>
         <div>
-          <div class="gov-title">IHIRWE NATIONAL WORKFORCE</div>
+          <div class="gov-title">EKAZE NATIONAL WORKFORCE</div>
           <div class="gov-subtitle">Official Worker Identification Verification</div>
         </div>
       </div>
@@ -3929,7 +3929,7 @@ const renderVerificationSuccessHtml = (data) => `
       </svg>
       <div class="sec-text">
         <h4>Digital Registry Integrity Guaranteed</h4>
-        <p>This verification confirms active compliance, background verification, and formal authorization under Ihirwe Workforce Standards.</p>
+        <p>This verification confirms active compliance, background verification, and formal authorization under Ekaze Workforce Standards.</p>
       </div>
     </div>
 
@@ -3951,7 +3951,7 @@ const renderVerificationErrorHtml = (title, message) => `
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verification Failed - Ihirwe</title>
+  <title>Verification Failed - Ekaze</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -4012,7 +4012,7 @@ const renderVerificationErrorHtml = (title, message) => `
     </div>
     <h2>${title}</h2>
     <p>${message}</p>
-    <a href="https://ihirwe.rw" class="home-btn">Go to Ihirwe Portal</a>
+    <a href="https://ekaze.rw" class="home-btn">Go to Ekaze Portal</a>
   </div>
 </body>
 </html>
@@ -4052,14 +4052,14 @@ const verifyWorkerCardPublic = async (req, res, next) => {
     const cardNumber = `RW-CARD-${String(raw.id).padStart(6, '0')}`;
     const photo = raw.user?.profile_photo || raw.profile_photo || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';
     const phone = raw.user?.phone || raw.phone || '+250 788 000 000';
-    const email = raw.user?.email || raw.email || 'worker@ihirwe.rw';
+    const email = raw.user?.email || raw.email || 'worker@ekaze.rw';
     const nationalId = raw.user?.national_id || raw.national_id || '1199880012345678';
     const maskedNid = nationalId.length === 16 
       ? `${nationalId.substring(0, 1)} ${nationalId.substring(1, 5)} ${nationalId.substring(5, 6)} ${nationalId.substring(6, 9)}**** * ${nationalId.substring(14)}`
       : nationalId;
     const district = raw.user?.district || raw.district || 'Gasabo';
     const province = raw.user?.province || raw.province || 'Kigali';
-    const companyName = raw.company?.company_name || 'Ihirwe Verified Workforce Agency';
+    const companyName = raw.company?.company_name || 'Ekaze Verified Workforce Agency';
     const profession = (Array.isArray(raw.skills) && raw.skills.length > 0)
       ? raw.skills.join(', ').toUpperCase()
       : (Array.isArray(raw.professions) && raw.professions.length > 0 ? raw.professions.join(', ').toUpperCase() : 'PROFESSIONAL WORKER');

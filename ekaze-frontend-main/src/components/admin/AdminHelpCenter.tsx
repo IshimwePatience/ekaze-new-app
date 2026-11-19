@@ -62,7 +62,7 @@ export const AdminHelpCenter: React.FC = () => {
     try {
       await helpFeedbackService.updateStatus(ticket.id, {
         status: 'resolved',
-        admin_notes: 'Issue marked as resolved by Ihirwe.',
+        admin_notes: 'Issue marked as resolved by Ekaze.',
       });
       toast.success('Feedback marked as resolved and user notified.');
       setTickets((prev) =>
@@ -72,7 +72,7 @@ export const AdminHelpCenter: React.FC = () => {
               ...item,
               status: 'resolved',
               resolved_at: new Date().toISOString(),
-              admin_notes: 'Issue marked as resolved by Ihirwe.',
+              admin_notes: 'Issue marked as resolved by Ekaze.',
             }
             : item
         )
@@ -210,16 +210,16 @@ export const AdminHelpCenter: React.FC = () => {
                       {item.message || item.subject}
                     </div>
 
-                    {/* Ihirwe Response / Notes if present */}
+                    {/* Ekaze Response / Notes if present */}
                     {item.admin_notes && (
                       <div className="text-xs text-slate-700 bg-blue-50/60 p-3 rounded-xl border border-blue-100">
-                        <span className="font-normal text-slate-800 block mb-0.5">Ihirwe Response:</span>
+                        <span className="font-normal text-slate-800 block mb-0.5">Ekaze Response:</span>
                         <p className="text-slate-600 leading-relaxed font-normal">
                           {item.admin_notes
-                            .replace(/by Administrator/gi, 'by Ihirwe')
-                            .replace(/by Admin/gi, 'by Ihirwe')
-                            .replace(/Administrator/gi, 'Ihirwe')
-                            .replace(/Admin/gi, 'Ihirwe')}
+                            .replace(/by Administrator/gi, 'by Ekaze')
+                            .replace(/by Admin/gi, 'by Ekaze')
+                            .replace(/Administrator/gi, 'Ekaze')
+                            .replace(/Admin/gi, 'Ekaze')}
                         </p>
                       </div>
                     )}

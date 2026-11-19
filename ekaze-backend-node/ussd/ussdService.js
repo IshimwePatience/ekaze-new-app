@@ -58,7 +58,7 @@ const handleUssdSession = async ({ sessionId, serviceCode, phoneNumber, text }) 
 
     // Handle Unregistered Phone
     if (!user) {
-      return `END Murakaza neza kuri Ihirwe.\nNimero yawe (${phoneNumber}) ntabwo yanditse mu rusobe rwacu.\nSura ihirwe.rw wiyandikishe.`;
+      return `END Murakaza neza kuri Ekaze.\nNimero yawe (${phoneNumber}) ntabwo yanditse mu rusobe rwacu.\nSura ekaze.rw wiyandikishe.`;
     }
 
     // Input sequence array from telecom aggregator (e.g. "1*2*5000")
@@ -367,7 +367,7 @@ const handleUssdSession = async ({ sessionId, serviceCode, phoneNumber, text }) 
 
       // Option 2: Approve Worker Salary
       if (mainOption === '2') {
-        return `CON IHIRWE PAYOUT APPROVAL:\nIhemba ry'ukwezi rijyanye na MoMo approval.\nKoresha *182# kwemeza cyangwa kanda 0 usubire inyuma.\n\n0. Subira inyuma`;
+        return `CON EKAZEOUT APPROVAL:\nIhemba ry'ukwezi rijyanye na MoMo approval.\nKoresha *182# kwemeza cyangwa kanda 0 usubire inyuma.\n\n0. Subira inyuma`;
       }
 
       // Option 3: View Escrow Balance
@@ -379,7 +379,7 @@ const handleUssdSession = async ({ sessionId, serviceCode, phoneNumber, text }) 
       return `CON ${t.employer_menu}`;
     }
 
-    return `END Murakaza neza kuri Ihirwe Pay. Sura ihirwe.rw kuri internet.`;
+    return `END Murakaza neza kuri Ekaze. Sura ekaze.rw kuri internet.`;
 
   } catch (error) {
     console.error('USSD processing error:', error);

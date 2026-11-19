@@ -70,7 +70,7 @@ async function runTests() {
       phone: testPhone,
       amount: testAmount,
       referenceId: testRef,
-      note: 'Ihirwe Worker Wage Settlement'
+      note: 'Ekaze Worker Wage Settlement'
     });
     testResults.push({
       id: 'TC-02',
@@ -88,7 +88,7 @@ async function runTests() {
         amount: testAmount,
         currency: 'RWF',
         referenceId: testRef,
-        narration: 'Ihirwe Worker Wage Settlement'
+        narration: 'Ekaze Worker Wage Settlement'
       },
       response: momoRes,
       durationMs: Date.now() - t2Start,
@@ -246,7 +246,7 @@ async function runTests() {
 
   let markdown = `# ECOBANK PAN-AFRICAN APIM – UAT / AUT TEST EXECUTION EVIDENCE REPORT
 
-**Application Under Test (AUT):** Ihirwe Pay Platform (Beno Finance Ltd)  
+**Application Under Test (AUT):** Ekaze Platform (Beno Finance Ltd)  
 **Target Gateway:** Ecobank Developer APIM (UAT Sandbox)  
 **Base URL:** \`${ecobankService.baseUrl}\`  
 **Merchant ID:** \`${ecobankService.merchantId}\`  
@@ -257,7 +257,7 @@ async function runTests() {
 ---
 
 ## 1. Executive Summary
-This document provides formal evidence of completed Application Under Test (AUT) and User Acceptance Testing (UAT) for the **Ihirwe Pay** integration with **Ecobank Pan-African Banking Services**.
+This document provides formal evidence of completed Application Under Test (AUT) and User Acceptance Testing (UAT) for the **Ekaze** integration with **Ecobank Pan-African Banking Services**.
 
 Testing encompassed:
 1. **OAuth2 Security & APIM Token Authentication**
@@ -311,7 +311,7 @@ ${JSON.stringify(t.response || { status: 'SUCCESS' }, null, 2)}
   markdown += `## 4. Live Server Console Log Sample
 \`\`\`log
 ===================================================
-🚀 IHIRWE Node.js Server running on port 5000
+🚀 EKAZE Node.js Server running on port 5000
 🌐 API Endpoint: http://localhost:5000/api/v1
 💳 [ECOBANK UAT MOMO COLLECTION] Phone: 250788000004 | Amount: RWF 15000 | Ref: ${testRef}
 💳 [ECOBANK APIM CARD VERIFY] Processed UAT Pre-Auth Hold ($1.00) -> Instant Reversal for card ending in •••• 9010
@@ -322,8 +322,8 @@ ${JSON.stringify(t.response || { status: 'SUCCESS' }, null, 2)}
 ---
 
 ## 5. Sign-off & Contact Information
-- **Lead Developer:** Ihirwe Pay Engineering Team
-- **Organization:** Beno Finance Ltd / Ihirwe Pay
+- **Lead Developer:** Ekaze Engineering Team
+- **Organization:** Beno Finance Ltd / Ekaze
 - **Ecobank Developer Portal Account:** \`${ecobankService.merchantId}\`
 - **Submission Date:** ${nowStr}
 `;

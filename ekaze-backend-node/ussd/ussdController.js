@@ -39,7 +39,7 @@ const handleUssdWebhook = async (req, res, next) => {
 const getUssdInfo = (req, res) => {
   return res.status(200).json({
     success: true,
-    service: 'Ihirwe USSD Gateway Engine',
+    service: 'Ekaze USSD Gateway Engine',
     shortcode: '*789#',
     supported_aggregators: ["Africa's Talking", 'MTN Rwanda Webhook', 'Airtel Money USSD'],
     endpoints: {

@@ -320,7 +320,7 @@ const TransactionHistory = () => {
     const tx = transactions.find((t: any) => t.id === transactionId);
     downloadInvoicePdf({
       id: transactionId,
-      reference_number: tx?.reference_number || tx?.reference_id || `IHIRWE-SAL-${transactionId}`,
+      reference_number: tx?.reference_number || tx?.reference_id || `EKAZE-SAL-${transactionId}`,
       description: tx?.description || "Worker Salary Payout",
       amount: tx?.amount || tx?.total_amount || 0,
       phone: tx?.worker_phone || tx?.beneficiary?.phone || "",

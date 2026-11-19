@@ -320,7 +320,7 @@ const WorkHistory = () => {
       link.setAttribute("href", encodedUri);
       link.setAttribute(
         "download",
-        `ihirwe-work-history-${format(new Date(), "yyyy-MM-dd")}.csv`
+        `ekaze-work-history-${format(new Date(), "yyyy-MM-dd")}.csv`
       );
       document.body.appendChild(link);
       link.click();

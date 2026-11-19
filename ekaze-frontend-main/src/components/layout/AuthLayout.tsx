@@ -80,7 +80,7 @@ export const AuthLayout = ({ children }: AuthLayoutProps) => {
       {/* Top Header Bar (Identical across Auth pages) */}
       <header className="w-full bg-white px-6 py-4 flex items-center justify-between">
         <a href={ROUTES.HOME} className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-          <img src={logo} alt="Ihirwe Pay" className="h-9 w-auto" />
+          <img src={logo} alt="Ekaze" className="h-9 w-auto" />
         </a>
 
         {/* Right Side: Language Selector */}
@@ -123,7 +123,7 @@ export const AuthLayout = ({ children }: AuthLayoutProps) => {
 
         {/* Center / Right Links */}
         <div className="flex flex-wrap items-center gap-3 text-slate-400">
-          <a href="/" className="hover:text-slate-600 transition-colors">ihirwe.rw</a>
+          <a href="/" className="hover:text-slate-600 transition-colors">ekaze.rw</a>
           <span>|</span>
           <a href="/who-we-are" className="hover:text-slate-600 transition-colors">Who We Are</a>
           <span>|</span>
@@ -138,7 +138,7 @@ export const AuthLayout = ({ children }: AuthLayoutProps) => {
 
         {/* Copyright */}
         <div className="w-full sm:w-auto text-slate-400 text-center sm:text-right">
-          © {new Date().getFullYear()} ihirwe.rw, a Beno Finance Ltd brand
+          © {new Date().getFullYear()} ekaze.rw, a Beno Finance Ltd brand
         </div>
       </footer>
 
@@ -151,7 +151,7 @@ export const AuthLayout = ({ children }: AuthLayoutProps) => {
                 <HelpCircle className="w-5 h-5 text-slate-800" />
               </div>
               <DialogTitle className="text-lg font-extrabold text-[#2d3748] tracking-tight">
-                Ihirwe Help & Support Desk
+                Ekaze Help & Support Desk
               </DialogTitle>
             </div>
             <DialogDescription className="text-xs text-[#4f687a] font-medium">

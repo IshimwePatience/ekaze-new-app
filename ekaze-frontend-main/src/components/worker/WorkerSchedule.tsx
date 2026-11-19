@@ -919,7 +919,7 @@ export const WorkerSchedule = () => {
                   <span>Salary Payment Overdue In Recovery</span>
                 </div>
                 <p className="text-[11.5px] text-rose-700 leading-relaxed">
-                  Your monthly salary was scheduled for <strong>{selectedShift.dateIso}</strong> and is currently overdue. Ihirwe has urged {selectedShift.employerName || "your employer"} to top up funds and notified placement agency & admin mediators.
+                  Your monthly salary was scheduled for <strong>{selectedShift.dateIso}</strong> and is currently overdue. Ekaze has urged {selectedShift.employerName || "your employer"} to top up funds and notified placement agency & admin mediators.
                 </p>
               </div>
             )}

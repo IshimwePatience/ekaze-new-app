@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const { Transaction, Company, User, Employer, HiringRequest, sequelize } = require('../models');
 const mtnMomoService = require('./mtnMomoService');
 
-// 1. Initiate Collection Payment via MTN MoMo (User/Employer/Company pays into Ihirwe)
+// 1. Initiate Collection Payment via MTN MoMo (User/Employer/Company pays into Ekaze)
 const initiatePayment = async ({ userId, type, amount, phoneNumber, metadata }) => {
   const referenceId = uuidv4(); // Standard UUIDv4 for MTN MoMo X-Reference-Id
 
@@ -32,7 +32,7 @@ const initiatePayment = async ({ userId, type, amount, phoneNumber, metadata }) 
     amount: targetAmount,
     referenceId,
     externalId: referenceId,
-    note: `IHIRWE ${type ? type.replace(/_/g, ' ') : 'Payment'}`
+    note: `EKAZE ${type ? type.replace(/_/g, ' ') : 'Payment'}`
   });
 
   if (!result.success) {
@@ -86,7 +86,7 @@ const initiatePayout = async ({ userId, amount, phoneNumber, metadata, type = 'w
     amount: targetAmount,
     referenceId,
     externalId: referenceId,
-    note: `IHIRWE Payout (${type})`
+    note: `EKAZE Payout (${type})`
   });
 
   if (!momoResult.success) {

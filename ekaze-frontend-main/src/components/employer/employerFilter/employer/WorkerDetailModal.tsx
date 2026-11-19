@@ -424,7 +424,7 @@ export const WorkerDetailModal = ({ worker, isOpen, onClose, isAuthenticated = f
         first_name: worker.first_name || 'Worker',
         last_name: worker.last_name || '',
         phone: (worker as any).phone || '0788123456',
-        email: (worker as any).email || 'worker@ihirwe.rw',
+        email: (worker as any).email || 'worker@ekaze.rw',
         national_id: '1199880011223344',
         gender: worker.gender || 'female',
         district: worker.district || 'Kigali',
@@ -442,7 +442,7 @@ export const WorkerDetailModal = ({ worker, isOpen, onClose, isAuthenticated = f
         first_name: worker.first_name || 'Worker',
         last_name: worker.last_name || '',
         phone: (worker as any).phone || '0788123456',
-        email: (worker as any).email || 'worker@ihirwe.rw',
+        email: (worker as any).email || 'worker@ekaze.rw',
         national_id: '1199880011223344',
         gender: worker.gender || 'female',
         district: worker.district || 'Kigali',
@@ -488,7 +488,7 @@ export const WorkerDetailModal = ({ worker, isOpen, onClose, isAuthenticated = f
       languages_spoken: displayWorker.languages || [],
       work_type_preferences: [(displayWorker as any).workType || (displayWorker.type === 'freelance' ? 'Freelance' : 'Full Time')],
       preferred_districts: [],
-      bio: (displayWorker as any).bio || 'Verified Professional registered on Ihirwe.',
+      bio: (displayWorker as any).bio || 'Verified Professional registered on Ekaze.',
       work_type: (displayWorker as any).workType || (displayWorker.type === 'freelance' ? 'Freelance' : 'Full Time'),
       availability: displayWorker.availability || 'Available',
       photo_url: displayWorker.photo || null,
@@ -791,10 +791,10 @@ export const WorkerDetailModal = ({ worker, isOpen, onClose, isAuthenticated = f
                 {/* Branding */}
                 <div>
                   <h3 className="text-3xl lg:text-4xl font-black text-white tracking-tight leading-none">
-                    ihirwe
+                    ekaze
                   </h3>
                   <p className="text-sm font-normal text-white/80 mt-1">
-                    by ihirwepay
+                    by ekazepay
                   </p>
                 </div>
 
@@ -829,7 +829,7 @@ export const WorkerDetailModal = ({ worker, isOpen, onClose, isAuthenticated = f
                       )}
                     </div>
                     <p className="text-sm text-white/80 mt-0.5 font-normal">
-                      Verified Professional on Ihirwe
+                      Verified Professional on Ekaze
                     </p>
                   </div>
 
@@ -1264,7 +1264,7 @@ export const WorkerDetailModal = ({ worker, isOpen, onClose, isAuthenticated = f
                     className="mt-0.5 h-4 w-4 rounded border-white/40 text-[#226e9f] focus:ring-white cursor-pointer shrink-0"
                   />
                   <span className="text-xs text-white/90 leading-relaxed font-normal">
-                    I accept the <strong className="text-white font-bold">Terms & Conditions</strong>: If the employer and worker do not match or understand each other, this payment is NOT refundable, but Ihirwe will assist the employer to get another suggested worker.
+                    I accept the <strong className="text-white font-bold">Terms & Conditions</strong>: If the employer and worker do not match or understand each other, this payment is NOT refundable, but Ekaze will assist the employer to get another suggested worker.
                   </span>
                 </label>
 

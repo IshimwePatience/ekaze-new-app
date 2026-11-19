@@ -1353,22 +1353,22 @@ const WorkerDetailsModal = ({
         >
           <DialogContent className="max-w-5xl max-h-[85vh] overflow-y-auto z-[9999]" style={{ borderRadius: "6px" }}>
             <DialogHeader>
-              <DialogTitle className="text-base">Ihirwe — Registration Consent & Disclaimer</DialogTitle>
+              <DialogTitle className="text-base">Ekaze — Registration Consent & Disclaimer</DialogTitle>
             </DialogHeader>
 
             <div className="space-y-4 text-xs text-gray-800 leading-relaxed">
               <p>
-                <strong>Please read this carefully before completing your registration on the Ihirwe platform.</strong>
+                <strong>Please read this carefully before completing your registration on the Ekaze platform.</strong>
               </p>
               <p>
-                By registering as a user of Ihirwe ("the Platform," "we," "us," "our"), whether as an Employer or as a
+                By registering as a user of Ekaze ("the Platform," "we," "us," "our"), whether as an Employer or as a
                 House Helper / Restaurant Bar Worker ("Worker"), you acknowledge, consent to, and agree to the
                 following terms.
               </p>
 
               <div>
                 <p className="font-bold">1. Who This Applies To</p>
-                <p>This disclaimer applies to all individuals registering on Ihirwe, including:</p>
+                <p>This disclaimer applies to all individuals registering on Ekaze, including:</p>
                 <ul className="list-disc pl-5 space-y-1 mt-1">
                   <li>Employers seeking to source, allocate, and manage domestic or restaurant/bar workers</li>
                   <li>Workers (house helpers and restaurant/bar staff) creating a profile to be sourced by employers</li>
@@ -1405,7 +1405,7 @@ const WorkerDetailsModal = ({
               <div>
                 <p className="font-bold">4. Sharing of Information</p>
                 <p>
-                  Because Ihirwe is built around trust, accountability, and safety for both parties, your
+                  Because Ekaze is built around trust, accountability, and safety for both parties, your
                   information may be shared with:
                 </p>
                 <ul className="list-disc pl-5 space-y-1 mt-1">
@@ -1484,7 +1484,7 @@ const WorkerDetailsModal = ({
               <div>
                 <p className="font-bold">11. Changes to This Disclaimer</p>
                 <p>
-                  Ihirwe may update this consent notice periodically. Continued use of the Platform after changes
+                  Ekaze may update this consent notice periodically. Continued use of the Platform after changes
                   constitutes acceptance of the revised terms.
                 </p>
               </div>

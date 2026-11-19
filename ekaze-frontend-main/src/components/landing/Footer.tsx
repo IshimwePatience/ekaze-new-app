@@ -63,7 +63,7 @@ const Footer = () => {
 
         {/* Bottom Legal Links & Copyright */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-200/80 text-xs sm:text-sm font-medium text-slate-600">
-          <p>© {new Date().getFullYear()} ihirwe.rw, a Beno Finance Ltd brand</p>
+          <p>© {new Date().getFullYear()} ekaze.rw, a Beno Finance Ltd brand</p>
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-slate-700 font-semibold">
             {/* PREVIOUS:
             <a href="/who-we-are" className="hover:text-[#0056D2] transition-colors">Who We Are</a>

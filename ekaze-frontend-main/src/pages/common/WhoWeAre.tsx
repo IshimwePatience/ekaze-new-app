@@ -32,7 +32,7 @@ export const WhoWeAre = () => {
         <Header />
 
         {/* ══════════════════════════════════════════════════════════════════════════
-            PRICING & AGREEMENTS SECTION (Worker Category / Ihirwe Design Style)
+            PRICING & AGREEMENTS SECTION (Worker Category / Ekaze Design Style)
         ══════════════════════════════════════════════════════════════════════════ */}
         <section
           className="py-12 sm:py-16 lg:py-20 bg-white overflow-hidden border-b border-slate-100"
@@ -52,7 +52,7 @@ export const WhoWeAre = () => {
                 <div className="relative w-full max-w-[360px] sm:max-w-[420px] lg:max-w-none flex items-center justify-center">
                   <img
                     src={personImg}
-                    alt={isRw ? "Ibiciro n'Amasezerano - Ihirwe Pay" : "Pricing & Agreements - Ihirwe Pay"}
+                    alt={isRw ? "Ibiciro n'Amasezerano - Ekaze" : "Pricing & Agreements - Ekaze"}
                     className="w-full max-h-[380px] sm:max-h-[460px] object-cover object-top rounded-2xl shadow-lg border border-slate-200/80 transition-all duration-300"
                   />
                   
@@ -81,8 +81,8 @@ export const WhoWeAre = () => {
 
                 <p className="text-slate-700 text-sm sm:text-base leading-relaxed max-w-2xl font-normal">
                   {isRw
-                    ? "Ihirwe itanga uburyo bwiza bwo kwishyura no guha akazi abashoferi b'umwuga b'amakamyo n'imodoka mu buryo bworoshye. Dufite ifatabuguzi rya buri Kwezi (Monthly) n'iry'Umwaka (Annual), ndetse n'ibiciro by'ubumvikane ku gihe runaka (Dealing Price). Buri gahunda iherekezwa n'amasezerano y'ikoranabuhanga yizewe."
-                    : "Ihirwe delivers transparent, flexible pricing tailored for commercial transport, logistics fleets, and personal vehicle drivers. Choose from Monthly or Annual subscriptions, or agree on custom Dealing Prices for specific contract durations. Every engagement is backed by legally verified digital agreements."}
+                    ? "Ekaze itanga uburyo bwiza bwo kwishyura no guha akazi abashoferi b'umwuga b'amakamyo n'imodoka mu buryo bworoshye. Dufite ifatabuguzi rya buri Kwezi (Monthly) n'iry'Umwaka (Annual), ndetse n'ibiciro by'ubumvikane ku gihe runaka (Dealing Price). Buri gahunda iherekezwa n'amasezerano y'ikoranabuhanga yizewe."
+                    : "Ekaze delivers transparent, flexible pricing tailored for commercial transport, logistics fleets, and personal vehicle drivers. Choose from Monthly or Annual subscriptions, or agree on custom Dealing Prices for specific contract durations. Every engagement is backed by legally verified digital agreements."}
                 </p>
 
                 <div className="rounded-2xl bg-blue-50/70 border border-blue-200/80 p-4 sm:p-5 flex items-start gap-3.5 max-w-2xl">
@@ -246,7 +246,7 @@ export const WhoWeAre = () => {
         <section className="hidden py-16 sm:py-20 bg-white">
           <div className="container mx-auto px-6 max-w-7xl">
             <h1>Our Story</h1>
-            <p>Ihirwe (a Beno Finance Ltd platform) was launched with a mission to provide universal access to fast, reliable, and verified domestic staffing across Rwanda...</p>
+            <p>Ekaze (a Beno Finance Ltd platform) was launched with a mission to provide universal access to fast, reliable, and verified domestic staffing across Rwanda...</p>
           </div>
         </section>
         */}

@@ -1,6 +1,6 @@
 # ECOBANK PAN-AFRICAN APIM – UAT / AUT TEST EXECUTION EVIDENCE REPORT
 
-**Application Under Test (AUT):** Ihirwe Pay Platform (Beno Finance Ltd)  
+**Application Under Test (AUT):** Ekaze Platform (Beno Finance Ltd)  
 **Target Gateway:** Ecobank Developer APIM (UAT Sandbox)  
 **Base URL:** `https://apimuat-developer.ecobank.com`  
 **Merchant ID:** `BenoHoldings-UAT`  
@@ -11,7 +11,7 @@
 ---
 
 ## 1. Executive Summary
-This document provides formal evidence of completed Application Under Test (AUT) and User Acceptance Testing (UAT) for the **Ihirwe Pay** integration with **Ecobank Pan-African Banking Services**.
+This document provides formal evidence of completed Application Under Test (AUT) and User Acceptance Testing (UAT) for the **Ekaze** integration with **Ecobank Pan-African Banking Services**.
 
 Testing encompassed:
 1. **OAuth2 Security & APIM Token Authentication**
@@ -78,7 +78,7 @@ Testing encompassed:
   "amount": 15000,
   "currency": "RWF",
   "referenceId": "ECO-UAT-1792578570021",
-  "narration": "Ihirwe Worker Wage Settlement"
+  "narration": "Ekaze Worker Wage Settlement"
 }
 ```
 
@@ -203,7 +203,7 @@ Testing encompassed:
 ## 4. Live Server Console Log Sample
 ```log
 ===================================================
-🚀 IHIRWE Node.js Server running on port 5000
+🚀 EKAZE Node.js Server running on port 5000
 🌐 API Endpoint: http://localhost:5000/api/v1
 💳 [ECOBANK UAT MOMO COLLECTION] Phone: 250788000004 | Amount: RWF 15000 | Ref: ECO-UAT-1792578570021
 💳 [ECOBANK APIM CARD VERIFY] Processed UAT Pre-Auth Hold ($1.00) -> Instant Reversal for card ending in •••• 9010
@@ -214,7 +214,7 @@ Testing encompassed:
 ---
 
 ## 5. Sign-off & Contact Information
-- **Lead Developer:** Ihirwe Pay Engineering Team
-- **Organization:** Beno Finance Ltd / Ihirwe Pay
+- **Lead Developer:** Ekaze Engineering Team
+- **Organization:** Beno Finance Ltd / Ekaze
 - **Ecobank Developer Portal Account:** `BenoHoldings-UAT`
 - **Submission Date:** Wed, 21 Oct 2026 10:29:31 GMT

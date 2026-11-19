@@ -13,7 +13,7 @@ export const Footer = () => {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg gradient-primary">
                 <span className="text-sm font-bold text-primary-foreground">IP</span>
               </div>
-              <span className="text-lg font-bold text-foreground">Ihirwe Pay</span>
+              <span className="text-lg font-bold text-foreground">Ekaze</span>
             </div>
             <p className="mt-3 text-sm text-muted-foreground">
               Connecting Rwandan households with verified workers through a secure, transparent platform.
@@ -64,7 +64,7 @@ export const Footer = () => {
         {/* Bottom */}
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Ihirwe Pay. All rights reserved.
+            © {new Date().getFullYear()} Ekaze. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>

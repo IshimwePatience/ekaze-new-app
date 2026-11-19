@@ -26,7 +26,7 @@ interface CompanyRegistrationFormProps {
   onSuccess: () => void;
 }
 
-const SESSION_KEY = 'ihirwe_company_reg_full_draft';
+const SESSION_KEY = 'ekaze_company_reg_full_draft';
 
 export const CompanyRegistrationForm = ({ onSuccess }: CompanyRegistrationFormProps) => {
   const { t } = useLanguage();
@@ -263,7 +263,7 @@ export const CompanyRegistrationForm = ({ onSuccess }: CompanyRegistrationFormPr
               setHasExistingData(true);
               setPrefillData(pd);
               if (pd.phone) setValue('owner_phone', pd.phone);
-              if (pd.email && !pd.email.endsWith('@ihirwe.rw')) setValue('owner_email', pd.email);
+              if (pd.email && !pd.email.endsWith('@ekaze.rw')) setValue('owner_email', pd.email);
             },
           });
         } else {

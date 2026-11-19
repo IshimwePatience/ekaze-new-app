@@ -599,7 +599,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
   const searchPlaceholder = getRoleSearchPlaceholder(normalizedRole, isRw);
 
   // Storage key for session-based recent searches
-  const storageKey = `ihirwe_recent_searches_${userId || normalizedRole}`;
+  const storageKey = `ekaze_recent_searches_${userId || normalizedRole}`;
 
   // Read catalog strictly for this role
   const catalog = ROLE_SEARCH_CATALOG[normalizedRole] || ROLE_SEARCH_CATALOG.employer;
@@ -847,7 +847,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                       className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2478b8] hover:underline cursor-pointer"
                     >
                       <Bot className="w-3.5 h-3.5" />
-                      Ask Ihirwe AI about "{searchQuery}"
+                      Ask Ekaze AI about "{searchQuery}"
                     </button>
                   )}
                 </div>

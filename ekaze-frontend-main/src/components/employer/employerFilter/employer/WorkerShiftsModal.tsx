@@ -250,7 +250,7 @@ export const WorkerShiftsModal: React.FC<WorkerShiftsModalProps> = ({
           <div className="mt-6 pt-4 border-t border-white/20 flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-1.5 text-xs text-white/80">
               <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
-              <span>Verified schedule on Ihirwe</span>
+              <span>Verified schedule on Ekaze</span>
             </div>
             <div className="flex items-center gap-2 ml-auto">
               {isAuthenticated && openSlots.length > 0 && onBookSelectedSlots && (

@@ -20,8 +20,8 @@ export const GeneralTerms = () => {
           {/* Intro Description */}
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-8">
             {isRw
-              ? "Aya mabwiriza rusange agenga imikoranire kati y'urubuga rwa Ihirwe, abashyira mu akazi, n'abakozi mu ngo n'inzobere mu Rwanda. Intego yacu ni ukwimakaza gukora neza, umutekano ku murimo, no korohereza buri wese gusora n'ikoranabuhanga ritanga icyizere."
-              : "These General Terms and Conditions govern the operational framework between Ihirwe, employers, staffing agencies, and domestic workers across Rwanda. This framework provides rules for placement, identification verification, transparent hiring, and account responsibilities."}
+              ? "Aya mabwiriza rusange agenga imikoranire kati y'urubuga rwa Ekaze, abashyira mu akazi, n'abakozi mu ngo n'inzobere mu Rwanda. Intego yacu ni ukwimakaza gukora neza, umutekano ku murimo, no korohereza buri wese gusora n'ikoranabuhanga ritanga icyizere."
+              : "These General Terms and Conditions govern the operational framework between Ekaze, employers, staffing agencies, and domestic workers across Rwanda. This framework provides rules for placement, identification verification, transparent hiring, and account responsibilities."}
           </p>
 
           <h2 className="text-xl font-bold text-slate-900 mb-6">
@@ -41,8 +41,8 @@ export const GeneralTerms = () => {
                     {isRw ? "Guhuza Abakozi n'Abakoresha: " : "Worker-Employer Matching: "}
                   </strong>
                   {isRw
-                    ? "Ihirwe yorohereza abakoresha n'abakozi guhura no kumvikana ku kazi n'umushahara mu bwinyagamburiro."
-                    : "Ihirwe serves as a digital staffing platform providing verified worker candidate profiles to employers."}
+                    ? "Ekaze yorohereza abakoresha n'abakozi guhura no kumvikana ku kazi n'umushahara mu bwinyagamburiro."
+                    : "Ekaze serves as a digital staffing platform providing verified worker candidate profiles to employers."}
                 </li>
                 <li>
                   <strong className="text-slate-900">

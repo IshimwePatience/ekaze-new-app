@@ -1,7 +1,7 @@
 {
-  "name": "ihirwe-backend-node",
+  "name": "ekaze-backend-node",
   "version": "1.0.0",
-  "description": "IHIRWE Node.js Backend API - Professional Express, Sequelize, Socket.IO & BullMQ System",
+  "description": "EKAZE Node.js Backend API - Professional Express, Sequelize, Socket.IO & BullMQ System",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -10,7 +10,7 @@
     "migrate:undo": "npx sequelize-cli db:migrate:undo"
   },
   "keywords": [
-    "ihirwe",
+    "ekaze",
     "node",
     "express",
     "sequelize",

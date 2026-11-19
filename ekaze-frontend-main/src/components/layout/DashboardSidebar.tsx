@@ -295,7 +295,7 @@ export const DashboardSidebar = ({
 
           {!isCollapsed && (
             <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer">
-              <img src={logo} alt="Ihirwe Pay" className="h-7 w-auto brightness-0 invert" />
+              <img src={logo} alt="Ekaze" className="h-7 w-auto brightness-0 invert" />
             </a>
           )}
         </div>

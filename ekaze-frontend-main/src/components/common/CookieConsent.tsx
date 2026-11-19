@@ -10,7 +10,7 @@ export interface CookiePreferences {
   timestamp: string | null;
 }
 
-const STORAGE_KEY = "ihirwe_cookie_consent";
+const STORAGE_KEY = "ekaze_cookie_consent";
 
 const DEFAULT_PREFERENCES: CookiePreferences = {
   necessary: true,

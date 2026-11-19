@@ -156,18 +156,18 @@ const CompanyManagement = () => {
             </div>
             <div style="text-align: right;">
               <img src="${logo}" style="height: 40px; width: auto; display: block; margin-left: auto;" />
-              <span style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-top: 4px;">Ihirwe Pay</span>
+              <span style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-top: 4px;">Ekaze</span>
             </div>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 32px; font-size: 12px; line-height: 1.6;">
             <div>
-              <p style="font-weight: 700; margin: 0 0 4px 0; color: #0f172a;">Ihirwe Pay Ltd</p>
+              <p style="font-weight: 700; margin: 0 0 4px 0; color: #0f172a;">Ekaze Ltd</p>
               <p style="margin: 0;">KN 5 Rd, Nyarugenge</p>
               <p style="margin: 0;">PMB 90375</p>
               <p style="margin: 0;">Kigali, Rwanda</p>
               <p style="margin: 0;">TIN: 129845763</p>
-              <p style="margin: 0; color: #475569;">support@ihirwepay.rw</p>
+              <p style="margin: 0; color: #475569;">support@ekazepay.rw</p>
             </div>
             <div>
               <p style="font-weight: 700; margin: 0 0 4px 0; color: #0f172a;">Bill to</p>
@@ -185,7 +185,7 @@ const CompanyManagement = () => {
             <p style="font-size: 11px; color: #475569; margin-top: 12px;">While we prefer electronic payment methods, any checks must be sent to the address below, NOT to our Kigali main office.</p>
             <p style="font-family: monospace; color: #cbd5e1; margin: 4px 0;">---------------------------------</p>
             <p style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: #334155; margin: 0;">PAYMENT ADDRESS:</p>
-            <p style="font-size: 12px; font-weight: 600; margin: 2px 0 0 0;">Ihirwe Pay Ltd</p>
+            <p style="font-size: 12px; font-weight: 600; margin: 2px 0 0 0;">Ekaze Ltd</p>
             <p style="font-size: 12px; margin: 0;">P.O. Box 104477</p>
             <p style="font-size: 12px; margin: 0;">Kigali, Rwanda</p>
           </div>
@@ -1545,10 +1545,10 @@ const CompanyManagement = () => {
                     </div>
                   </div>
 
-                  {/* Ihirwe Logo */}
+                  {/* Ekaze Logo */}
                   <div className="flex flex-col items-end">
-                    <img src={logo} alt="Ihirwe Logo" className="h-10 w-auto object-contain mb-1" />
-                    <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">Ihirwe Pay</span>
+                    <img src={logo} alt="Ekaze Logo" className="h-10 w-auto object-contain mb-1" />
+                    <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">Ekaze</span>
                   </div>
                 </div>
 
@@ -1556,12 +1556,12 @@ const CompanyManagement = () => {
                 <div className="grid grid-cols-2 gap-8 mt-10 text-xs text-slate-900 leading-relaxed">
                   {/* Left: Issuer Address */}
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900">Ihirwe Pay Ltd</p>
+                    <p className="font-bold text-slate-900">Ekaze Ltd</p>
                     <p>KN 5 Rd, Nyarugenge</p>
                     <p>PMB 90375</p>
                     <p>Kigali, Rwanda</p>
                     <p>TIN: 129845763</p>
-                    <p className="text-slate-700">support@ihirwepay.rw</p>
+                    <p className="text-slate-700">support@ekazepay.rw</p>
                   </div>
 
                   {/* Right: Bill to */}
@@ -1591,7 +1591,7 @@ const CompanyManagement = () => {
                   <p>any checks must be sent to the address below, NOT to our Kigali main office.</p>
                   <p className="text-slate-300 font-mono tracking-widest my-1">---------------------------------</p>
                   <p className="font-bold uppercase text-[10px] tracking-wider text-slate-800">PAYMENT ADDRESS:</p>
-                  <p className="font-semibold text-slate-900">Ihirwe Pay Ltd</p>
+                  <p className="font-semibold text-slate-900">Ekaze Ltd</p>
                   <p>P.O. Box 104477</p>
                   <p>Kigali, Rwanda</p>
                 </div>

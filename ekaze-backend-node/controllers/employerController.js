@@ -1030,14 +1030,14 @@ const requestPaymentPhoneOtp = async (req, res) => {
         : reqPurpose === 'update_payment_method'
           ? 'guhindura nimero yo kwishyura'
           : 'kwemeza nimero ya MTN MoMo yo kwishyura';
-      smsText = `Ihirwe Pay: Kode yawe ya OTP yo kwemeza ${actionRw} kuri MTN ${normalizedMtn} ni ${otpCode}. Izarangira mu minota 5.`;
+      smsText = `Ekaze: Kode yawe ya OTP yo kwemeza ${actionRw} kuri MTN ${normalizedMtn} ni ${otpCode}. Izarangira mu minota 5.`;
     } else {
       const purposeEn = reqPurpose === 'pay_worker'
         ? 'worker salary payment'
         : reqPurpose === 'update_payment_method'
           ? 'updating your MTN MoMo payout number'
           : 'MTN MoMo payout number verification';
-      smsText = `Ihirwe Pay: Your OTP code to confirm ${purposeEn} on MTN ${normalizedMtn} is ${otpCode}. Valid for 5 minutes.`;
+      smsText = `Ekaze: Your OTP code to confirm ${purposeEn} on MTN ${normalizedMtn} is ${otpCode}. Valid for 5 minutes.`;
     }
 
     const smsResult = await sendSMS(normalizedMtn, smsText);
@@ -1377,8 +1377,8 @@ const saveAutoPaymentSettings = async (req, res) => {
               referenceId: refId,
               externalId: refId,
               note: overdueOrDue.length > 1
-                ? `IHIRWE Overdue Payroll (${overdueOrDue.length} workers)`
-                : `IHIRWE Overdue Salary ${overdueOrDue[0].worker_name}`
+                ? `EKAZE Overdue Payroll (${overdueOrDue.length} workers)`
+                : `EKAZE Overdue Salary ${overdueOrDue[0].worker_name}`
             });
 
             if (momoReq.success) {
@@ -1567,7 +1567,7 @@ const payWorker = async (req, res) => {
         amount: totalBatchAmount,
         referenceId: refId,
         externalId: refId,
-        note: `IHIRWE Payroll (${unpaidList.length} workers)`
+        note: `EKAZE Payroll (${unpaidList.length} workers)`
       });
 
       if (!momoReq.success) {
@@ -1677,7 +1677,7 @@ const payWorker = async (req, res) => {
       amount: payAmount,
       referenceId: refId,
       externalId: refId,
-      note: `IHIRWE Salary ${workerName}`
+      note: `EKAZE Salary ${workerName}`
     });
 
     if (!momoReq.success) {
@@ -2098,7 +2098,7 @@ const downloadTransactionReceipt = async (req, res, next) => {
 
     const pdfContent = `
 ==================================================
-              IHIRWE PAY - PAYMENT RECEIPT
+              EKAZE - PAYMENT RECEIPT
 ==================================================
 Receipt / Invoice #: ${txRef}
 Date: ${date}
@@ -2112,8 +2112,8 @@ Worker Hiring & Contact Access Fee     ${amount.toLocaleString()} RWF
 --------------------------------------------------
 TOTAL PAID:                           ${amount.toLocaleString()} RWF
 ==================================================
-Thank you for using Ihirwe Pay!
-Support Email: support@ihirwepay.rw
+Thank you for using Ekaze!
+Support Email: support@ekazepay.rw
 ==================================================
 `;
 
@@ -2299,8 +2299,8 @@ const requestWorkerOtp = async (req, res, next) => {
       const { sendSMS, resolveUserLanguage } = require('../services/smsService');
       const lang = resolveUserLanguage(req, user);
       const otpMsg = lang === 'rw'
-        ? `Ihirwe Pay: Kode yawe ya OTP yo kwemeza amasezerano y'akazi ni ${generatedOtp}. Izarangira mu minota 5.`
-        : `Ihirwe Pay: Your hiring authorization OTP code is ${generatedOtp}. Valid for 5 minutes.`;
+        ? `Ekaze: Kode yawe ya OTP yo kwemeza amasezerano y'akazi ni ${generatedOtp}. Izarangira mu minota 5.`
+        : `Ekaze: Your hiring authorization OTP code is ${generatedOtp}. Valid for 5 minutes.`;
       await sendSMS(workerPhone, otpMsg).catch(() => {});
     } catch (_) {}
 
@@ -2387,7 +2387,7 @@ const verifyWorkerOtp = async (req, res, next) => {
 
     const workerName = user?.name || worker?.full_name || 'Test Worker';
     const workerPhone = user?.phone || worker?.phone || '0788000000';
-    const workerEmail = user?.email || worker?.email || 'worker@ihirwe.rw';
+    const workerEmail = user?.email || worker?.email || 'worker@ekaze.rw';
     const workerAddress = user?.district || worker?.address || 'Kigali, Rwanda';
 
     return res.status(200).json({
@@ -2761,8 +2761,8 @@ const requestTerminationOtp = async (req, res, next) => {
       const { sendSMS, resolveUserLanguage } = require('../services/smsService');
       const lang = resolveUserLanguage(req, user);
       const otpMsg = lang === 'rw'
-        ? `Ihirwe Pay: Kode yawe ya OTP yo kwemeza gusesa amasezerano ni ${generatedOtp}. Izarangira mu minota 5.`
-        : `Ihirwe Pay: Your contract termination OTP code is ${generatedOtp}. Valid for 5 minutes.`;
+        ? `Ekaze: Kode yawe ya OTP yo kwemeza gusesa amasezerano ni ${generatedOtp}. Izarangira mu minota 5.`
+        : `Ekaze: Your contract termination OTP code is ${generatedOtp}. Valid for 5 minutes.`;
       await sendSMS(workerPhone, otpMsg).catch(() => {});
     } catch (_) {}
 

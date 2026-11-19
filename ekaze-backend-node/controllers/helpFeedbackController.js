@@ -218,10 +218,10 @@ exports.updateFeedbackStatus = async (req, res, next) => {
     if (status) record.status = status;
     if (admin_notes !== undefined) {
       record.admin_notes = String(admin_notes)
-        .replace(/by Administrator/gi, 'by Ihirwe')
-        .replace(/by Admin/gi, 'by Ihirwe')
-        .replace(/Administrator/gi, 'Ihirwe')
-        .replace(/Admin/gi, 'Ihirwe');
+        .replace(/by Administrator/gi, 'by Ekaze')
+        .replace(/by Admin/gi, 'by Ekaze')
+        .replace(/Administrator/gi, 'Ekaze')
+        .replace(/Admin/gi, 'Ekaze');
     }
 
     if (status === 'resolved' && !record.resolved_at) {
@@ -244,15 +244,15 @@ exports.updateFeedbackStatus = async (req, res, next) => {
     if (targetUserId) {
       const isResolved = status === 'resolved';
       const cleanNote = (record.admin_notes || '')
-        .replace(/by Administrator/gi, 'by Ihirwe')
-        .replace(/by Admin/gi, 'by Ihirwe')
-        .replace(/Administrator/gi, 'Ihirwe')
-        .replace(/Admin/gi, 'Ihirwe');
+        .replace(/by Administrator/gi, 'by Ekaze')
+        .replace(/by Admin/gi, 'by Ekaze')
+        .replace(/Administrator/gi, 'Ekaze')
+        .replace(/Admin/gi, 'Ekaze');
       const title = isResolved
         ? `Issue Resolved: ${record.ticket_number}`
-        : `Ihirwe Response: ${record.ticket_number}`;
+        : `Ekaze Response: ${record.ticket_number}`;
       const message = cleanNote
-        ? `Ihirwe Response: ${cleanNote}`
+        ? `Ekaze Response: ${cleanNote}`
         : `Your support inquiry (${record.ticket_number}) status is now ${record.status}.`;
 
       await Notification.create({

@@ -175,7 +175,7 @@ export const RegisterDropdown: React.FC<RegisterDropdownProps> = ({
           </div>
 
           {/* ──────────────────────────────────────────────────────────────────
-              RIGHT COLUMN: EXACT RWANDAIR "REGISTER TO IHIRWE AND ENJOY:"
+              RIGHT COLUMN: EXACT RWANDAIR "REGISTER TO EKAZE AND ENJOY:"
           ────────────────────────────────────────────────────────────────── */}
           <div className="md:pl-8 pt-6 md:pt-0 relative flex flex-col justify-between">
 
@@ -190,17 +190,17 @@ export const RegisterDropdown: React.FC<RegisterDropdownProps> = ({
             </button>
 
             <div>
-              {/* Header: Register to Ihirwe and enjoy: */}
+              {/* Header: Register to Ekaze and enjoy: */}
               <h3 className="text-[26px] font-bold text-[#222222] leading-tight mb-6 pr-8">
                 {isRw ? (
                   <>
                     Iyandikishe kuri <br />
-                    Ihirwe wishimire:
+                    Ekaze wishimire:
                   </>
                 ) : (
                   <>
                     Register to <br />
-                    Ihirwe and enjoy:
+                    Ekaze and enjoy:
                   </>
                 )}
               </h3>
@@ -244,14 +244,14 @@ export const RegisterDropdown: React.FC<RegisterDropdownProps> = ({
               </div>
             </div>
 
-            {/* Stylized Script Branding for Ihirwe */}
+            {/* Stylized Script Branding for Ekaze */}
             <div className="pt-2 select-none">
               <div className="flex items-baseline gap-1.5">
                 <span
                   className="text-3xl font-bold italic tracking-tight text-[#005a9c]"
                   style={{ fontFamily: "'Brush Script MT', 'Dancing Script', 'Segoe Script', cursive, sans-serif" }}
                 >
-                  Ihirwe Pay
+                  Ekaze
                 </span>
                 <span className="text-[11px] text-slate-400 font-sans font-semibold">™</span>
               </div>

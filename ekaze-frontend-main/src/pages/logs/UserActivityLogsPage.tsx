@@ -332,7 +332,7 @@ export const UserActivityLogsPage: React.FC = () => {
             href="/"
             className="flex items-center gap-2.5 hover:opacity-90 transition-opacity cursor-pointer"
           >
-            <img src={logo} alt="Ihirwe" className="h-6 w-auto" />
+            <img src={logo} alt="Ekaze" className="h-6 w-auto" />
             <span className="text-[17px] font-medium text-[#202124] tracking-tight">
               {isRw ? 'Amateka y’Konte' : 'User Logs'}
             </span>
@@ -732,7 +732,7 @@ export const UserActivityLogsPage: React.FC = () => {
                 </h2>
                 <p className="text-[16px] leading-[26px] font-normal text-[#202124] mt-1">
                   {isRw
-                    ? "Incamake rusange ku bikorwa by'uyu mukoresha muri gahunda ya Ihirwe."
+                    ? "Incamake rusange ku bikorwa by'uyu mukoresha muri gahunda ya Ekaze."
                     : 'High-level activity and security status summary for this user.'}
                 </p>
               </div>

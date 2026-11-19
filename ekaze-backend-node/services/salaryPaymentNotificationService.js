@@ -209,7 +209,7 @@ const settleSingleWorkerSalary = async ({
       amount: numAmount,
       referenceId: transferRef,
       externalId: `${refId}-W${worker.id}`,
-      note: `IHIRWE Salary from ${employerName}`
+      note: `EKAZE Salary from ${employerName}`
     }).catch(err => console.warn('Worker MTN MoMo transfer notice:', err.message));
   }
 
@@ -278,13 +278,13 @@ const settleSingleWorkerSalary = async ({
     if (workerLang === 'rw') {
       title = isAutomatic ? 'Umushahara Wishyuwe Bwikora kuri MTN MoMo' : 'Umushahara Wakiriwe kuri MTN MoMo';
       message = hasSavingsInfo
-        ? `Ihirwe Pay: Wakiriye umushahara wa ${numAmount.toLocaleString()} RWF uturutse kuri ${employerName} kuwa ${dateStr} saa ${timeStr}. Ayashyizwe kuri konti: ${walletPortion.toLocaleString()} RWF (Asigaye kuri konti: ${newWalletBalance.toLocaleString()} RWF). Ayazigamwe: ${savingsPortion.toLocaleString()} RWF (Ubwizigame bwose: ${newSavings.toLocaleString()} RWF).`
-        : `Ihirwe Pay: Wakiriye umushahara wa ${numAmount.toLocaleString()} RWF uturutse kuri ${employerName} kuwa ${dateStr} saa ${timeStr}. Asigaye kuri konti yawe ni ${newWalletBalance.toLocaleString()} RWF.`;
+        ? `Ekaze: Wakiriye umushahara wa ${numAmount.toLocaleString()} RWF uturutse kuri ${employerName} kuwa ${dateStr} saa ${timeStr}. Ayashyizwe kuri konti: ${walletPortion.toLocaleString()} RWF (Asigaye kuri konti: ${newWalletBalance.toLocaleString()} RWF). Ayazigamwe: ${savingsPortion.toLocaleString()} RWF (Ubwizigame bwose: ${newSavings.toLocaleString()} RWF).`
+        : `Ekaze: Wakiriye umushahara wa ${numAmount.toLocaleString()} RWF uturutse kuri ${employerName} kuwa ${dateStr} saa ${timeStr}. Asigaye kuri konti yawe ni ${newWalletBalance.toLocaleString()} RWF.`;
     } else {
       title = isAutomatic ? 'Salary Paid Automatically via MTN MoMo' : 'Salary Paid via MTN MoMo';
       message = hasSavingsInfo
-        ? `Ihirwe Pay: You received ${numAmount.toLocaleString()} RWF salary from ${employerName} on ${dateStr} at ${timeStr}. Wallet credited: ${walletPortion.toLocaleString()} RWF (Balance: ${newWalletBalance.toLocaleString()} RWF). Saved: ${savingsPortion.toLocaleString()} RWF (Total Savings: ${newSavings.toLocaleString()} RWF).`
-        : `Ihirwe Pay: You received ${numAmount.toLocaleString()} RWF salary from ${employerName} on ${dateStr} at ${timeStr}. Your wallet balance is ${newWalletBalance.toLocaleString()} RWF.`;
+        ? `Ekaze: You received ${numAmount.toLocaleString()} RWF salary from ${employerName} on ${dateStr} at ${timeStr}. Wallet credited: ${walletPortion.toLocaleString()} RWF (Balance: ${newWalletBalance.toLocaleString()} RWF). Saved: ${savingsPortion.toLocaleString()} RWF (Total Savings: ${newSavings.toLocaleString()} RWF).`
+        : `Ekaze: You received ${numAmount.toLocaleString()} RWF salary from ${employerName} on ${dateStr} at ${timeStr}. Your wallet balance is ${newWalletBalance.toLocaleString()} RWF.`;
     }
 
     await sendNotification({
@@ -348,10 +348,10 @@ const notifyEmployerPaymentSuccess = async ({
   let message;
   if (empLang === 'rw') {
     title = isAutomatic ? 'Kwishyura Bwikora Byagenze Neza' : 'Kwishyura Umushahara Byagenze Neza';
-    message = `Ihirwe Pay: Ubwishyu ${isAutomatic ? 'bwikora ' : ''}bw'umushahara wa ${Number(totalAmount || 0).toLocaleString()} RWF kuri ${workersLabel} kuwa ${dateStr} saa ${timeStr} bwarangiye neza.`;
+    message = `Ekaze: Ubwishyu ${isAutomatic ? 'bwikora ' : ''}bw'umushahara wa ${Number(totalAmount || 0).toLocaleString()} RWF kuri ${workersLabel} kuwa ${dateStr} saa ${timeStr} bwarangiye neza.`;
   } else {
     title = isAutomatic ? 'Automatic Salary Payment Successful' : 'Salary Payment Successful';
-    message = `Ihirwe Pay: Your ${isAutomatic ? 'automatic ' : ''}salary payment of ${Number(totalAmount || 0).toLocaleString()} RWF to ${workersLabel} on ${dateStr} at ${timeStr} was completed successfully.`;
+    message = `Ekaze: Your ${isAutomatic ? 'automatic ' : ''}salary payment of ${Number(totalAmount || 0).toLocaleString()} RWF to ${workersLabel} on ${dateStr} at ${timeStr} was completed successfully.`;
   }
 
   if (employerUserId) {
@@ -612,8 +612,8 @@ const checkAndProcessSalaryNotifications = async () => {
             ? '⚠️ Amakuru ku Mushahara Watinze'
             : '⚠️ Overdue Salary Notice';
           const workerMsg = wrkLang === 'rw'
-            ? `Menyesha: Umushahara wawe wa ${salaryFormatted} wari uteganyijwe kuwa ${ctx.dueDateFormatted} nturishyurwa na ${employerName}. Ihirwe Pay yibukije umukoresha kwishyura bidatinze.`
-            : `Notice: Your scheduled salary of ${salaryFormatted} due on ${ctx.dueDateFormatted} from ${employerName} is overdue (${ctx.daysDifference} days). Ihirwe Pay has notified the employer to settle promptly.`;
+            ? `Menyesha: Umushahara wawe wa ${salaryFormatted} wari uteganyijwe kuwa ${ctx.dueDateFormatted} nturishyurwa na ${employerName}. Ekaze yibukije umukoresha kwishyura bidatinze.`
+            : `Notice: Your scheduled salary of ${salaryFormatted} due on ${ctx.dueDateFormatted} from ${employerName} is overdue (${ctx.daysDifference} days). Ekaze has notified the employer to settle promptly.`;
 
           await sendNotification({
             userId: workerUser.id,
@@ -726,7 +726,7 @@ const checkAndProcessSalaryNotifications = async () => {
         }
 
         // ──────────────────────────────────────────────────────────────
-        // 4. ESCALATION: Send Ihirwe ADMIN Notifications
+        // 4. ESCALATION: Send Ekaze ADMIN Notifications
         // ──────────────────────────────────────────────────────────────
         if (adminUsers.length > 0) {
           for (const admin of adminUsers) {
@@ -743,7 +743,7 @@ const checkAndProcessSalaryNotifications = async () => {
               const agencyLabel = company ? `Agency: ${company.company_name || company.name || '#' + company.id}` : 'Direct Placement';
               await sendNotification({
                 userId: admin.id,
-                title: `🛡️ Ihirwe Admin Alert: Overdue Salary Default (${employerName} -> ${workerName})`,
+                title: `🛡️ Ekaze Admin Alert: Overdue Salary Default (${employerName} -> ${workerName})`,
                 message: `Compliance Default Alert: Overdue salary of ${salaryFormatted} for worker ${workerName} by employer ${employerName} (Tel: ${employerUser.phone || 'N/A'}) has exceeded payment date (${ctx.dueDateFormatted}, ${ctx.daysDifference} days overdue). Payment attempt failed due to insufficient funds on card/phone. [${agencyLabel}]. Immediate mediation required.`,
                 type: 'admin_overdue_alert',
                 data: {
@@ -856,7 +856,7 @@ const checkAndProcessSalaryNotifications = async () => {
         amount: totalBatchAmount,
         referenceId: refId,
         externalId: refId,
-        note: `IHIRWE Auto Payroll (${group.items.length} workers)`
+        note: `EKAZE Auto Payroll (${group.items.length} workers)`
       }).catch(() => ({ success: false }));
 
       if (momoRes && momoRes.success) {

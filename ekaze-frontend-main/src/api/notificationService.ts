@@ -11,10 +11,10 @@ import type {
 const sanitizeText = (text?: string): string => {
   if (!text) return '';
   return text
-    .replace(/by Administrator/gi, 'by Ihirwe')
-    .replace(/by Admin/gi, 'by Ihirwe')
-    .replace(/Administrator/gi, 'Ihirwe')
-    .replace(/Support response:/gi, 'Ihirwe Response:');
+    .replace(/by Administrator/gi, 'by Ekaze')
+    .replace(/by Admin/gi, 'by Ekaze')
+    .replace(/Administrator/gi, 'Ekaze')
+    .replace(/Support response:/gi, 'Ekaze Response:');
 };
 
 const sanitizeNotification = (item: any) => {

@@ -26,7 +26,7 @@ interface EmployerRegistrationFormProps {
   onSuccess: () => void;
 }
 
-const SESSION_KEY = 'ihirwe_employer_reg_full_draft';
+const SESSION_KEY = 'ekaze_employer_reg_full_draft';
 
 export const EmployerRegistrationForm = ({ onSuccess }: EmployerRegistrationFormProps) => {
   const { t } = useLanguage();
@@ -255,7 +255,7 @@ export const EmployerRegistrationForm = ({ onSuccess }: EmployerRegistrationForm
               setHasExistingData(true);
               setPrefillData(pd);
               if (pd.phone) setValue('phone', pd.phone);
-              if (pd.email && !pd.email.endsWith('@ihirwe.rw')) setValue('email', pd.email);
+              if (pd.email && !pd.email.endsWith('@ekaze.rw')) setValue('email', pd.email);
             },
           });
         } else {

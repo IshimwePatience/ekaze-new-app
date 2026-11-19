@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight } from "lucide-react";
-import ihirweAppWomanHero from "@/assets/ihirwe_app_woman_hero.jpg";
+import ekazeAppWomanHero from "@/assets/ekaze_app_woman_hero.jpg";
 import scaniaHeroTruck from "@/assets/scania_truck_africa_hero.jpg";
 
 const Hero = () => {
@@ -20,8 +20,8 @@ const Hero = () => {
 
         {/* PREVIOUS BACKGROUND IMAGE (DOMESTIC WORKERS):
         <img
-          src={ihirweAppWomanHero}
-          alt="Rwandan woman managing domestic workers on Ihirwe App"
+          src={ekazeAppWomanHero}
+          alt="Rwandan woman managing domestic workers on Ekaze App"
           className="absolute inset-0 w-full h-full object-cover object-[82%_top] sm:object-[78%_top] md:object-[75%_top] select-none pointer-events-none"
         />
         */}
@@ -185,7 +185,7 @@ const Hero = () => {
                     onClick={() => navigate("/download")}
                     className="text-[#0062b8] font-bold hover:underline cursor-pointer"
                   >
-                    Ihirwe App
+                    Ekaze App
                   </button>{" "}
                   cyangwa ukande <span className="text-[#0062b8] font-bold">*182#</span> kuri telefoni.
                 </>
@@ -197,7 +197,7 @@ const Hero = () => {
                     onClick={() => navigate("/download")}
                     className="text-[#0062b8] font-bold hover:underline cursor-pointer"
                   >
-                    Ihirwe App
+                    Ekaze App
                   </button>{" "}
                   or dial <span className="text-[#0062b8] font-bold">*182#</span> on any phone.
                 </>

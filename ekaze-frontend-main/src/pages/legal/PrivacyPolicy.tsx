@@ -20,8 +20,8 @@ export const PrivacyPolicy = () => {
           {/* Intro Description matching Screenshot Text format */}
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-8">
             {isRw
-              ? "Iyi Politiki y'Kurinda Amakuru n'Umutekano isobanura ubwiyemezi bwa Ihirwe (ikirango cya Beno Finance Ltd) mu kurinda no kubungabunga amakuru bwite y'abakoresha n'abakozi bishingiye ku mategeko arinda amakuru y'umuntu mu Rwanda. Ihirwe izirikana igiciro n'agaciro k'amakuru n'uburenganzira bw'abantu."
-              : "This Information Security and Privacy Policy outlines the commitment of Ihirwe (a Beno Finance Ltd brand) to maintaining the highest standards of information security and privacy in line with the requirements of Information Security and Privacy standards. Ihirwe recognizes the importance of safeguarding information assets and respecting individuals' privacy rights. This policy applies to all systems, processes, personnel, and third parties that access or process data on Ihirwe."}
+              ? "Iyi Politiki y'Kurinda Amakuru n'Umutekano isobanura ubwiyemezi bwa Ekaze (ikirango cya Beno Finance Ltd) mu kurinda no kubungabunga amakuru bwite y'abakoresha n'abakozi bishingiye ku mategeko arinda amakuru y'umuntu mu Rwanda. Ekaze izirikana igiciro n'agaciro k'amakuru n'uburenganzira bw'abantu."
+              : "This Information Security and Privacy Policy outlines the commitment of Ekaze (a Beno Finance Ltd brand) to maintaining the highest standards of information security and privacy in line with the requirements of Information Security and Privacy standards. Ekaze recognizes the importance of safeguarding information assets and respecting individuals' privacy rights. This policy applies to all systems, processes, personnel, and third parties that access or process data on Ekaze."}
           </p>
 
           <h2 className="text-xl font-bold text-slate-900 mb-6">
@@ -42,8 +42,8 @@ export const PrivacyPolicy = () => {
                     {isRw ? "Ibyiciro by'Amakuru: " : "Information Classification: "}
                   </strong>
                   {isRw
-                    ? "Ihirwe igabanyamo amakuru ibyiciro nka Ibanga, Ikoreshwa ry'Imbere, n'Amakuru Rusange. Urwego rw'amakuru rugena uburyo bwo kuyarinda n'ubushobozi bwo kuyageraho."
-                    : "Ihirwe classifies information into categories such as Confidential, Internal Use, and Public. The classification level determines the appropriate handling, access controls, and encryption measures."}
+                    ? "Ekaze igabanyamo amakuru ibyiciro nka Ibanga, Ikoreshwa ry'Imbere, n'Amakuru Rusange. Urwego rw'amakuru rugena uburyo bwo kuyarinda n'ubushobozi bwo kuyageraho."
+                    : "Ekaze classifies information into categories such as Confidential, Internal Use, and Public. The classification level determines the appropriate handling, access controls, and encryption measures."}
                 </li>
                 <li>
                   <strong className="text-slate-900">
@@ -66,8 +66,8 @@ export const PrivacyPolicy = () => {
                     {isRw ? "Hahugurwa ku Umutekano: " : "Security Awareness & Training: "}
                   </strong>
                   {isRw
-                    ? "Ihirwe itanga amahugurwa arambuye ku bakozi mu kurinda amakuru n'umutekano w'urubuga."
-                    : "Ihirwe provides ongoing security awareness training to all personnel and partners to ensure informed security decisions."}
+                    ? "Ekaze itanga amahugurwa arambuye ku bakozi mu kurinda amakuru n'umutekano w'urubuga."
+                    : "Ekaze provides ongoing security awareness training to all personnel and partners to ensure informed security decisions."}
                 </li>
                 <li>
                   <strong className="text-slate-900">
@@ -91,8 +91,8 @@ export const PrivacyPolicy = () => {
                     {isRw ? "Kurinda Amakuru: " : "Data Protection: "}
                   </strong>
                   {isRw
-                    ? "Ihirwe ikurikiza amategeko y'u Rwanda arinda amakuru bwite. Amakuru yakusanyijwe arindwa mu mucyo no mu bwinyagamburiro."
-                    : "Ihirwe complies with all relevant Rwandan data protection laws and regulations. Personal data is collected, processed, and stored lawfully and transparently."}
+                    ? "Ekaze ikurikiza amategeko y'u Rwanda arinda amakuru bwite. Amakuru yakusanyijwe arindwa mu mucyo no mu bwinyagamburiro."
+                    : "Ekaze complies with all relevant Rwandan data protection laws and regulations. Personal data is collected, processed, and stored lawfully and transparently."}
                 </li>
                 <li>
                   <strong className="text-slate-900">
@@ -100,7 +100,7 @@ export const PrivacyPolicy = () => {
                   </strong>
                   {isRw
                     ? "Urubuga rusaba ubwumvikane bw'umukoresha mbere yo gukusanya cyangwa gukoresha amakuru ye."
-                    : "When required, Ihirwe obtains explicit and informed consent from users before collecting or processing personal information."}
+                    : "When required, Ekaze obtains explicit and informed consent from users before collecting or processing personal information."}
                 </li>
                 <li>
                   <strong className="text-slate-900">

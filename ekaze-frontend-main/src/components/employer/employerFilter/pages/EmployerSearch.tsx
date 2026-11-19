@@ -9,7 +9,7 @@ import { Button } from '../ui/button';
 import { SearchFilters } from '../employer/SearchFilters';
 import { WorkerSearchResults } from '../employer/WorkerSearchResults';
 import { WorkerDetailModal } from '../employer/WorkerDetailModal';
-import { AskIhirweRightSidebar } from '@/components/layout/AskIhirweRightSidebar';
+import { AskEkazeRightSidebar } from '@/components/layout/AskEkazeRightSidebar';
 import Footer from '@/components/landing/Footer';
 import Header from '@/components/landing/Header';
 import { usePublicWorkerSearch } from '@/hooks/useWorkers';
@@ -1069,7 +1069,7 @@ const EmployerSearch = ({ statusSearch }: EmployerSearchProps) => {
                 <span>{isRw ? `Erekana ibisubizo ${filteredWorkers.length}` : `Show ${filteredWorkers.length} results`}</span>
               </button>
 
-              {/* PREVIOUS ADVANCED SEARCH & ASK IHIRWE (REMOVED PER USER REQUEST, PRESERVED IN CODE):
+              {/* PREVIOUS ADVANCED SEARCH & ASK EKAZE (REMOVED PER USER REQUEST, PRESERVED IN CODE):
               <button
                 type="button"
                 onClick={() => setIsAdvancedOpen(true)}
@@ -1081,12 +1081,12 @@ const EmployerSearch = ({ statusSearch }: EmployerSearchProps) => {
               <button
                 type="button"
                 onClick={() => setIsAiSearchOpen(true)}
-                title={isRw ? 'Baza Ihirwe' : 'Ask Ihirwe'}
+                title={isRw ? 'Baza Ekaze' : 'Ask Ekaze'}
                 className="h-10 px-4 rounded-full flex items-center gap-2 hover:bg-white/15 text-white border border-white/40 transition-all cursor-pointer bg-white/5 active:scale-95"
               >
                 <Sparkles className="w-4 h-4 text-blue-300" />
                 <span className="text-xs sm:text-[13px] font-semibold text-white">
-                  {isRw ? 'Baza Ihirwe' : 'Ask Ihirwe'}
+                  {isRw ? 'Baza Ekaze' : 'Ask Ekaze'}
                 </span>
               </button>
               */}
@@ -1220,7 +1220,7 @@ const EmployerSearch = ({ statusSearch }: EmployerSearchProps) => {
           setRefreshKey(prev => prev + 1);
         }}
       />
-      <AskIhirweRightSidebar
+      <AskEkazeRightSidebar
         isOpen={isAiSearchOpen}
         onClose={() => setIsAiSearchOpen(false)}
         onWorkerFilter={handleAiWorkerFilter}

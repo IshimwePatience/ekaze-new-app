@@ -81,7 +81,7 @@ const startServer = async () => {
 
     server.listen(PORT, () => {
       console.log(`===================================================`);
-      console.log(`🚀 IHIRWE Node.js Server running on port ${PORT}`);
+      console.log(`🚀 EKAZE Node.js Server running on port ${PORT}`);
       console.log(`🌐 API Endpoint: http://localhost:${PORT}/api/v1`);
       console.log(`🔒 Environment: ${env.NODE_ENV}`);
       console.log(`===================================================`);

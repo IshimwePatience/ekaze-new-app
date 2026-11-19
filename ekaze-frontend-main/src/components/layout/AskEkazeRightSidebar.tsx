@@ -27,7 +27,7 @@ import {
 import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../lib/api";
 
-interface AskIhirweRightSidebarProps {
+interface AskEkazeRightSidebarProps {
   isOpen: boolean;
   onClose: () => void;
   isDocked?: boolean;
@@ -51,7 +51,7 @@ interface ConversationItem {
   messages?: Message[];
 }
 
-export const AskIhirweRightSidebar: React.FC<AskIhirweRightSidebarProps> = ({
+export const AskEkazeRightSidebar: React.FC<AskEkazeRightSidebarProps> = ({
   isOpen,
   onClose,
   isDocked = false,
@@ -165,7 +165,7 @@ export const AskIhirweRightSidebar: React.FC<AskIhirweRightSidebarProps> = ({
 
   // General Platform Suggestions
   const generalSuggestionsGroup1 = [
-    "How can Ask Ihirwe help me?",
+    "How can Ask Ekaze help me?",
     "Find verified workers across Rwanda",
     "How does MTN MoMo wage payout work?",
     "Explain NIDA identity verification",
@@ -174,7 +174,7 @@ export const AskIhirweRightSidebar: React.FC<AskIhirweRightSidebarProps> = ({
   const generalSuggestionsGroup2 = [
     "How to register an employer account?",
     "How are domestic workers vetted?",
-    "What services does Ihirwe provide?",
+    "What services does Ekaze provide?",
     "Contact customer support and guidance",
   ];
 
@@ -456,7 +456,7 @@ export const AskIhirweRightSidebar: React.FC<AskIhirweRightSidebarProps> = ({
           setConversationId(res.data.conversation_id);
         }
 
-        let aiText = res.data.ai_message?.text || "Hello! I am **Ihirwe AI**, how can I help you today?";
+        let aiText = res.data.ai_message?.text || "Hello! I am **Ekaze AI**, how can I help you today?";
 
         if (currentAttachment && !aiText.toLowerCase().includes("attached")) {
           aiText = `I have received the attached file (**${currentAttachment.name}**).\n\n` + aiText;
@@ -481,11 +481,11 @@ export const AskIhirweRightSidebar: React.FC<AskIhirweRightSidebarProps> = ({
         console.log("AI generation stopped by user");
         return;
       }
-      console.log("Using local Ihirwe AI response fallback:", error);
+      console.log("Using local Ekaze AI response fallback:", error);
 
       let fallbackText = currentAttachment
-        ? `No problem sir! I have reviewed and audited the attached document/image (**${currentAttachment.name}**) for your Ihirwe request.\n\n### Platform Verification & Action Plan:\n- **File Name**: ${currentAttachment.name}\n- **Relevance**: Verified for Ihirwe worker identity & contract verification\n- **Status**: Checked and compliant. You can attach this file directly to a worker profile or active contract.`
-        : `I am **Ihirwe AI**, your intelligent assistant for the Ihirwe platform.\n\nI have processed your query regarding **"${query}"**.\n\nOur system live database shows 142 active workers and 98.4% NIDA verified compliance. All MoMo payment gateway APIs are operational. How else can I assist you?`;
+        ? `No problem sir! I have reviewed and audited the attached document/image (**${currentAttachment.name}**) for your Ekaze request.\n\n### Platform Verification & Action Plan:\n- **File Name**: ${currentAttachment.name}\n- **Relevance**: Verified for Ekaze worker identity & contract verification\n- **Status**: Checked and compliant. You can attach this file directly to a worker profile or active contract.`
+        : `I am **Ekaze AI**, your intelligent assistant for the Ekaze platform.\n\nI have processed your query regarding **"${query}"**.\n\nOur system live database shows 142 active workers and 98.4% NIDA verified compliance. All MoMo payment gateway APIs are operational. How else can I assist you?`;
 
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
@@ -743,7 +743,7 @@ export const AskIhirweRightSidebar: React.FC<AskIhirweRightSidebarProps> = ({
               )}
 
               <span className="text-base font-bold text-slate-900 tracking-tight">
-                Ask Ihirwe
+                Ask Ekaze
               </span>
             </div>
 
@@ -760,7 +760,7 @@ export const AskIhirweRightSidebar: React.FC<AskIhirweRightSidebarProps> = ({
               {/* Close Sidebar Card Button */}
               <button
                 onClick={onClose}
-                title="Close Ask Ihirwe"
+                title="Close Ask Ekaze"
                 className="p-2 rounded-full text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
@@ -775,7 +775,7 @@ export const AskIhirweRightSidebar: React.FC<AskIhirweRightSidebarProps> = ({
             {messages.length === 0 && (
               <div className="pt-1 pb-0.5 space-y-0.5">
                 <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                  {user && userName ? `Hi, ${userName}` : "Welcome to Ihirwe"}
+                  {user && userName ? `Hi, ${userName}` : "Welcome to Ekaze"}
                 </h2>
                 <h1 className="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-purple-600 via-pink-600 to-rose-500 bg-clip-text text-transparent">
                   How can I help you?
@@ -879,7 +879,7 @@ export const AskIhirweRightSidebar: React.FC<AskIhirweRightSidebarProps> = ({
                   <div className="w-6 h-6 rounded-full bg-[#2478b8]/10 flex items-center justify-center text-[#2478b8]">
                     <Sparkles className="w-3.5 h-3.5 animate-spin" />
                   </div>
-                  <span>Ask Ihirwe is thinking...</span>
+                  <span>Ask Ekaze is thinking...</span>
                 </div>
                 <button
                   onClick={handleStopGenerating}
@@ -1055,4 +1055,4 @@ export const AskIhirweRightSidebar: React.FC<AskIhirweRightSidebarProps> = ({
   );
 };
 
-export default AskIhirweRightSidebar;
+export default AskEkazeRightSidebar;

@@ -118,7 +118,7 @@ const AdminStats = () => {
           <div className="lg:col-span-8 space-y-3">
             <p className="text-xs text-slate-500 font-normal">Welcome, Admin</p>
             <h1 className="text-2xl font-normal text-slate-900 tracking-tight">
-              Manage Ihirwe Pay with real-time verification & MoMo analytics
+              Manage Ekaze with real-time verification & MoMo analytics
             </h1>
 
             {/* Checklist with Green Checkmarks */}
@@ -162,7 +162,7 @@ const AdminStats = () => {
             </div>
 
             <div className="space-y-1">
-              <p className="text-xs font-semibold text-slate-900">Configure Ihirwe Pay for enterprise workloads</p>
+              <p className="text-xs font-semibold text-slate-900">Configure Ekaze for enterprise workloads</p>
               <button
                 onClick={() => navigateTo('companies')}
                 className="text-xs text-[#2478b8] hover:underline font-medium cursor-pointer flex items-center gap-1"

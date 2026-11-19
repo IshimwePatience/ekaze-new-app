@@ -140,8 +140,8 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
     }
   };
 
-  const currentHost = typeof window !== 'undefined' ? window.location.host : 'ihirwepay.rw';
-  const pageTitle = typeof document !== 'undefined' ? document.title : 'Ihirwe Platform';
+  const currentHost = typeof window !== 'undefined' ? window.location.host : 'ekazepay.rw';
+  const pageTitle = typeof document !== 'undefined' ? document.title : 'Ekaze Platform';
 
   return (
     <>
@@ -161,7 +161,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
         {/* Drawer Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#2d2f31] shrink-0">
           <h2 className="text-[17px] font-medium text-[#e3e3e3] tracking-tight">
-            Send feedback to Ihirwe
+            Send feedback to Ekaze
           </h2>
           <button
             onClick={onClose}
@@ -283,7 +283,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
             >
               account and system information
             </a>{' '}
-            may be sent to Ihirwe. We use it to fix problems and improve our services, subject to our{' '}
+            may be sent to Ekaze. We use it to fix problems and improve our services, subject to our{' '}
             <a
               href="/privacy-and-terms?tab=privacy-policy"
               target="_blank"

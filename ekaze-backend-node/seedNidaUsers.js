@@ -31,7 +31,7 @@ async function seedAdminOnly() {
       where: {
         [sequelize.Sequelize.Op.or]: [
           { email: 'ishimwepatience87@gmail.com' },
-          { email: 'admin@ihirwe.rw' },
+          { email: 'admin@ekaze.rw' },
           { role: 'admin' }
         ]
       }

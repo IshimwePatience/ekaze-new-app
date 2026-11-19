@@ -206,7 +206,7 @@ const EmployerStats = ({ onOpenWorkerSearch }: EmployerStatsProps) => {
                       <span className="font-semibold underline decoration-rose-400">
                         {awareness.payment_method === "card" ? "linked Bank Card" : "MTN Mobile Money account"}
                       </span>{" "}
-                      (<code>{awareness.payment_account}</code>). Notice has been transmitted to Ihirwe Compliance.
+                      (<code>{awareness.payment_account}</code>). Notice has been transmitted to Ekaze Compliance.
                     </>
                   ) : (
                     <>

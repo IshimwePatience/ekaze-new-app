@@ -39,7 +39,7 @@ export const NotificationSettingsPage = ({
   const user = currentUserData?.data?.user || currentUserData?.user || authUser || {};
 
   const isEmployer = (user.role || authUser?.role || "").toLowerCase() === "employer";
-  const userEmail = user.email || "user@ihirwe.rw";
+  const userEmail = user.email || "user@ekaze.rw";
   const userPhone = user.phone || "+250 788 000 004";
 
   // Delivery Preferences Modal State

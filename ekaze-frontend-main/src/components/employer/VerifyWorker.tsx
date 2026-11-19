@@ -826,7 +826,7 @@ const VerifyWorker = ({ initialNationalId = "", onClose, onHired }: VerifyWorker
                   <div className="text-[12px] text-[#5f6368] mt-0.5">
                     {professionalInfo?.experience_level
                       ? `Experience: ${professionalInfo.experience_level}`
-                      : "Verified identity profile on Ihirwe system"}
+                      : "Verified identity profile on Ekaze system"}
                   </div>
                 </div>
               </div>

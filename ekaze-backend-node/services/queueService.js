@@ -3,7 +3,7 @@ const redisClient = require('../config/redis');
 const { sendEmail } = require('./emailService');
 
 // Create BullMQ Email Queue
-const emailQueue = new Queue('emailQueue', {
+const emailQueue = new Queue('ekaze-emailQueue', {
   connection: redisClient
 });
 
@@ -12,7 +12,7 @@ emailQueue.on('error', () => {});
 
 // Worker to process email jobs in background
 const emailWorker = new Worker(
-  'emailQueue',
+  'ekaze-emailQueue',
   async (job) => {
     console.log(`🚀 Processing background email job #${job.id}: ${job.data.subject}`);
     await sendEmail(job.data);

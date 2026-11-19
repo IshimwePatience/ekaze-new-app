@@ -5,7 +5,7 @@ const { sequelize } = require('./models');
 async function exportDatabase() {
   try {
     await sequelize.authenticate();
-    console.log('✓ Connected to local database:', process.env.DB_NAME || 'ihirwe_db');
+    console.log('✓ Connected to local database:', process.env.DB_NAME || 'ekaze_db');
 
     const [tables] = await sequelize.query(`
       SELECT table_name

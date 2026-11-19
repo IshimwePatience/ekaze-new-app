@@ -1,5 +1,5 @@
 import { jsPDF } from "jspdf";
-import { IHIRWE_LOGO_BASE64 } from "./ihirweLogoBase64";
+import { EKAZE_LOGO_BASE64 } from "./ekazeLogoBase64";
 
 export interface ContractParty {
   name: string;
@@ -92,7 +92,7 @@ function cleanLocation(loc?: string): string {
 
 /**
  * Generates an official 2-page Microsoft Word-style Rwandan employment contract.
- * - Header includes Ihirwe logo from landing page + Republic of Rwanda header
+ * - Header includes Ekaze logo from landing page + Republic of Rwanda header
  * - Standard Word document flow with full Page 1 and full Page 2
  * - Sharp, clean layout without rounded borders or heavy bulky cards
  * - Font: Times New Roman
@@ -211,10 +211,10 @@ export const downloadEmploymentContractPdf = (data: ContractData) => {
   // PAGE 1: HEADER, PARTIES, ARTICLES 1, 2, 3, 4, 5
   // ==========================================
   
-  // 1. TOP HEADER: Republic of Rwanda info on left + Ihirwe Logo on right
+  // 1. TOP HEADER: Republic of Rwanda info on left + Ekaze Logo on right
   let y = 14;
   try {
-    doc.addImage(IHIRWE_LOGO_BASE64, "PNG", rightEdge - 36, y - 2, 36, 10.2);
+    doc.addImage(EKAZE_LOGO_BASE64, "PNG", rightEdge - 36, y - 2, 36, 10.2);
   } catch (err) {
     console.warn("Could not render logo in PDF header:", err);
   }
@@ -231,7 +231,7 @@ export const downloadEmploymentContractPdf = (data: ContractData) => {
 
   y += 4.2;
   doc.setFontSize(8.5);
-  doc.text("Ministry of Public Service and Labour, Ihirwe Labor Registry", leftMargin, y);
+  doc.text("Ministry of Public Service and Labour, Ekaze Labor Registry", leftMargin, y);
 
   // 2. DOCUMENT TITLE
   y += 7.5;

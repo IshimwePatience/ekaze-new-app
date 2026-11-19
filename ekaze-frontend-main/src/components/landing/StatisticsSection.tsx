@@ -44,8 +44,8 @@ const StatisticsSection = () => {
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="font-bold text-xs sm:text-sm md:text-base text-[#2b2b2b] tracking-tight">
                 {isRw
-                  ? "Ibipimo by'abakozi n'abakoresha kuri Ihirwe (%) mu Gihe cya B, 2026"
-                  : "Ihirwe Platform Growth & Verification Metrics (%) in Season B, 2026"}
+                  ? "Ibipimo by'abakozi n'abakoresha kuri Ekaze (%) mu Gihe cya B, 2026"
+                  : "Ekaze Platform Growth & Verification Metrics (%) in Season B, 2026"}
               </h3>
               <div className="flex items-center gap-3 shrink-0">
                 <button className="p-1 text-slate-500 hover:text-slate-900 transition-colors" title="Options">
@@ -103,12 +103,12 @@ const StatisticsSection = () => {
             <h3 className="text-2xl sm:text-3xl font-bold text-[#2b2b2b] leading-snug tracking-tight">
               {isRw
                 ? "Ubushakashatsi bw'Abakozi n'Abakoresha"
-                : "Ihirwe Workforce & Verification Survey"}
+                : "Ekaze Workforce & Verification Survey"}
             </h3>
 
             <p className="text-[#4f687a] text-sm sm:text-base leading-relaxed font-medium">
               {isRw
-                ? `Ibipimo ${stats?.verified_profiles_percent ?? 0}% by'abakozi banditswe bamaze kugenzurwa imyirondoro n'indangamuntu kuri Ihirwe.`
+                ? `Ibipimo ${stats?.verified_profiles_percent ?? 0}% by'abakozi banditswe bamaze kugenzurwa imyirondoro n'indangamuntu kuri Ekaze.`
                 : `${stats?.verified_profiles_percent ?? 0} pct of registered workers completed NIDA identity verification and background check.`}
             </p>
           </div>

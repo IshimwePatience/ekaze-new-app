@@ -3,30 +3,30 @@ version: '3.8'
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: ihirwe-postgres
+    container_name: ekaze-postgres
     restart: always
     environment:
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-Patience123@}
-      POSTGRES_DB: ${DB_NAME:-ihirwe_db}
+      POSTGRES_DB: ${DB_NAME:-ekaze_db}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - ihirwe-network
+      - ekaze-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-ihirwe_db}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-ekaze_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: ihirwe-redis
+    container_name: ekaze-redis
     restart: always
     volumes:
       - redis_data:/data
     networks:
-      - ihirwe-network
+      - ekaze-network
 
   backend:
     build:
@@ -55,7 +55,7 @@ services:
     ports:
       - "5000:5000"
     networks:
-      - ihirwe-network
+      - ekaze-network
 
   frontend:
     build:
@@ -72,7 +72,7 @@ services:
     ports:
       - "8080:80"
     networks:
-      - ihirwe-network
+      - ekaze-network
 
 volumes:
   postgres_data:
@@ -80,6 +80,6 @@ volumes:
   backend_uploads:
 
 networks:
-  ihirwe-network:
+  ekaze-network:
     driver: bridge
 

@@ -18,7 +18,7 @@ const { verifyNationalId } = require('../services/nidaService');
 router.get('/welcome', (req, res) => {
   res.status(200).json({
     success: true,
-    message: 'Welcome to IHIRWE Node.js API System',
+    message: 'Welcome to EKAZE Node.js API System',
     version: '1.0.0',
     timestamp: new Date().toISOString(),
     powered_by: 'Beno Finance Ltd.'

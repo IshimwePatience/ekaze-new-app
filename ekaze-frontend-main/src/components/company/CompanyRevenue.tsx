@@ -256,7 +256,7 @@ const CompanyRevenue = () => {
                 <span className="font-bold">500 RWF</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Standard registration fee as per Ihirwe Pay pricing structure
+                Standard registration fee as per Ekaze pricing structure
               </p>
             </div>
           </CardContent>

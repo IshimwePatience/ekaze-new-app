@@ -35,7 +35,7 @@ export const downloadInvoicePdf = (data: InvoiceData) => {
   const amountVal = data.amount || 5000;
   const phoneStr = data.phone || data.phone_number || "0788000004";
   const empName = data.employer_name || "Employer Organization";
-  const empEmail = data.employer_email || "employer@ihirwe.rw";
+  const empEmail = data.employer_email || "employer@ekaze.rw";
   const empAddress = data.employer_address || "Kigali, Rwanda";
 
   const formattedAmount = `${Number(amountVal).toLocaleString()} RWF`;
@@ -46,16 +46,16 @@ export const downloadInvoicePdf = (data: InvoiceData) => {
   doc.setFont("helvetica", "bold");
   doc.text("Invoice", 15, 25);
 
-  // 2. Top Right Logo: ihirwe by IHIRWE PAY
-  doc.setTextColor(2, 132, 199); // #0284c7 ihirwe blue
+  // 2. Top Right Logo: ekaze by EKAZE
+  doc.setTextColor(2, 132, 199); // #0284c7 ekaze blue
   doc.setFontSize(26);
   doc.setFont("helvetica", "bold");
-  doc.text("ihirwe", 155, 22);
+  doc.text("ekaze", 155, 22);
 
   doc.setTextColor(100, 116, 139); // slate-500
   doc.setFontSize(8);
   doc.setFont("helvetica", "normal");
-  doc.text("IHIRWE PAY", 168, 28);
+  doc.text("EKAZE", 168, 28);
 
   // 3. Invoice Number & Dates
   let y = 38;
@@ -82,14 +82,14 @@ export const downloadInvoicePdf = (data: InvoiceData) => {
   doc.setTextColor(15, 23, 42);
   doc.text(dateStr, 45, y);
 
-  // 4. Two Column Entity Info (Ihirwe Pay Ltd vs Bill to)
+  // 4. Two Column Entity Info (Ekaze Ltd vs Bill to)
   y = 65;
 
-  // Left: Ihirwe Pay Ltd
+  // Left: Ekaze Ltd
   doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(15, 23, 42);
-  doc.text("Ihirwe Pay Ltd", 15, y);
+  doc.text("Ekaze Ltd", 15, y);
 
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
@@ -98,7 +98,7 @@ export const downloadInvoicePdf = (data: InvoiceData) => {
   doc.text("PMB 90375", 15, y + 12);
   doc.text("Kigali, Rwanda", 15, y + 18);
   doc.text("TIN: 129845763", 15, y + 24);
-  doc.text("support@ihirwepay.rw", 15, y + 30);
+  doc.text("support@ekazepay.rw", 15, y + 30);
 
   // Right: Bill to
   doc.setFontSize(10);
@@ -147,7 +147,7 @@ export const downloadInvoicePdf = (data: InvoiceData) => {
   doc.text("PAYMENT ADDRESS:", 15, y);
 
   doc.setFont("helvetica", "normal");
-  doc.text("Ihirwe Pay Ltd", 15, y + 5);
+  doc.text("Ekaze Ltd", 15, y + 5);
   doc.text("P.O. Box 104477", 15, y + 10);
   doc.text("Kigali, Rwanda", 15, y + 15);
 
@@ -193,7 +193,7 @@ export const downloadInvoicePdf = (data: InvoiceData) => {
   doc.text(formattedAmount, 175, y);
 
   // Download PDF
-  doc.save(`IHIRWE-Invoice-${refNum}.pdf`);
+  doc.save(`EKAZE-Invoice-${refNum}.pdf`);
 };
 
 export interface ReceiptData {
@@ -238,7 +238,7 @@ export const downloadReceiptPdf = (data: ReceiptData) => {
   const paymentMethod = data.payment_method || "MTN Mobile Money";
   const workerName = data.worker_name || "Domestic Professional";
   const workerPhone = data.worker_phone || "0788000005";
-  const senderName = data.sender_name || (isReceived ? "Employer" : "Ihirwe Pay Payout System");
+  const senderName = data.sender_name || (isReceived ? "Employer" : "Ekaze Payout System");
   const senderPhone = data.sender_phone || "0788000004";
   const typeLabel = (data.type || data.transaction_type || (isReceived ? "Payment" : "Withdrawal")).toUpperCase();
 
@@ -251,16 +251,16 @@ export const downloadReceiptPdf = (data: ReceiptData) => {
   doc.setFont("helvetica", "bold");
   doc.text("Receipt", 15, 25);
 
-  // 2. Top Right Logo: ihirwe by IHIRWE PAY
-  doc.setTextColor(2, 132, 199); // #0284c7 ihirwe blue
+  // 2. Top Right Logo: ekaze by EKAZE
+  doc.setTextColor(2, 132, 199); // #0284c7 ekaze blue
   doc.setFontSize(26);
   doc.setFont("helvetica", "bold");
-  doc.text("ihirwe", 155, 22);
+  doc.text("ekaze", 155, 22);
 
   doc.setTextColor(100, 116, 139); // slate-500
   doc.setFontSize(8);
   doc.setFont("helvetica", "normal");
-  doc.text("IHIRWE PAY", 168, 28);
+  doc.text("EKAZE", 168, 28);
 
   // 3. Receipt Number & Dates (matching Invoice style)
   let y = 38;
@@ -287,14 +287,14 @@ export const downloadReceiptPdf = (data: ReceiptData) => {
   doc.setTextColor(15, 23, 42);
   doc.text(typeLabel, 45, y);
 
-  // 4. Two Column Entity Info (Ihirwe Pay Ltd vs Recipient / Account Holder)
+  // 4. Two Column Entity Info (Ekaze Ltd vs Recipient / Account Holder)
   y = 65;
 
-  // Left: Ihirwe Pay Ltd
+  // Left: Ekaze Ltd
   doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(15, 23, 42);
-  doc.text("Ihirwe Pay Ltd", 15, y);
+  doc.text("Ekaze Ltd", 15, y);
 
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
@@ -303,7 +303,7 @@ export const downloadReceiptPdf = (data: ReceiptData) => {
   doc.text("PMB 90375", 15, y + 12);
   doc.text("Kigali, Rwanda", 15, y + 18);
   doc.text("TIN: 129845763", 15, y + 24);
-  doc.text("support@ihirwepay.rw", 15, y + 30);
+  doc.text("support@ekazepay.rw", 15, y + 30);
 
   // Right: Recipient / Worker Information
   doc.setFontSize(10);
@@ -341,7 +341,7 @@ export const downloadReceiptPdf = (data: ReceiptData) => {
   y += 10;
   doc.setFontSize(8.5);
   doc.setTextColor(100, 116, 139);
-  doc.text("This official electronic transaction receipt confirms the transfer processed through Ihirwe Pay verified platform.", 15, y);
+  doc.text("This official electronic transaction receipt confirms the transfer processed through Ekaze verified platform.", 15, y);
 
   y += 6;
   doc.setDrawColor(203, 213, 225);
@@ -355,7 +355,7 @@ export const downloadReceiptPdf = (data: ReceiptData) => {
   doc.text("PAYMENT ADDRESS:", 15, y);
 
   doc.setFont("helvetica", "normal");
-  doc.text("Ihirwe Pay Ltd", 15, y + 5);
+  doc.text("Ekaze Ltd", 15, y + 5);
   doc.text("P.O. Box 104477", 15, y + 10);
   doc.text("Kigali, Rwanda", 15, y + 15);
 

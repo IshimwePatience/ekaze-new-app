@@ -124,7 +124,7 @@ export const WorkerVerificationPage: React.FC = () => {
             card_number: `RW-CARD-${String(cleanId || '10').padStart(6, '0')}`,
             photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
             phone: '0788111222',
-            email: 'worker@ihirwe.rw',
+            email: 'worker@ekaze.rw',
             national_id: '1199880012345678',
             masked_nid: '1 1998 8 001**** * 78',
             district: 'Gasabo',
@@ -140,7 +140,7 @@ export const WorkerVerificationPage: React.FC = () => {
           card_number: `RW-CARD-${String(cleanId || '10').padStart(6, '0')}`,
           photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
           phone: '0788111222',
-          email: 'worker@ihirwe.rw',
+          email: 'worker@ekaze.rw',
           national_id: '1199880012345678',
           masked_nid: '1 1998 8 001**** * 78',
           district: 'Gasabo',
@@ -223,14 +223,14 @@ export const WorkerVerificationPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Centered Ihirwe Brand Logo */}
+        {/* Centered Ekaze Brand Logo */}
         <div className="flex flex-col items-center justify-center pt-2">
           <div
             className="flex flex-col items-center select-none cursor-pointer transition-transform hover:scale-105"
             onClick={() => navigate('/')}
-            title="Ihirwe Pay"
+            title="Ekaze"
           >
-            <img src={logo} alt="Ihirwe Pay" className="h-10 sm:h-12 w-auto object-contain" />
+            <img src={logo} alt="Ekaze" className="h-10 sm:h-12 w-auto object-contain" />
           </div>
         </div>
       </header>
@@ -268,8 +268,8 @@ export const WorkerVerificationPage: React.FC = () => {
               </h1>
               <p className="text-[14px] text-[#545b64] leading-[22px] mb-6">
                 {lang === 'kin'
-                  ? 'Ibi birerekana umwirondoro w’umukozi wemejwe muri sisitemu ya Ihirwe Pay.'
-                  : 'Official worker credentials registered and verified in the Ihirwe Pay registry.'}
+                  ? 'Ibi birerekana umwirondoro w’umukozi wemejwe muri sisitemu ya Ekaze.'
+                  : 'Official worker credentials registered and verified in the Ekaze registry.'}
               </p>
 
               {/* Status Alert Box matching mfa-setup clean alert box */}
@@ -407,7 +407,7 @@ export const WorkerVerificationPage: React.FC = () => {
 
       {/* Footer */}
       <footer className="relative z-10 w-full py-4 text-center text-[12px] text-[#545b64] print:hidden">
-        © 2026 Ihirwe Pay Ltd. All rights reserved.
+        © 2026 Ekaze Ltd. All rights reserved.
       </footer>
     </div>
   );

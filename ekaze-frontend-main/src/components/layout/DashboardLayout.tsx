@@ -1,7 +1,7 @@
 import { useState, useEffect, ReactNode } from "react";
 import { DashboardNavbar } from "./DashboardNavbar";
 import { DashboardSidebar } from "./DashboardSidebar";
-import { AskIhirweRightSidebar } from "./AskIhirweRightSidebar";
+import { AskEkazeRightSidebar } from "./AskEkazeRightSidebar";
 import DashboardTopAlertBanner from "./DashboardTopAlertBanner";
 import { useAuth } from "@/hooks/useAuth";
 import { useSocketNotifications } from "@/hooks/useSocketNotifications";
@@ -26,7 +26,7 @@ export const DashboardLayout = ({
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isAiSidebarOpen, setIsAiSidebarOpen] = useState(() => {
-    return localStorage.getItem("ihirwe_ai_sidebar_open") === "true";
+    return localStorage.getItem("ekaze_ai_sidebar_open") === "true";
   });
 
   const { user } = useAuth();
@@ -50,14 +50,14 @@ export const DashboardLayout = ({
   const toggleAiSidebar = () => {
     setIsAiSidebarOpen((prev) => {
       const nextState = !prev;
-      localStorage.setItem("ihirwe_ai_sidebar_open", String(nextState));
+      localStorage.setItem("ekaze_ai_sidebar_open", String(nextState));
       return nextState;
     });
   };
 
   const handleCloseAiSidebar = () => {
     setIsAiSidebarOpen(false);
-    localStorage.setItem("ihirwe_ai_sidebar_open", "false");
+    localStorage.setItem("ekaze_ai_sidebar_open", "false");
   };
 
   return (
@@ -102,7 +102,7 @@ export const DashboardLayout = ({
           {/* Docked YouTube Studio Style Right AI Sidebar (Standing side-by-side on right) */}
           {isAiSidebarOpen && (
             <div className="w-full sm:w-[410px] shrink-0 h-full p-2.5 pl-0 bg-white z-30 transition-all duration-300 animate-in slide-in-from-right border-l border-slate-100 flex flex-col overflow-hidden">
-              <AskIhirweRightSidebar
+              <AskEkazeRightSidebar
                 isOpen={isAiSidebarOpen}
                 onClose={handleCloseAiSidebar}
                 isDocked={true}

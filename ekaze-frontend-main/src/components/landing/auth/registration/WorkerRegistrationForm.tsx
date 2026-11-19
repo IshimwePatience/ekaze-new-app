@@ -63,7 +63,7 @@ const WORKER_PROFESSIONS = [
 type InsuranceType = 'MITUELLE_DE_SANTE' | 'OTHERS' | null;
 type DocumentType = 'nida' | 'passport';
 
-const SESSION_KEY = 'ihirwe_worker_reg_full_draft';
+const SESSION_KEY = 'ekaze_worker_reg_full_draft';
 
 export const WorkerRegistrationForm = ({ onSuccess }: WorkerRegistrationFormProps) => {
   const { t } = useLanguage();
@@ -382,7 +382,7 @@ export const WorkerRegistrationForm = ({ onSuccess }: WorkerRegistrationFormProp
               setHasExistingData(true);
               setPrefillData(pd);
               if (pd.phone) setValue('phone', pd.phone);
-              if (pd.email && !pd.email.endsWith('@ihirwe.rw')) setValue('email', pd.email);
+              if (pd.email && !pd.email.endsWith('@ekaze.rw')) setValue('email', pd.email);
               if (pd.experience_level) setValue('experience_level', pd.experience_level);
               if (pd.min_salary) setValue('min_salary', pd.min_salary);
               if (pd.max_salary) setValue('max_salary', pd.max_salary);

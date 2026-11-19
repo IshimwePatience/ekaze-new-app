@@ -63,7 +63,7 @@ class EcobankService {
   }
 
   // 1. Ecobank MoMo Collection (Charge User MTN MoMo -> Settle into Ecobank Account)
-  async requestMoMoPayment({ phone, amount, referenceId, note = 'IHIRWE Payment' }) {
+  async requestMoMoPayment({ phone, amount, referenceId, note = 'EKAZE Payment' }) {
     const formattedPhone = this.normalizePhone(phone);
     const ref = referenceId || `ECO-${Date.now()}-${uuidv4().substring(0, 6)}`;
     const token = await this.getAuthToken();

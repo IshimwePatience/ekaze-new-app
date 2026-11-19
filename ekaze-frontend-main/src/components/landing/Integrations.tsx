@@ -33,7 +33,7 @@ const Integrations = () => {
                 >
                   {isRw ? (
                     <>
-                      Ihirwe Serivisi z'Ubwikorezi <br />
+                      Ekaze Serivisi z'Ubwikorezi <br />
                       <span className="font-normal text-white/95">n'Abashoferi b'Umwuga</span>
                     </>
                   ) : (
@@ -70,7 +70,7 @@ const Integrations = () => {
               <div className="w-full rounded-[20px] sm:rounded-[26px] overflow-hidden shadow-2xl border border-white/10 aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10] max-h-[420px] bg-slate-900">
                 <img
                   src={scaniaHeroTruck}
-                  alt="Ihirwe Transport & Fleet Services"
+                  alt="Ekaze Transport & Fleet Services"
                   className="w-full h-full object-cover object-[center_center] select-none pointer-events-none hover:scale-102 transition-transform duration-700"
                 />
               </div>
@@ -85,7 +85,7 @@ const Integrations = () => {
       ══════════════ PREVIOUS 3-COLUMN SERVICES DESIGN (PRESERVED) ══════════════
       <div className="hidden">
         <div className="mb-2">
-          <p className="text-[#005a9c] font-bold text-base sm:text-lg tracking-tight">Ihirwe Services</p>
+          <p className="text-[#005a9c] font-bold text-base sm:text-lg tracking-tight">Ekaze Services</p>
         </div>
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-slate-900 tracking-tight">Our services</h2>

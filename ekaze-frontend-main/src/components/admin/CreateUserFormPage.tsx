@@ -328,7 +328,7 @@ export const CreateUserFormPage: React.FC<CreateUserFormPageProps> = ({
             <div className="relative">
               <FormInput
                 type="email"
-                placeholder={role === "company" ? "info@company.rw" : "admin@ihirwe.rw"}
+                placeholder={role === "company" ? "info@company.rw" : "admin@ekaze.rw"}
                 value={formData.email}
                 onChange={(e) => handleChange("email", e.target.value)}
                 className={formData.email && formData.email.includes("@") ? "pr-10" : ""}

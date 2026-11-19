@@ -143,7 +143,7 @@ class MtnMomoService {
   /**
    * 1. Request to Pay (Collection - Prompt user for PIN on MTN phone)
    */
-  async requestToPay({ phone, amount, referenceId, externalId, note = 'IHIRWE Payment' }) {
+  async requestToPay({ phone, amount, referenceId, externalId, note = 'EKAZE Payment' }) {
     const formattedPhone = this.normalizeMtnPhone(phone);
     if (!formattedPhone) {
       return {
@@ -229,9 +229,9 @@ class MtnMomoService {
   }
 
   /**
-   * 2. Transfer / Payout (Disbursement - Send funds from Ihirwe account to worker MTN phone)
+   * 2. Transfer / Payout (Disbursement - Send funds from Ekaze account to worker MTN phone)
    */
-  async transfer({ phone, amount, referenceId, externalId, note = 'IHIRWE Payout' }) {
+  async transfer({ phone, amount, referenceId, externalId, note = 'EKAZE Payout' }) {
     const formattedPhone = this.normalizeMtnPhone(phone);
     if (!formattedPhone) {
       return {

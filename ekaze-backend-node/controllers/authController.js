@@ -140,21 +140,21 @@ const sendMfaChallenge = async (user, res, req = null) => {
     if (method === 'email' && user.email) {
       sendEmail({
         to: user.email,
-        subject: 'Your Ihirwe Pay Two-Factor Verification Code',
+        subject: 'Your Ekaze Two-Factor Verification Code',
         html: `<div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h2>Ihirwe Pay Login Verification</h2>
+          <h2>Ekaze Login Verification</h2>
           <p>Your one-time 6-digit login verification code is:</p>
           <h1 style="color: #0056D2; letter-spacing: 4px;">${otpCode}</h1>
           <p>This code will expire in 10 minutes. If you did not attempt to log in, please secure your account immediately.</p>
         </div>`,
-        text: `Your Ihirwe Pay two-factor login verification code is: ${otpCode}`
+        text: `Your Ekaze two-factor login verification code is: ${otpCode}`
       }).catch(err => console.warn('MFA email send warning:', err.message));
     } else if (method === 'sms' && user.phone) {
       const { resolveUserLanguage } = require('../services/smsService');
       const lang = resolveUserLanguage(req, user);
       const msg = lang === 'rw'
-        ? `Ihirwe Pay: Kode yawe yo kwinjira muri konti ni ${otpCode}. Izarangira mu minota 10.`
-        : `Ihirwe Pay: Your login verification code is ${otpCode}. It expires in 10 minutes.`;
+        ? `Ekaze: Kode yawe yo kwinjira muri konti ni ${otpCode}. Izarangira mu minota 10.`
+        : `Ekaze: Your login verification code is ${otpCode}. It expires in 10 minutes.`;
       sendSMS(user.phone, msg)
         .catch(err => console.warn('MFA SMS send warning:', err.message));
     }
@@ -185,9 +185,9 @@ const sendChannelVerificationChallenge = async (user, channel, res, req = null) 
   if (channel === 'email' && user.email) {
     sendEmail({
       to: user.email,
-      subject: 'Ihirwe Pay - Security Verification Code',
+      subject: 'Ekaze - Security Verification Code',
       html: `<div style="font-family: Arial, sans-serif; padding: 20px; color: #1e293b;">
-        <h2>Ihirwe Pay Security Verification</h2>
+        <h2>Ekaze Security Verification</h2>
         <p>Hello <strong>${user.name || 'User'}</strong>,</p>
         <p>Please enter the following 6-digit verification code to verify your email and complete your sign in:</p>
         <div style="margin: 20px 0; padding: 15px; background: #f0f7ff; border-radius: 8px; display: inline-block;">
@@ -195,14 +195,14 @@ const sendChannelVerificationChallenge = async (user, channel, res, req = null) 
         </div>
         <p>This code will expire in 10 minutes.</p>
       </div>`,
-      text: `Your Ihirwe Pay verification code is: ${otpCode}`
+      text: `Your Ekaze verification code is: ${otpCode}`
     }).catch(err => console.warn('Channel verification email dispatch warning:', err.message));
   } else if (channel === 'phone' && user.phone) {
     const { resolveUserLanguage } = require('../services/smsService');
     const lang = resolveUserLanguage(req, user);
     const msg = lang === 'rw'
-      ? `Ihirwe Pay: Kode yawe yo kwemeza nimero ni ${otpCode}. Izarangira mu minota 10.`
-      : `Ihirwe Pay: Your verification code is ${otpCode}. It expires in 10 minutes.`;
+      ? `Ekaze: Kode yawe yo kwemeza nimero ni ${otpCode}. Izarangira mu minota 10.`
+      : `Ekaze: Your verification code is ${otpCode}. It expires in 10 minutes.`;
     sendSMS(user.phone, msg)
       .catch(err => console.warn('Channel verification SMS dispatch warning:', err.message));
   }
@@ -916,7 +916,7 @@ const registerWorker = async (req, res, next) => {
     const computedFirstName = resolvedFirstName || (resolvedName ? resolvedName.split(' ')[0] : 'Worker');
     const computedLastName = resolvedLastName || (resolvedName ? resolvedName.split(' ').slice(1).join(' ') : '');
     const fullName = (resolvedName || `${computedFirstName} ${computedLastName}`).trim();
-    const finalPassword = getVal(password, 'password') || ('Ihirwe' + Math.random().toString(36).slice(-6) + '!');
+    const finalPassword = getVal(password, 'password') || ('Ekaze' + Math.random().toString(36).slice(-6) + '!');
 
     const dupMsg = await checkDuplicateUser({ national_id: resolvedNationalId, passport_number: resolvedPassportNumber, phone: resolvedPhone, email: resolvedEmail });
     if (dupMsg) {
@@ -1045,7 +1045,7 @@ const registerEmployer = async (req, res, next) => {
     const computedFirstName = resolvedFirstName || (resolvedName ? resolvedName.split(' ')[0] : 'Employer');
     const computedLastName = resolvedLastName || (resolvedName ? resolvedName.split(' ').slice(1).join(' ') : '');
     const fullName = (resolvedName || `${computedFirstName} ${computedLastName}`).trim();
-    const finalPassword = getVal(password, 'password') || ('Ihirwe' + Math.random().toString(36).slice(-6) + '!');
+    const finalPassword = getVal(password, 'password') || ('Ekaze' + Math.random().toString(36).slice(-6) + '!');
 
     const dupMsg = await checkDuplicateUser({ national_id: resolvedNationalId, passport_number: resolvedPassportNumber, phone: resolvedPhone, email: resolvedEmail });
     if (dupMsg) {
@@ -1152,7 +1152,7 @@ const registerCompany = async (req, res, next) => {
     const computedFirstName = resolvedFirstName || (resolvedName ? resolvedName.split(' ')[0] : (resolvedCompany ? resolvedCompany.split(' ')[0] : 'Company'));
     const computedLastName = resolvedLastName || (resolvedName ? resolvedName.split(' ').slice(1).join(' ') : '');
     const fullName = (resolvedCompany || resolvedName || `${computedFirstName} ${computedLastName}`).trim();
-    const finalPassword = getVal(password, 'password') || ('Ihirwe' + Math.random().toString(36).slice(-6) + '!');
+    const finalPassword = getVal(password, 'password') || ('Ekaze' + Math.random().toString(36).slice(-6) + '!');
 
     const dupMsg = await checkDuplicateUser({ national_id: resolvedNationalId, passport_number: resolvedPassportNumber, phone: resolvedPhone, email: resolvedEmail });
     if (dupMsg) {
@@ -1201,7 +1201,7 @@ const registerCompany = async (req, res, next) => {
 
     let refId = null;
     if (!isFree) {
-      refId = `IHIRWE-REG-${Date.now()}-${uuidv4().substring(0, 8)}`;
+      refId = `EKAZE-REG-${Date.now()}-${uuidv4().substring(0, 8)}`;
       await Transaction.create({
         reference_id: refId,
         user_id: user.id,
@@ -1503,8 +1503,8 @@ const resendOtp = async (req, res, next) => {
       const { resolveUserLanguage } = require('../services/smsService');
       const lang = resolveUserLanguage(req, user);
       const msg = lang === 'rw'
-        ? `Ihirwe Pay: Kode yawe nshya yo kwemeza ni ${otpCode}. Izarangira mu minota 10.`
-        : `Ihirwe Pay: Your new verification code is ${otpCode}. It expires in 10 minutes.`;
+        ? `Ekaze: Kode yawe nshya yo kwemeza ni ${otpCode}. Izarangira mu minota 10.`
+        : `Ekaze: Your new verification code is ${otpCode}. It expires in 10 minutes.`;
       sendSMS(targetPhone, msg)
         .catch(err => console.warn('Resend OTP SMS warning:', err.message));
     }
@@ -1578,7 +1578,7 @@ const setupMfa = async (req, res, next) => {
         await user.save();
       }
       const secret = `${rawSecret.slice(0, 4)}-${rawSecret.slice(4, 8)}-${rawSecret.slice(8, 12)}-${rawSecret.slice(12, 16)}`;
-      const qrCodeUri = `otpauth://totp/IhirwePay:${encodeURIComponent(user.email || user.phone || 'User')}?secret=${rawSecret}&issuer=IhirwePay&algorithm=SHA1&digits=6&period=30`;
+      const qrCodeUri = `otpauth://totp/Ekaze:${encodeURIComponent(user.email || user.phone || 'User')}?secret=${rawSecret}&issuer=Ekaze&algorithm=SHA1&digits=6&period=30`;
 
       user.mfa_secret = rawSecret;
       user.mfa_method = 'authenticator';
@@ -1606,7 +1606,7 @@ const setupMfa = async (req, res, next) => {
       if (method === 'email' && user.email) {
         sendEmail({
           to: user.email,
-          subject: 'Your Ihirwe Pay MFA Setup Code',
+          subject: 'Your Ekaze MFA Setup Code',
           html: `<div style="font-family: Arial, sans-serif; padding: 20px;">
             <h2>Two-Factor Setup Code</h2>
             <p>Your 6-digit confirmation code is:</p>
@@ -1618,8 +1618,8 @@ const setupMfa = async (req, res, next) => {
         const { resolveUserLanguage } = require('../services/smsService');
         const lang = resolveUserLanguage(req, user);
         const msg = lang === 'rw'
-          ? `Ihirwe Pay: Kode yawe yo gufungura umutekano wa MFA ni ${otpCode}.`
-          : `Ihirwe Pay: Your MFA setup code is ${otpCode}.`;
+          ? `Ekaze: Kode yawe yo gufungura umutekano wa MFA ni ${otpCode}.`
+          : `Ekaze: Your MFA setup code is ${otpCode}.`;
         sendSMS(user.phone, msg)
           .catch(err => console.warn('MFA SMS send error:', err.message));
       }
@@ -1715,21 +1715,21 @@ const sendMfaCode = async (req, res, next) => {
     if (method === 'email' && user.email) {
       sendEmail({
         to: user.email,
-        subject: 'Your Ihirwe Pay MFA Verification Code',
+        subject: 'Your Ekaze MFA Verification Code',
         html: `<div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h2>Ihirwe Pay Security Verification</h2>
+          <h2>Ekaze Security Verification</h2>
           <p>Your one-time 6-digit verification code is:</p>
           <h1 style="color: #0056D2; letter-spacing: 4px;">${otpCode}</h1>
           <p>This code will expire in 10 minutes.</p>
         </div>`,
-        text: `Your Ihirwe Pay verification code is: ${otpCode}`
+        text: `Your Ekaze verification code is: ${otpCode}`
       }).catch(err => console.warn('Email dispatch warning:', err.message));
     } else if (method === 'sms' && user.phone) {
       const { resolveUserLanguage } = require('../services/smsService');
       const lang = resolveUserLanguage(req, user);
       const msg = lang === 'rw'
-        ? `Ihirwe Pay: Kode yawe yo kwemeza MFA ni ${otpCode}. Izarangira mu minota 10.`
-        : `Ihirwe Pay: Your MFA verification code is ${otpCode}. It expires in 10 minutes.`;
+        ? `Ekaze: Kode yawe yo kwemeza MFA ni ${otpCode}. Izarangira mu minota 10.`
+        : `Ekaze: Your MFA verification code is ${otpCode}. It expires in 10 minutes.`;
       sendSMS(user.phone, msg)
         .catch(err => console.warn('MFA SMS send warning:', err.message));
     }
@@ -1957,21 +1957,21 @@ const resendLoginMfa = async (req, res, next) => {
       if (isEmail && user.email) {
         sendEmail({
           to: user.email,
-          subject: 'Your New Ihirwe Pay Login Verification Code',
+          subject: 'Your New Ekaze Login Verification Code',
           html: `<div style="font-family: Arial, sans-serif; padding: 20px;">
-            <h2>Ihirwe Pay Login Verification</h2>
+            <h2>Ekaze Login Verification</h2>
             <p>Your new one-time 6-digit login verification code is:</p>
             <h1 style="color: #0056D2; letter-spacing: 4px;">${otpCode}</h1>
             <p>This code will expire in 10 minutes.</p>
           </div>`,
-          text: `Your new Ihirwe Pay verification code is: ${otpCode}`
+          text: `Your new Ekaze verification code is: ${otpCode}`
         }).catch(err => console.warn('Email dispatch warning:', err.message));
       } else if (isSms && user.phone) {
         const { resolveUserLanguage } = require('../services/smsService');
         const lang = resolveUserLanguage(req, user);
         const msg = lang === 'rw'
-          ? `Ihirwe Pay: Kode yawe nshya yo kwinjira muri konti ni ${otpCode}. Izarangira mu minota 10.`
-          : `Ihirwe Pay: Your new login verification code is ${otpCode}. It expires in 10 minutes.`;
+          ? `Ekaze: Kode yawe nshya yo kwinjira muri konti ni ${otpCode}. Izarangira mu minota 10.`
+          : `Ekaze: Your new login verification code is ${otpCode}. It expires in 10 minutes.`;
         sendSMS(user.phone, msg)
           .catch(err => console.warn('MFA SMS send warning:', err.message));
       }
@@ -2139,8 +2139,8 @@ const sendVerificationCode = async (req, res, next) => {
         const { resolveUserLanguage } = require('../services/smsService');
         const lang = resolveUserLanguage(req);
         const smsText = lang === 'rw'
-          ? `Ihirwe Pay: Kode yawe yo kwemeza telefoni ni ${code}.`
-          : `Ihirwe Pay: Your phone verification code is ${code}.`;
+          ? `Ekaze: Kode yawe yo kwemeza telefoni ni ${code}.`
+          : `Ekaze: Your phone verification code is ${code}.`;
         smsDispatch = await sendSMS(cleanTarget, smsText);
         console.log(`[SMS] Dispatch result for ${cleanTarget}:`, JSON.stringify(smsDispatch));
       } catch (err) {
@@ -2149,10 +2149,10 @@ const sendVerificationCode = async (req, res, next) => {
     } else if (type === 'email') {
       sendEmail({
         to: cleanTarget,
-        subject: 'Ihirwe Pay: Your Verification Code',
-        text: `Your Ihirwe Pay verification code is: ${code}`,
+        subject: 'Ekaze: Your Verification Code',
+        text: `Your Ekaze verification code is: ${code}`,
         html: `<div style="font-family:sans-serif;padding:20px;max-width:500px;margin:0 auto;border:1px solid #e2e8f0;border-radius:8px;">
-          <h2 style="color:#0062b8;">Ihirwe Pay Verification</h2>
+          <h2 style="color:#0062b8;">Ekaze Verification</h2>
           <p>Please enter the following 6-digit verification code to confirm your email:</p>
           <div style="font-size:28px;font-weight:bold;letter-spacing:4px;color:#0062b8;background:#f0f7fc;padding:12px 20px;display:inline-block;border-radius:6px;margin:16px 0;">
             ${code}

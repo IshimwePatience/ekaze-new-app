@@ -4,7 +4,7 @@ const { ensureUserRoleProfile } = require('./services/roleIsolationService');
 const demoUsers = [
   {
     name: 'District Supervisor',
-    email: 'supervisor@ihirwepay.rw',
+    email: 'supervisor@ekazepay.rw',
     phone: '250788000001',
     national_id: '1199000000000001',
     role: 'supervisor',
@@ -19,7 +19,7 @@ const demoUsers = [
   },
   {
     name: 'System Admin',
-    email: 'admin@ihirwepay.rw',
+    email: 'admin@ekazepay.rw',
     phone: '250788000002',
     national_id: '1199000000000002',
     role: 'admin',
@@ -34,7 +34,7 @@ const demoUsers = [
   },
   {
     name: 'Test Police Officer',
-    email: 'police@ihirwepay.rw',
+    email: 'police@ekazepay.rw',
     phone: '250788000006',
     national_id: '1199000000000006',
     role: 'police',

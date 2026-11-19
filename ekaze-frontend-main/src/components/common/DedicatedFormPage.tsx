@@ -89,9 +89,9 @@ export const DedicatedFormPage: React.FC<DedicatedFormPageProps> = ({
 
       {/* ── Top Header Bar ──── */}
       <div className="w-full bg-white px-6 sm:px-12 py-3.5 flex items-center justify-between sticky top-0 z-20 border-b border-[#eaeded]">
-        {/* Left: Ihirwe Brand Logo */}
+        {/* Left: Ekaze Brand Logo */}
         <div className="flex items-center gap-3">
-          <img src={logo} alt="Ihirwe" className="h-9 w-auto object-contain cursor-pointer" onClick={onBack} />
+          <img src={logo} alt="Ekaze" className="h-9 w-auto object-contain cursor-pointer" onClick={onBack} />
         </div>
 
         {/* Right: Custom headerRight or Dashboard Navbar User Menu */}

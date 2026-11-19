@@ -76,7 +76,7 @@ export const AiWorkerSearchModal: React.FC<AiWorkerSearchModalProps> = ({
           <p className="text-xs text-slate-500 font-medium leading-relaxed">
             {isRw
               ? 'Sobanura umukozi wifuza cyangwa ibyo ukeneye mu magambo asanzwe.'
-              : 'Select specific preferences or ask Ihirwe AI in plain language to find candidates matching your exact domestic staffing requirements.'}
+              : 'Select specific preferences or ask Ekaze AI in plain language to find candidates matching your exact domestic staffing requirements.'}
           </p>
           <p className="text-xs text-slate-500 font-medium leading-relaxed">
             {isRw

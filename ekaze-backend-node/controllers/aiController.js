@@ -86,11 +86,11 @@ On this page, users can:
 If the user asks where they are, how to find workers, or for a tour of this screen, guide them warmly on these features.`;
   }
 
-  return `The user is currently browsing the Ihirwe platform at: ${currentPage}.`;
+  return `The user is currently browsing the Ekaze platform at: ${currentPage}.`;
 }
 
 /**
- * Fetch real-time database context summary for Ihirwe AI
+ * Fetch real-time database context summary for Ekaze AI
  */
 async function getDatabaseContextSummary() {
   try {
@@ -259,11 +259,11 @@ exports.sendMessage = async (req, res, next) => {
       (normalizedMessage.includes('worker') || normalizedMessage.includes('nanny') || normalizedMessage.includes('maid') || normalizedMessage.includes('driver') || normalizedMessage.includes('cook') || normalizedMessage.includes('them') || normalizedMessage.includes('him') || normalizedMessage.includes('her') || normalizedMessage.includes('phone') || normalizedMessage.includes('contact') || normalizedMessage.includes('location') || normalizedMessage.includes('address') || normalizedMessage.includes('number'));
 
     if (isContactOrLocationQuery) {
-      aiReplyText = `For worker safety, privacy protection, and compliance with Rwandan labor regulations, personal contact details (phone numbers, email) and precise home locations are strictly confidential.\n\nTo contact or hire a verified professional, employers can initiate an employment request directly on the worker's profile through Ihirwe's secure contract system.`;
+      aiReplyText = `For worker safety, privacy protection, and compliance with Rwandan labor regulations, personal contact details (phone numbers, email) and precise home locations are strictly confidential.\n\nTo contact or hire a verified professional, employers can initiate an employment request directly on the worker's profile through Ekaze's secure contract system.`;
     }
     // B. Logged-in Worker User Restriction
     else if (isWorkerUser && normalizedMessage.match(/\b(worker|workers|nanny|nannies|maid|cook|chef|driver|drivers|cleaner|housekeeper|electrician|gardener|plumber|hire|find worker|find workers|candidate|candidates|staff|babysitter)\b/)) {
-      aiReplyText = `Worker accounts are restricted from searching or browsing other workers' profiles on Ihirwe.\n\nAs a registered worker, you can use your dashboard to manage your own profile, update your skills and availability, check your NIDA verification status, review your job contract offers, and monitor your MoMo wage payouts. If you need help with any of these worker tools, let me know!`;
+      aiReplyText = `Worker accounts are restricted from searching or browsing other workers' profiles on Ekaze.\n\nAs a registered worker, you can use your dashboard to manage your own profile, update your skills and availability, check your NIDA verification status, review your job contract offers, and monitor your MoMo wage payouts. If you need help with any of these worker tools, let me know!`;
     }
     // C. Real Worker Matching directly from Database (100% Anti-Hallucination)
     else if (!isWorkerUser && (
@@ -321,7 +321,7 @@ exports.sendMessage = async (req, res, next) => {
         ? 'RESTRICTED: The active user is logged in as a WORKER. Worker accounts are strictly prohibited from viewing, searching, or receiving other workers\' profiles, candidate lists, or rates.'
         : dbData.workersCatalog;
 
-      const systemPrompt = `You are "Ihirwe AI", the friendly, intelligent, and highly knowledgeable assistant and tour guide for the Ihirwe platform in Rwanda.
+      const systemPrompt = `You are "Ekaze AI", the friendly, intelligent, and highly knowledgeable assistant and tour guide for the Ekaze platform in Rwanda.
 
 CRITICAL COMMUNICATION GUIDELINES:
 1. TALK NATURALLY LIKE A SMART, HELPFUL HUMAN:
@@ -353,7 +353,7 @@ ${workersCatalogForAi}
         },
         {
           role: "model",
-          parts: [{ text: "Understood! I am Ihirwe AI. I will communicate naturally, intelligently, and helpfully like a human assistant." }]
+          parts: [{ text: "Understood! I am Ekaze AI. I will communicate naturally, intelligently, and helpfully like a human assistant." }]
         }
       ];
 
@@ -404,21 +404,21 @@ ${workersCatalogForAi}
         lower.includes('you good') ||
         lower.includes('how are you')
       ) {
-        aiReplyText = `I'm doing great, thank you for asking! 😊 I am **Ihirwe AI**, your personal assistant and guide for the Ihirwe platform in Rwanda. How can I help you today?`;
+        aiReplyText = `I'm doing great, thank you for asking! 😊 I am **Ekaze AI**, your personal assistant and guide for the Ekaze platform in Rwanda. How can I help you today?`;
       }
       // B. WORKER USER RESTRICTION: Worker accounts must not receive worker info or candidate search
       else if (
         isWorkerUser &&
         lower.match(/\b(worker|workers|nanny|nannies|maid|cook|chef|driver|drivers|cleaner|housekeeper|electrician|gardener|plumber|hire|find worker|find workers|candidate|candidates|staff|babysitter)\b/)
       ) {
-        aiReplyText = `Worker accounts are restricted from searching or browsing other workers' profiles on Ihirwe.\n\nAs a registered worker, you can use your dashboard to manage your own profile, update your skills and availability, check your NIDA verification status, review your job contract offers, and monitor your MoMo wage payouts. If you need help with any of these worker tools, let me know!`;
+        aiReplyText = `Worker accounts are restricted from searching or browsing other workers' profiles on Ekaze.\n\nAs a registered worker, you can use your dashboard to manage your own profile, update your skills and availability, check your NIDA verification status, review your job contract offers, and monitor your MoMo wage payouts. If you need help with any of these worker tools, let me know!`;
       }
       // C. PRIVACY RESTRICTION: Worker contact info or location inquiries -> STRICT REFUSAL
       else if (
         lower.match(/\b(phone|telephone|number|contact|call|whatsapp|email|address|location|where do they live|where does .* live|live in|where is|located|district|province|sector|cell|village)\b/) &&
         (lower.includes('worker') || lower.includes('nanny') || lower.includes('maid') || lower.includes('driver') || lower.includes('cook') || lower.includes('them') || lower.includes('him') || lower.includes('her') || lower.includes('phone') || lower.includes('contact') || lower.includes('location') || lower.includes('address') || lower.includes('number'))
       ) {
-        aiReplyText = `For worker safety, privacy protection, and compliance with Rwandan labor regulations, personal contact details (phone numbers, email) and precise home locations are strictly confidential.\n\nTo contact or hire a verified professional, employers can initiate an employment request directly on the worker's profile through Ihirwe's secure contract system.`;
+        aiReplyText = `For worker safety, privacy protection, and compliance with Rwandan labor regulations, personal contact details (phone numbers, email) and precise home locations are strictly confidential.\n\nTo contact or hire a verified professional, employers can initiate an employment request directly on the worker's profile through Ekaze's secure contract system.`;
       }
       // D. Admin / User Management Questions
       else if (lower.includes('admin') || lower.includes('add user') || lower.includes('create user') || lower.includes('new user') || (lower.includes('add') && lower.includes('user'))) {
@@ -426,11 +426,11 @@ ${workersCatalogForAi}
       }
       // E. Mobile Money / Payments / Wallet
       else if (lower.includes('momo') || lower.includes('mobile money') || lower.includes('payment') || lower.includes('wallet') || lower.includes('wage') || lower.includes('pay')) {
-        aiReplyText = `**MTN Mobile Money (MoMo)** on Ihirwe is integrated for secure and instant domestic worker wage payments:\n\n• **Deposit**: Employers can top up their Ihirwe Wallet via MTN MoMo (*182# prompt).\n• **Direct Wage Payout**: Pay verified workers directly to their registered MTN phone numbers with zero hassle.\n• **Receipts & Compliance**: Every payment generates an official digital transaction receipt for labor compliance and tax records.`;
+        aiReplyText = `**MTN Mobile Money (MoMo)** on Ekaze is integrated for secure and instant domestic worker wage payments:\n\n• **Deposit**: Employers can top up their Ekaze Wallet via MTN MoMo (*182# prompt).\n• **Direct Wage Payout**: Pay verified workers directly to their registered MTN phone numbers with zero hassle.\n• **Receipts & Compliance**: Every payment generates an official digital transaction receipt for labor compliance and tax records.`;
       }
       // F. NIDA / Verification
       else if (lower.includes('nida') || lower.includes('verify') || lower.includes('verification') || lower.includes('id card')) {
-        aiReplyText = `**NIDA Verification** on Ihirwe verifies all domestic workers and employers using the National Identification Agency of Rwanda (NIDA). This guarantees real identity validation, criminal background checks with Rwanda National Police, and verified contact numbers for safety.`;
+        aiReplyText = `**NIDA Verification** on Ekaze verifies all domestic workers and employers using the National Identification Agency of Rwanda (NIDA). This guarantees real identity validation, criminal background checks with Rwanda National Police, and verified contact numbers for safety.`;
       }
       // G. Page Guide / Tour
       else if (lower.includes('guide') || lower.includes('tour') || lower.includes('where am i') || lower.includes('how does this page work') || lower.includes('help me on this page')) {
@@ -482,14 +482,14 @@ ${workersCatalogForAi}
 
               return `• **Name**: ${name} (${role})\n  • **Age**: ${age} years old\n  • **Affiliation**: ${affiliation}\n  • **Rating**: ${rating}\n  • **Languages**: ${langs}\n  • **Salary Range**: ${salaryRange}\n  • **Status**: ${status}`;
             }).join('\n\n') +
-            `\n\nYou can click on their profiles directly on this page to initiate an employment offer through Ihirwe's secure contract system!`;
+            `\n\nYou can click on their profiles directly on this page to initiate an employment offer through Ekaze's secure contract system!`;
         } else {
           aiReplyText = `I couldn't find a worker matching that specific criteria right now. You can use the search bar and filter controls on the page to view all available verified professionals across Rwanda!`;
         }
       }
       // I. General intelligent response
       else {
-        aiReplyText = `I am **Ihirwe AI**, your personal assistant and guide on Ihirwe.\n\nI can help you navigate this screen, guide you through adding users or managing contracts, explain MTN MoMo payments and NIDA verification, or find verified domestic workers.\n\nCould you please clarify what you would like assistance with?`;
+        aiReplyText = `I am **Ekaze AI**, your personal assistant and guide on Ekaze.\n\nI can help you navigate this screen, guide you through adding users or managing contracts, explain MTN MoMo payments and NIDA verification, or find verified domestic workers.\n\nCould you please clarify what you would like assistance with?`;
       }
     }
 

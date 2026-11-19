@@ -242,7 +242,7 @@ export const HelpCenterPage: React.FC = () => {
             href="/"
             className="flex items-center gap-2.5 hover:opacity-90 transition-opacity cursor-pointer"
           >
-            <img src={logo} alt="Ihirwe" className="h-6 w-auto" />
+            <img src={logo} alt="Ekaze" className="h-6 w-auto" />
             <span className="text-[17px] font-medium text-[#202124] tracking-tight">
               {isRw ? 'Amabwiriza n’Umutekano' : 'Privacy & Terms'}
             </span>
@@ -444,7 +444,7 @@ export const HelpCenterPage: React.FC = () => {
                   </h2>
                   <p className="text-[16px] leading-[26px] font-normal text-[#202124]">
                     {isRw
-                      ? "Urubuga rwa Ihirwe rugamije kuvugurura no gushyira ku murongo umurimo w'abakozi bo mu ngo mu Rwanda. Twiyemeje guhuza ingo n'abakozi babifitiye uburambe n'umutekano, duharanira umushahara ukwiye, amasezerano yanditse, n'uburinzi bw'umutekano w'abakoresha n'abakozi."
+                      ? "Urubuga rwa Ekaze rugamije kuvugurura no gushyira ku murongo umurimo w'abakozi bo mu ngo mu Rwanda. Twiyemeje guhuza ingo n'abakozi babifitiye uburambe n'umutekano, duharanira umushahara ukwiye, amasezerano yanditse, n'uburinzi bw'umutekano w'abakoresha n'abakozi."
                       : 'Our platform modernizes domestic workforce management in Rwanda by providing a secure, verified, and dignified environment. We connect households with vetted domestic workers while ensuring fair wages, written agreements, and safety for all parties.'}
                   </p>
                 </section>
@@ -675,7 +675,7 @@ export const HelpCenterPage: React.FC = () => {
                   </h2>
                   <p className="text-[16px] leading-[26px] font-normal text-[#202124]">
                     {isRw
-                      ? "Kurenga ku masezerano cyangwa amakimbirane hagati y'umukoresha n'umukozi bishyikirizwa ubuyobozi bwa Ihirwe mu buryo bw'ikoranabuhanga. Ibibazo bikomeye cyangwa ibyaha byoherezwa kuri sitasiyo ya Polisi y'u Rwanda n'ubugenzacyaha bibifitiye ububasha."
+                      ? "Kurenga ku masezerano cyangwa amakimbirane hagati y'umukoresha n'umukozi bishyikirizwa ubuyobozi bwa Ekaze mu buryo bw'ikoranabuhanga. Ibibazo bikomeye cyangwa ibyaha byoherezwa kuri sitasiyo ya Polisi y'u Rwanda n'ubugenzacyaha bibifitiye ububasha."
                       : 'Any breach of contract, property grievance, or workplace dispute must be logged via the platform. Unresolved or severe cases are escalated directly to authorized Rwanda National Police stations.'}
                   </p>
                 </section>
@@ -760,7 +760,7 @@ export const HelpCenterPage: React.FC = () => {
                       <strong className="text-gray-900">
                         {isRw ? 'Imeli: ' : 'Email: '}
                       </strong>
-                      legal@ihirwepay.rw
+                      legal@ekazepay.rw
                     </p>
                     <p>
                       <strong className="text-gray-900">
