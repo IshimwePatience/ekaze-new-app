@@ -27,7 +27,7 @@ const Footer = () => {
                 type="button"
                 className="bg-[#1C1C1F] hover:bg-[#27272A] text-white font-semibold px-4 py-2 rounded-full text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer border border-white/15 shadow-2xs select-none"
               >
-                <Languages className="w-4 h-4 text-[#FFCC00]" />
+                <Languages className="w-4 h-4 text-[#10B981]" />
                 <span>{currentLanguage?.label || "English"}</span>
               </button>
             }
@@ -50,7 +50,7 @@ const Footer = () => {
                 key={item.name}
                 href="#"
                 aria-label={item.name}
-                className="w-9 h-9 rounded-full bg-[#1C1C1F] text-white hover:bg-[#FFCC00] hover:text-[#111111] border border-white/15 flex items-center justify-center transition-all shadow-2xs"
+                className="w-9 h-9 rounded-full bg-[#1C1C1F] text-white hover:bg-[#059669] hover:text-white border border-white/15 flex items-center justify-center transition-all shadow-2xs"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d={item.svg} />
@@ -65,11 +65,11 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-white/15 text-xs sm:text-sm font-medium text-white/70">
           <p>© {new Date().getFullYear()} ekaze.rw, a Beno Finance Ltd brand</p>
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-white/90 font-semibold">
-            <a href="/who-we-are" className="hover:text-[#FFCC00] transition-colors">Pricing</a>
-            <a href="/terms-of-service" className="hover:text-[#FFCC00] transition-colors">Terms of Service</a>
-            <a href="/terms-and-conditions" className="hover:text-[#FFCC00] transition-colors">General Terms and Conditions</a>
-            <a href="/privacy-policy" className="hover:text-[#FFCC00] transition-colors">Privacy Policy</a>
-            <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('open-cookie-preferences'))} className="hover:text-[#FFCC00] transition-colors cursor-pointer">Cookie Policy</button>
+            <a href="/who-we-are" className="hover:text-[#10B981] transition-colors">Pricing</a>
+            <a href="/terms-of-service" className="hover:text-[#10B981] transition-colors">Terms of Service</a>
+            <a href="/terms-and-conditions" className="hover:text-[#10B981] transition-colors">General Terms and Conditions</a>
+            <a href="/privacy-policy" className="hover:text-[#10B981] transition-colors">Privacy Policy</a>
+            <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('open-cookie-preferences'))} className="hover:text-[#10B981] transition-colors cursor-pointer">Cookie Policy</button>
           </div>
         </div>
 
@@ -79,7 +79,7 @@ const Footer = () => {
       <div className="w-full overflow-hidden select-none pointer-events-none mt-6 sm:mt-10 flex items-end justify-center leading-none">
         <span
           style={{ fontFamily: '"Outfit", "Plus Jakarta Sans", "Inter", sans-serif' }}
-          className="text-[#FFCC00] font-black text-[15.5vw] leading-[0.76] tracking-tighter uppercase block w-full text-center whitespace-nowrap select-none"
+          className="text-[#10B981] font-black text-[15.5vw] leading-[0.76] tracking-tighter uppercase block w-full text-center whitespace-nowrap select-none"
         >
           ekazefleet
         </span>

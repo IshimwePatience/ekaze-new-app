@@ -17,47 +17,47 @@ const Integrations = () => {
       <span id="integrations" className="absolute -top-20" aria-hidden="true" />
 
       <div className="container mx-auto px-5 sm:px-8 lg:px-12 max-w-7xl">
-        {/* Main Outer Rounded Yellow Banner Card (Signature Brand Yellow #FFCC00) */}
-        <div className="relative rounded-[28px] sm:rounded-[36px] bg-[#FFCC00] text-[#111111] p-7 sm:p-10 lg:p-12 shadow-2xl border border-[#E6B800]/40 overflow-hidden">
+        {/* Main Outer Rounded Emerald Green Banner Card (#059669) */}
+        <div className="relative rounded-[28px] sm:rounded-[36px] bg-[#059669] text-white p-7 sm:p-10 lg:p-12 shadow-2xl border border-emerald-400/30 overflow-hidden">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             
-            {/* Left Column: Heading, Subtitle & Black Pill Button */}
+            {/* Left Column: Heading, Subtitle & White Pill Button */}
             <div className="lg:col-span-5 flex flex-col justify-between text-left space-y-6">
               
               <div>
                 {/* Two-Line Title: Bold Top Line + Lighter Second Line */}
                 <h2
-                  className="text-2xl sm:text-3xl lg:text-[36px] font-bold text-[#111111] tracking-tight leading-[1.2]"
+                  className="text-2xl sm:text-3xl lg:text-[36px] font-bold text-white tracking-tight leading-[1.2]"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   {isRw ? (
                     <>
                       Ekaze Serivisi z'Ubwikorezi <br />
-                      <span className="font-normal text-[#111111]/90">n'Abashoferi b'Umwuga</span>
+                      <span className="font-normal text-white/95">n'Abashoferi b'Umwuga</span>
                     </>
                   ) : (
                     <>
                       Ekaze Fleet & Transport <br />
-                      <span className="font-normal text-[#111111]/90">Services & Driver Solutions</span>
+                      <span className="font-normal text-white/95">Services & Driver Solutions</span>
                     </>
                   )}
                 </h2>
 
                 {/* Body Description */}
-                <p className="text-[#111111]/85 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed mt-6 max-w-md font-medium">
+                <p className="text-white/90 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed mt-6 max-w-md font-normal">
                   {isRw
                     ? "Ha imbaraga ubucuruzi bwawe n'abashoferi b'umwuga bagenzuwe na Polisi na NIDA, amasezerano y'ikoranabuhanga n'uburyo bworoshye bwo kwishyura imishahara kuri MoMo na USSD mu Rwanda no mu Karere."
                     : "Empower your business with certified commercial drivers, automated digital contracts, fleet logistics, and on-demand transport solutions across Rwanda and East Africa."}
                 </p>
               </div>
 
-              {/* Black Pill Button with Brand Yellow Text */}
+              {/* White Pill Button with Emerald Text */}
               <div className="pt-2">
                 <button
                   type="button"
                   onClick={handleContactClick}
-                  className="inline-flex items-center justify-center rounded-full bg-[#111111] hover:bg-neutral-800 text-[#FFCC00] font-bold text-xs sm:text-sm px-8 py-3 transition-all shadow-md hover:shadow-lg cursor-pointer border-0"
+                  className="inline-flex items-center justify-center rounded-full bg-white hover:bg-emerald-50 text-[#059669] font-bold text-xs sm:text-sm px-8 py-3 transition-all shadow-md hover:shadow-lg cursor-pointer border-0"
                 >
                   {isRw ? "Twandikire" : "Contact us"}
                 </button>
