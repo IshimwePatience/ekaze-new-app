@@ -282,19 +282,6 @@ const Header = () => {
           <div className="flex items-center justify-between text-xs sm:text-[13px]">
             <div className="flex items-center gap-4 sm:gap-7 overflow-x-auto no-scrollbar">
               <a
-                href="#hero"
-                onClick={(e) => handleNavClick(e, "#hero")}
-                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer drop-shadow-xs ${
-                  isActiveLink("#hero")
-                    ? "text-[#FFCC00]"
-                    : isHomePage
-                      ? "text-white/95 hover:text-[#FFCC00]"
-                      : "text-slate-800 hover:text-[#C29300]"
-                }`}
-              >
-                {language === "kin" ? "Ahabanza" : "Personal"}
-              </a>
-              <a
                 href="#features"
                 onClick={(e) => handleNavClick(e, "#features")}
                 className={`font-semibold whitespace-nowrap transition-colors cursor-pointer drop-shadow-xs ${
@@ -306,19 +293,6 @@ const Header = () => {
                 }`}
               >
                 {language === "kin" ? "Abashoferi" : "Fleet & Drivers"}
-              </a>
-              <a
-                href="#services"
-                onClick={(e) => handleNavClick(e, "#services")}
-                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer drop-shadow-xs ${
-                  isActiveLink("#services")
-                    ? "text-[#FFCC00]"
-                    : isHomePage
-                      ? "text-white/95 hover:text-[#FFCC00]"
-                      : "text-slate-800 hover:text-[#C29300]"
-                }`}
-              >
-                {language === "kin" ? "Serivisi" : "Business"}
               </a>
               <button
                 type="button"
