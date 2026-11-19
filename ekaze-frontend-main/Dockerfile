@@ -9,7 +9,7 @@ COPY . .
 
 ARG VITE_API_URL=https://ekaze.benofinance.rw/api/v1
 ARG VITE_STORAGE_URL=https://ekaze.benofinance.rw
-ARG VITE_GOOGLE_CLIENT_ID=851412910623-cqq5dj652m3qmu71c56ak4626rop4jka.apps.googleusercontent.com
+ARG VITE_GOOGLE_CLIENT_ID=851412910623-p7ov04uca9tqtg20f3hg17i6upqjvkua.apps.googleusercontent.com
 
 ENV VITE_API_URL=$VITE_API_URL
 ENV VITE_STORAGE_URL=$VITE_STORAGE_URL

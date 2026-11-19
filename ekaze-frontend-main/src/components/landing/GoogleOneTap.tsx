@@ -14,7 +14,7 @@ export const GoogleOneTap = () => {
 
   const clientId =
     import.meta.env.VITE_GOOGLE_CLIENT_ID ||
-    "851412910623-cqq5dj652m3qmu71c56ak4626rop4jka.apps.googleusercontent.com";
+    "851412910623-p7ov04uca9tqtg20f3hg17i6upqjvkua.apps.googleusercontent.com";
 
   useEffect(() => {
     if (isAuthenticated) return;

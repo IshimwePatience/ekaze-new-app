@@ -414,7 +414,7 @@ const LoginPage = () => {
     if (workerId) {
       sessionStorage.setItem('auto_open_worker_id', workerId);
     }
-    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '851412910623-cqq5dj652m3qmu71c56ak4626rop4jka.apps.googleusercontent.com';
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '851412910623-p7ov04uca9tqtg20f3hg17i6upqjvkua.apps.googleusercontent.com';
     const redirectUri = window.location.origin + '/auth/login';
     const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=email%20profile&prompt=select_account`;
 
