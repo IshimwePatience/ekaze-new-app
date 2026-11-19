@@ -4,7 +4,15 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 
-const { getAdminDashboard } = require('../controllers/adminController');
+const {
+  getAdminDashboard,
+  getAdminTransactions,
+  getAdminTransactionStatistics,
+  getAdminTransactionById,
+  markAdminTransactionForReview,
+  refundAdminTransaction,
+  exportAdminTransactions
+} = require('../controllers/adminController');
 const userController = require('../controllers/userController');
 const workerController = require('../controllers/workerController');
 const companyController = require('../controllers/companyController');
@@ -87,5 +95,14 @@ router.get('/incidents/statistics', protectOptional, incidentController.getIncid
 router.get('/incidents', protectOptional, incidentController.getIncidents);
 router.put('/incidents/:id', protect, incidentController.updateIncident);
 router.delete('/incidents/:id', protect, incidentController.deleteIncident);
+
+// Admin Transaction Management Routes
+router.get('/transactions/statistics', protectOptional, getAdminTransactionStatistics);
+router.get('/transactions/export/data', protectOptional, exportAdminTransactions);
+router.get('/transactions/by-status/:status', protectOptional, getAdminTransactions);
+router.get('/transactions', protectOptional, getAdminTransactions);
+router.get('/transactions/:id', protectOptional, getAdminTransactionById);
+router.post('/transactions/:id/review', protectOptional, markAdminTransactionForReview);
+router.post('/transactions/:id/refund', protectOptional, refundAdminTransaction);
 
 module.exports = router;
