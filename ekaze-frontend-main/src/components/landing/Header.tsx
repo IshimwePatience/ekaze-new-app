@@ -401,13 +401,6 @@ const Header = () => {
                     </a>
                   );
                 })}
-                <button
-                  type="button"
-                  onClick={() => setIsHelpOpen(true)}
-                  className="px-3.5 py-2 text-sm md:text-[14.5px] rounded-xl text-[#111111]/85 hover:text-[#111111] hover:bg-[#111111]/8 font-semibold transition-all cursor-pointer bg-transparent border-0"
-                >
-                  {language === "kin" ? "Twandikire" : "Contact"}
-                </button>
               </nav>
             </div>
 
