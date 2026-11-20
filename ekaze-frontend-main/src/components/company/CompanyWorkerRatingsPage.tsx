@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHeaderBreadcrumb } from "@/components/common/PageHeaderBreadcrumb";
+import { CharacterIllustration } from "@/components/common/CharacterIllustration";
 import {
   Dialog,
   DialogContent,
@@ -182,16 +183,6 @@ export const CompanyWorkerRatingsPage: React.FC<CompanyWorkerRatingsPageProps> =
         >
           <div className="flex items-center gap-2">
             <Button
-              variant="outline"
-              size="sm"
-              onClick={onBack}
-              className="h-8 text-xs font-medium text-slate-700 hover:text-slate-900 border-slate-300 cursor-pointer flex items-center gap-1.5"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Back to drivers</span>
-            </Button>
-
-            <Button
               size="sm"
               onClick={() => setIsRateModalOpen(true)}
               className="h-8 bg-[#2478b8] hover:bg-[#1b6296] text-white text-xs font-semibold px-3.5 rounded shadow-2xs flex items-center gap-1.5 cursor-pointer"
@@ -204,7 +195,7 @@ export const CompanyWorkerRatingsPage: React.FC<CompanyWorkerRatingsPageProps> =
       </div>
 
       {/* ── Driver Summary Banner ── */}
-      <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="py-2 px-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="relative">
             {driverPhoto ? (
@@ -229,14 +220,13 @@ export const CompanyWorkerRatingsPage: React.FC<CompanyWorkerRatingsPageProps> =
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
-              {workerUser?.phone || "No phone"} &bull; {workerUser?.email || "No email"} &bull;{" "}
-              {workerUser?.district || "Kigali"}
+              {[workerUser?.phone, workerUser?.email, workerUser?.district || "Kigali"].filter(Boolean).join(", ")}
             </p>
           </div>
         </div>
 
         {/* Rating Score Badge */}
-        <div className="flex items-center gap-4 self-start sm:self-auto bg-white px-4 py-2.5 rounded-lg border border-slate-200 shadow-2xs">
+        <div className="flex items-center gap-4 self-start sm:self-auto py-1">
           <div className="flex items-center gap-1 text-amber-500">
             <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
             <span className="text-lg font-bold text-slate-900">{avgRating}</span>
@@ -298,25 +288,18 @@ export const CompanyWorkerRatingsPage: React.FC<CompanyWorkerRatingsPageProps> =
           <span className="text-xs">Loading company evaluations...</span>
         </div>
       ) : displayedReviews.length === 0 ? (
-        <div className="py-16 text-center border border-dashed border-slate-200 rounded-xl space-y-3 bg-slate-50/40">
-          <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">
-            <Star className="w-6 h-6" />
-          </div>
-          <h3 className="text-sm font-semibold text-slate-800">No ratings found</h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
-            {activeFilter === "mine"
-              ? "You haven't submitted any performance rating for this worker yet."
-              : activeFilter === "others"
-              ? "No other companies have evaluated this worker yet."
-              : "No company ratings recorded yet for this driver."}
-          </p>
-          <Button
-            size="sm"
-            onClick={() => setIsRateModalOpen(true)}
-            className="bg-[#2478b8] hover:bg-[#1b6296] text-white text-xs font-semibold px-4 py-1.5 rounded cursor-pointer"
-          >
-            Rate Your Worker
-          </Button>
+        <div className="py-12">
+          <CharacterIllustration
+            type="default"
+            title="No ratings recorded"
+            description={
+              activeFilter === "mine"
+                ? "You haven't submitted any performance rating for this worker yet."
+                : activeFilter === "others"
+                ? "No other companies have evaluated this worker yet."
+                : "No company ratings recorded yet for this driver."
+            }
+          />
         </div>
       ) : (
         /* TWO COLUMN GRID CLONING PICTURE 2 DESIGN */
