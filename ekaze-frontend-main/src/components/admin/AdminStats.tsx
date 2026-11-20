@@ -1,6 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Wallet,
   AlertTriangle,
   CheckCircle2
 } from "lucide-react";
@@ -11,13 +10,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const AdminStats = () => {
   const { t } = useLanguage();
   const { data, isLoading, isError } = useAdminDashboard();
-
-  const formatRevenue = (amount: string | number): string => {
-    const num = typeof amount === 'string' ? parseFloat(amount) : amount;
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-    return num.toFixed(0);
-  };
 
   const navigateTo = (tab: string) => {
     localStorage.setItem('admin_active_tab', tab);
@@ -33,11 +25,6 @@ const AdminStats = () => {
             <Skeleton className="h-4 w-96 mt-2 bg-slate-100" />
           </div>
           <Skeleton className="h-6 w-32 bg-slate-100" />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-36 bg-slate-100 rounded-lg" />
-          ))}
         </div>
       </div>
     );
@@ -62,52 +49,6 @@ const AdminStats = () => {
       </div>
     );
   }
-
-  const { statistics } = data.data;
-
-  const stats = [
-    {
-      id: "money_statement",
-      category: "payments",
-      tabId: "payments",
-      title: "Money Statement",
-      value: `${formatRevenue(statistics.transactions.total_revenue)} RWF`,
-      subtitle: "All money passed through system",
-      percentage: "Total System Flow",
-      icon: Wallet,
-    },
-    {
-      id: "admin_registration_gains",
-      category: "payments",
-      tabId: "payments",
-      title: "Admin Registration Gains",
-      value: `${formatRevenue(statistics.transactions.registration_revenue ?? 100000)} RWF`,
-      subtitle: "Company & worker registrations",
-      percentage: "Admin Gains",
-      icon: Wallet,
-    },
-    {
-      id: "freelance_contact_revenue",
-      category: "payments",
-      tabId: "payments",
-      title: "Freelance Contact Revenue",
-      value: `${formatRevenue(statistics.transactions.freelance_contact_revenue ?? 15000)} RWF`,
-      subtitle: "Paid to access freelance contacts",
-      percentage: "Admin Account",
-      icon: Wallet,
-    },
-    {
-      id: "incidents",
-      category: "incidents",
-      tabId: "incidents",
-      title: t("admin.adminStats.activeIncidents") || "Active Incidents",
-      value: (statistics.incidents.open + statistics.incidents.under_investigation).toString(),
-      subtitle: `${statistics.incidents.resolved} ${t("admin.adminStats.resolved") || "resolved"}`,
-      percentage: `${statistics.incidents.total} ${t("admin.adminStats.total") || "total"}`,
-      icon: AlertTriangle,
-    },
-  ];
-
 
   return (
     <div className="space-y-6 bg-white p-2 min-h-screen">
@@ -171,47 +112,6 @@ const AdminStats = () => {
               </button>
             </div>
           </div>
-        </div>
-      </div>
-
-
-      {/* GCP Console Title: Popular getting started resources */}
-      <div className="space-y-3 pt-2">
-        <h2 className="text-lg font-normal text-slate-900 tracking-tight">
-          Popular getting started resources
-        </h2>
-
-        {/* Main GCP Stats Resource Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <div
-                key={index}
-                onClick={() => navigateTo(stat.tabId)}
-                className="bg-white border border-slate-200 hover:border-slate-400 rounded-lg p-4 transition-all flex flex-col justify-between h-36 cursor-pointer shadow-2xs group"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="p-2 rounded bg-slate-50 text-[#2478b8] group-hover:bg-blue-50 transition-colors shrink-0">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-slate-900 leading-snug line-clamp-2 group-hover:text-[#2478b8] transition-colors">
-                      {stat.title}
-                    </p>
-                    <p className="text-[11px] text-slate-500 font-normal mt-0.5">
-                      {stat.subtitle}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-normal">
-                  <span className="text-lg font-bold text-slate-900">{stat.value}</span>
-                  <span className="text-slate-400">{stat.percentage}</span>
-                </div>
-              </div>
-            );
-          })}
         </div>
       </div>
     </div>
