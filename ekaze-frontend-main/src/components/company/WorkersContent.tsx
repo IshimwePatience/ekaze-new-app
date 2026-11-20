@@ -29,6 +29,7 @@ import {
   UserCheck,
   Clock,
   MessageSquare,
+  Check,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useCompanyWorkers } from "@/hooks/useWorkers";
@@ -39,6 +40,7 @@ import ImportWorkersModal from "./ImportWorkersModal";
 import EditWorkerModal from "./EditWorkerModal";
 import CompanyWorkerRatingsPage from "./CompanyWorkerRatingsPage";
 import { companyApi } from "@/api/companyService";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -1136,121 +1138,213 @@ const WorkersContent = () => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* MTN MoMo payment for driver card generation - Coursera Style */}
-      <AlertDialog
+      {/* MTN MoMo payment for driver card generation - Contact Us Style Modal */}
+      <Dialog
         open={!!cardPayment}
         onOpenChange={(open) => {
           if (!open && cardPayStatus !== "sending" && cardPayStatus !== "waiting") setCardPayment(null);
         }}
       >
-        <AlertDialogContent className="max-w-lg p-6 bg-white rounded-xl shadow-2xl border border-slate-200">
-          <AlertDialogHeader className="text-left space-y-1 pb-1">
-            <AlertDialogTitle className="text-lg font-bold text-slate-900 tracking-tight">
-              Payment methods
-            </AlertDialogTitle>
-          </AlertDialogHeader>
+        <DialogContent
+          hideCloseButton={true}
+          className="sm:max-w-[720px] w-[95vw] max-w-[95vw] bg-white text-[#222222] border border-slate-200 rounded-lg p-0 shadow-2xl overflow-hidden text-left"
+          style={{
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+          }}
+        >
+          {/* Main 2-Column Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200 p-8 sm:p-9 pb-6">
 
-          <AlertDialogDescription asChild>
-            <div className="space-y-4 text-left">
-              {/* Payment Method Card Container */}
-              <div className="border border-slate-300 rounded-lg p-5 bg-white space-y-4">
-                {/* Method Title */}
-                <div className="flex items-center gap-2.5 text-[#2478b8] font-bold text-sm">
-                  <CreditCard className="w-5 h-5 text-[#2478b8]" />
-                  <span>MTN Mobile Money (MoMo)</span>
-                </div>
-
-                {/* Summary Breakdown */}
-                {cardPayment && (
-                  <div className="rounded bg-slate-50 border border-slate-200 p-3 space-y-1.5 text-xs text-slate-600">
-                    <div className="flex justify-between">
-                      <span>Fee per card</span>
-                      <span className="font-semibold text-slate-800">{cardPayment.feePerCard.toLocaleString()} RWF</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Cards to pay</span>
-                      <span className="font-semibold text-slate-800">{cardPayment.unpaidCount}</span>
-                    </div>
-                    <div className="flex justify-between border-t border-slate-200 pt-1.5 mt-1 font-bold text-slate-900">
-                      <span>Total</span>
-                      <span className="text-[#2478b8] text-sm">{cardPayment.totalAmount.toLocaleString()} RWF</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Phone Input Box matching reference design */}
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold text-slate-800">
-                    Phone Number
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="tel"
-                      value={cardPayPhone}
-                      onChange={(e) => setCardPayPhone(e.target.value)}
-                      placeholder="078xxxxxxx"
-                      disabled={cardPayStatus === "sending" || cardPayStatus === "waiting"}
-                      className="w-full h-10 px-3 pr-24 text-sm rounded border border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[#2478b8] focus:border-[#2478b8]"
-                    />
-                    <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#ffcc00] text-black">
-                        MTN
-                      </span>
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#2478b8] text-white">
-                        MoMo
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Terms Disclaimer Text */}
-                <p className="text-xs text-slate-500 leading-relaxed font-normal">
-                  By providing your phone number, you allow Ekaze to initiate an MTN MoMo prompt of{" "}
-                  <span className="font-semibold text-slate-700">{cardPayment?.totalAmount.toLocaleString() || 100} RWF</span> to
-                  your device to complete driver card generation.
+            {/* LEFT COLUMN: PAYMENT DETAILS & MOMO INPUT */}
+            <div className="md:pr-8 pb-6 md:pb-0 flex flex-col justify-between space-y-4">
+              <div>
+                <h2 className="text-3xl font-bold text-[#222222] tracking-tight mb-1">
+                  Payment methods
+                </h2>
+                <p className="text-xs text-slate-500 font-medium">
+                  Enter your MTN MoMo phone number to complete payment.
                 </p>
+              </div>
 
-                {/* Status Banners */}
-                {cardPayStatus === "waiting" && (
-                  <div className="flex items-center gap-2 p-2.5 bg-blue-50 border border-blue-200 text-[#2478b8] rounded text-xs">
-                    <Loader2 className="w-4 h-4 animate-spin shrink-0" />
-                    <span>{cardPayMessage || "Waiting for MTN MoMo approval on your phone (*182*7*1#)..."}</span>
+              {/* Summary Breakdown */}
+              {cardPayment && (
+                <div className="rounded-[4px] bg-slate-50 border border-slate-200 p-3 space-y-1.5 text-xs text-slate-600">
+                  <div className="flex justify-between items-center">
+                    <span>Fee per card</span>
+                    <span className="font-semibold text-slate-800">{cardPayment.feePerCard.toLocaleString()} RWF</span>
                   </div>
-                )}
-                {cardPayStatus === "failed" && cardPayMessage && (
-                  <div className="p-2.5 bg-red-50 border border-red-200 text-red-600 rounded text-xs">
-                    {cardPayMessage}
+                  <div className="flex justify-between items-center">
+                    <span>Cards to pay</span>
+                    <span className="font-semibold text-slate-800">{cardPayment.unpaidCount}</span>
                   </div>
-                )}
+                  <div className="flex justify-between items-center border-t border-slate-200 pt-1.5 font-bold text-slate-900">
+                    <span>Total</span>
+                    <span className="text-[#2478b8] text-sm">{cardPayment.totalAmount.toLocaleString()} RWF</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Phone Input Box matching reference design */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700">
+                  Phone Number *
+                </label>
+                <div className="relative">
+                  <input
+                    type="tel"
+                    value={cardPayPhone}
+                    onChange={(e) => setCardPayPhone(e.target.value)}
+                    placeholder="078xxxxxxx"
+                    disabled={cardPayStatus === "sending" || cardPayStatus === "waiting"}
+                    style={{ fontSize: "16px", height: "46px" }}
+                    className="w-full px-3.5 pr-24 rounded-[4px] border border-[#a5b2c0] focus:border-[#2478b8] focus:outline-none transition-colors bg-white text-slate-900 placeholder:text-slate-400"
+                    required
+                  />
+                  <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#ffcc00] text-black">
+                      MTN
+                    </span>
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#2478b8] text-white">
+                      MoMo
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Terms Disclaimer Text */}
+              <p className="text-xs text-slate-500 leading-relaxed font-normal">
+                By providing your phone number, you allow Ekaze to initiate an MTN MoMo prompt of{" "}
+                <span className="font-semibold text-slate-700">{cardPayment?.totalAmount.toLocaleString() || 100} RWF</span> to
+                your device to complete driver card generation.
+              </p>
+
+              {/* Status Banners */}
+              {cardPayStatus === "waiting" && (
+                <div className="flex items-center gap-2 p-2.5 bg-blue-50 border border-blue-200 text-[#2478b8] rounded text-xs">
+                  <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+                  <span>{cardPayMessage || "Waiting for MTN MoMo approval on your phone (*182*7*1#)..."}</span>
+                </div>
+              )}
+              {cardPayStatus === "failed" && cardPayMessage && (
+                <div className="p-2.5 bg-red-50 border border-red-200 text-red-600 rounded text-xs">
+                  {cardPayMessage}
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="pt-2 flex items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (cardPayStatus !== "sending" && cardPayStatus !== "waiting") setCardPayment(null);
+                  }}
+                  disabled={cardPayStatus === "sending" || cardPayStatus === "waiting"}
+                  className="w-1/3 h-11 border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-sm rounded-[6px] transition-colors cursor-pointer flex items-center justify-center disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handlePayForCards}
+                  disabled={cardPayStatus === "sending" || cardPayStatus === "waiting"}
+                  className="flex-1 h-11 bg-[#2478b8] hover:bg-[#1b6296] text-white font-bold text-sm sm:text-base rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs disabled:opacity-50"
+                >
+                  {(cardPayStatus === "sending" || cardPayStatus === "waiting") && (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  )}
+                  <span>
+                    {cardPayStatus === "failed"
+                      ? "Retry Payment"
+                      : `Pay ${cardPayment?.totalAmount.toLocaleString() || 100} RWF`}
+                  </span>
+                </button>
               </div>
             </div>
-          </AlertDialogDescription>
 
-          <AlertDialogFooter className="flex items-center justify-end gap-2 pt-2">
-            <AlertDialogCancel
-              disabled={cardPayStatus === "sending" || cardPayStatus === "waiting"}
-              className="h-9 px-4 text-xs font-semibold text-slate-700 border border-slate-300 rounded hover:bg-slate-50 cursor-pointer"
+            {/* RIGHT COLUMN: CONTACT US, PHONE 0783202922 & BULLETS */}
+            <div className="md:pl-8 pt-6 md:pt-0 relative flex flex-col justify-between">
+
+              {/* Top Close '✕' Button: Exact same size and position as Login dropdown */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (cardPayStatus !== "sending" && cardPayStatus !== "waiting") setCardPayment(null);
+                }}
+                className="absolute top-0 right-0 text-slate-700 hover:text-black p-1 transition-colors cursor-pointer"
+                aria-label="Close"
+              >
+                <X className="w-6 h-6 stroke-[2.5]" />
+              </button>
+
+              <div>
+                <h3 className="text-[26px] font-bold text-[#222222] leading-tight mb-6 pr-8">
+                  If you have any <br />
+                  question, contact us:
+                </h3>
+
+                {/* Bullet Points with Checkmarks */}
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-center gap-3 text-[#333333] text-[14px]">
+                    <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
+                    <span>Phone & WhatsApp: 0783202922</span>
+                  </li>
+
+                  <li className="flex items-center gap-3 text-[#333333] text-[14px]">
+                    <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
+                    <span>Quick response within 15 minutes</span>
+                  </li>
+
+                  <li className="flex items-center gap-3 text-[#333333] text-[14px]">
+                    <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
+                    <span>Worker verification & contracts</span>
+                  </li>
+
+                  <li className="flex items-center gap-3 text-[#333333] text-[14px]">
+                    <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
+                    <span>24/7 dedicated platform support</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Branding Script Footer matching LoginDropdown */}
+              <div className="pt-2 select-none">
+                <div className="flex items-baseline gap-1.5">
+                  <span
+                    className="text-2xl font-bold italic tracking-tight text-[#2478b8]"
+                    style={{ fontFamily: "'Brush Script MT', 'Dancing Script', 'Segoe Script', cursive, sans-serif" }}
+                  >
+                    Ekaze
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-sans font-semibold">™</span>
+                </div>
+                <p className="text-[11px] text-[#2478b8] font-medium tracking-tight">
+                  Earn trust whenever you manage with us
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* BOTTOM BAR: Direct WhatsApp Action */}
+          <div className="border-t border-slate-200 px-8 py-3.5 bg-white flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-[14px] text-[#333333] font-normal">
+              Need urgent assistance right away?
+            </span>
+            <a
+              href="https://wa.me/250783202922"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="h-9 px-5 bg-[#2478b8] hover:bg-[#1b6296] text-white font-bold text-xs sm:text-sm rounded-[6px] transition-colors cursor-pointer shadow-xs inline-flex items-center justify-center gap-2"
             >
-              Cancel
-            </AlertDialogCancel>
-            <Button
-              type="button"
-              onClick={handlePayForCards}
-              disabled={cardPayStatus === "sending" || cardPayStatus === "waiting"}
-              className="h-9 px-5 text-xs font-semibold bg-[#2478b8] hover:bg-[#1b6296] text-white rounded shadow-sm flex items-center gap-1.5 cursor-pointer"
-            >
-              {(cardPayStatus === "sending" || cardPayStatus === "waiting") && (
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-              )}
-              <span>
-                {cardPayStatus === "failed"
-                  ? "Retry Payment"
-                  : `Pay ${cardPayment?.totalAmount.toLocaleString() || 100} RWF`}
-              </span>
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.18-.544-1.898-.788-3.13-2.73-3.224-2.856-.095-.126-.774-1.031-.774-1.968 0-.936.491-1.396.666-1.587.175-.19.382-.238.509-.238.127 0 .254.002.366.007.119.006.277-.045.433.328.16.381.545 1.332.593 1.43.048.098.08.212.016.339-.064.127-.096.207-.191.318-.095.111-.2.248-.286.333-.095.096-.195.2-.084.391.111.191.494.814 1.059 1.318.729.648 1.343.85 1.534.945.191.096.302.08.414-.047.111-.127.476-.556.603-.746.127-.19.254-.159.429-.095.175.064 1.11.523 1.301.618.191.096.318.143.366.223.048.079.048.461-.096.866zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.174L2 22l4.981-1.306C8.423 21.532 10.15 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.273c-1.636 0-3.161-.489-4.439-1.328l-.318-.21-2.955.775.789-2.879-.231-.368C3.93 14.938 3.4 13.513 3.4 12c0-4.742 3.858-8.6 8.6-8.6 4.743 0 8.6 3.858 8.6 8.6 0 4.742-3.857 8.273-8.6 8.273z" />
+              </svg>
+              <span>WhatsApp 0783202922</span>
+            </a>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -3253,12 +3253,26 @@ const rateCompanyWorker = async (req, res, next) => {
     const totalStars = currentRatings.reduce((sum, r) => sum + (Number(r.rating) || 5), 0);
     const avgRating = (totalStars / currentRatings.length).toFixed(1);
 
-    ext.ratings = currentRatings;
-    worker.extended_profile = ext;
+    const updatedProfile = {
+      ...ext,
+      ratings: currentRatings
+    };
+
+    worker.extended_profile = updatedProfile;
     worker.rating = parseFloat(avgRating);
     worker.rating_count = currentRatings.length;
+    worker.changed('extended_profile', true);
 
     await worker.save();
+
+    await Worker.update(
+      {
+        extended_profile: updatedProfile,
+        rating: parseFloat(avgRating),
+        rating_count: currentRatings.length
+      },
+      { where: { id: worker.id } }
+    );
 
     return res.status(200).json({
       success: true,

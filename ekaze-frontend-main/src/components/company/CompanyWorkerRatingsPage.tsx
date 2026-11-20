@@ -88,7 +88,15 @@ export const CompanyWorkerRatingsPage: React.FC<CompanyWorkerRatingsPageProps> =
     try {
       setIsLoading(true);
       const res = await companyApi.getWorkerRatings(worker.id);
-      const list = Array.isArray(res?.data) ? res.data : [];
+      const list = Array.isArray(res?.data)
+        ? res.data
+        : Array.isArray(res?.data?.ratings)
+        ? res.data.ratings
+        : Array.isArray(res?.ratings)
+        ? res.ratings
+        : Array.isArray(res)
+        ? res
+        : [];
       setReviews(list);
     } catch {
       const ext = worker?.extended_profile || {};
@@ -119,7 +127,7 @@ export const CompanyWorkerRatingsPage: React.FC<CompanyWorkerRatingsPageProps> =
 
     try {
       setIsSubmitting(true);
-      await companyApi.rateWorker(worker.id, {
+      const res = await companyApi.rateWorker(worker.id, {
         rating,
         comment: comment.trim(),
       });
@@ -130,9 +138,19 @@ export const CompanyWorkerRatingsPage: React.FC<CompanyWorkerRatingsPageProps> =
         description: `Your rating for ${workerName} has been recorded.`,
       });
 
+      const returnedRatings =
+        res?.data?.ratings ||
+        res?.ratings ||
+        res?.data;
+
+      if (Array.isArray(returnedRatings) && returnedRatings.length > 0) {
+        setReviews(returnedRatings);
+      } else {
+        fetchRatings();
+      }
+
       setComment("");
       setIsRateModalOpen(false);
-      fetchRatings();
       if (onRatingSubmitted) onRatingSubmitted();
     } catch (err: any) {
       toast({
