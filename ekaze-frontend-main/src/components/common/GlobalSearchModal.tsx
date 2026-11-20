@@ -337,11 +337,11 @@ const ROLE_SEARCH_CATALOG: Record<string, { recommended: SearchItem[]; allItems:
       },
       {
         id: "a-companies",
-        title: "Companies & Employers",
+        title: "Companies",
         desc: "Staffing agencies, company accreditation and corporate clients",
         path: "/admin?tab=companies",
         icon: ConsoleBuildingIcon,
-        keywords: ["companies", "agencies", "employers", "accreditation"],
+        keywords: ["companies", "agencies", "accreditation"],
       },
       {
         id: "a-payments",
@@ -387,11 +387,11 @@ const ROLE_SEARCH_CATALOG: Record<string, { recommended: SearchItem[]; allItems:
       },
       {
         id: "a-companies",
-        title: "Companies & Employers",
+        title: "Companies",
         desc: "Staffing agencies, company accreditation and corporate clients",
         path: "/admin?tab=companies",
         icon: ConsoleBuildingIcon,
-        keywords: ["companies", "agencies", "employers", "accreditation"],
+        keywords: ["companies", "agencies", "accreditation"],
       },
       {
         id: "a-users",

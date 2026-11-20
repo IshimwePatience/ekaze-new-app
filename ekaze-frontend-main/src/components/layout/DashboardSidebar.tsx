@@ -251,7 +251,7 @@ export const DashboardSidebar = ({
           {
             category: "WORKFORCE & USERS",
             items: [
-              { id: "companies", label: "Companies & Employers", icon: ConsoleBuildingIcon },
+              { id: "companies", label: "Companies", icon: ConsoleBuildingIcon },
               { id: "users", label: "User Access & Roles", icon: ConsoleUsersIcon },
             ],
           },

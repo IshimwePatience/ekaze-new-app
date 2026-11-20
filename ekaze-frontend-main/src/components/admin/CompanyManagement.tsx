@@ -451,64 +451,38 @@ const CompanyManagement = () => {
       <div className="pt-1 pb-2 px-0">
         <PageHeaderBreadcrumb
           title={
-            currentPath === "root"
-              ? "Companies & Employers"
-              : currentPath === "companies"
-                ? "Companies"
-                : currentPath === "employers"
-                  ? "Employers"
-                  : currentPath === "company-detail"
-                    ? selectedCompanyName || "Company Details"
-                    : selectedEmployerName || "Employer Details"
+            currentPath === "root" || currentPath === "companies"
+              ? "Companies"
+              : currentPath === "employers"
+                ? "Employers"
+                : currentPath === "company-detail"
+                  ? selectedCompanyName || "Company Details"
+                  : selectedEmployerName || "Employer Details"
           }
           items={
             currentPath === "root"
               ? []
-              : currentPath === "companies" || currentPath === "employers"
-                ? [
-                  {
-                    label: "Companies & Employers",
-                    onClick: () => {
-                      setCurrentPath("root");
-                      setSelectedCompanyId(null);
-                      setSelectedEmployerId(null);
-                      setTabSearchQuery("");
-                    },
-                  },
-                ]
+              : currentPath === "companies"
+                ? []
                 : currentPath === "company-detail"
                   ? [
                     {
-                      label: "Companies & Employers",
+                      label: "Companies",
                       onClick: () => {
                         setCurrentPath("root");
                         setSelectedCompanyId(null);
                         setSelectedEmployerId(null);
-                        setTabSearchQuery("");
-                      },
-                    },
-                    {
-                      label: "Companies",
-                      onClick: () => {
-                        setCurrentPath("companies");
                         setTabSearchQuery("");
                       },
                     },
                   ]
                   : [
                     {
-                      label: "Companies & Employers",
+                      label: "Companies",
                       onClick: () => {
                         setCurrentPath("root");
                         setSelectedCompanyId(null);
                         setSelectedEmployerId(null);
-                        setTabSearchQuery("");
-                      },
-                    },
-                    {
-                      label: "Employers",
-                      onClick: () => {
-                        setCurrentPath("employers");
                         setTabSearchQuery("");
                       },
                     },
@@ -539,7 +513,7 @@ const CompanyManagement = () => {
       {/* Main Content Layout Container */}
       <div className="w-full bg-white space-y-4">
         {/* ========================================================================= */}
-        {/* LEVEL 0: ROOT VIEW - FOLDERS (Companies & Employers) */}
+        {/* LEVEL 0: ROOT VIEW - FOLDERS (Companies) */}
         {/* ========================================================================= */}
         {currentPath === "root" && (
           <div className="pt-2">
@@ -560,22 +534,6 @@ const CompanyManagement = () => {
                     {isLoadingCompanies ? "..." : `${companies.length} items`}
                   </p>
                 </div>
-
-                {/* Folder 2: Employers */}
-                <div
-                  onClick={() => setCurrentPath("employers")}
-                  className="group flex flex-col items-center justify-center p-2 cursor-pointer text-center select-none w-32 hover:bg-slate-50 rounded-lg transition-colors"
-                >
-                  <div className="mb-2">
-                    <BlueFolderIcon className="w-14 h-11" />
-                  </div>
-                  <h3 className="text-xs font-semibold text-slate-800 group-hover:text-[#2478b8] transition-colors line-clamp-2">
-                    Employers
-                  </h3>
-                  <p className="text-[11px] text-slate-400 mt-0.5 font-normal">
-                    {isLoadingEmployers ? "..." : `${employersList.length} items`}
-                  </p>
-                </div>
               </div>
             ) : (
               <div className="divide-y divide-slate-100">
@@ -591,21 +549,6 @@ const CompanyManagement = () => {
                   </div>
                   <span className="text-[11px] text-slate-400 font-normal">
                     {isLoadingCompanies ? "..." : `${companies.length} items`}
-                  </span>
-                </div>
-
-                <div
-                  onClick={() => setCurrentPath("employers")}
-                  className="group flex items-center justify-between py-2.5 px-2 hover:bg-slate-50 cursor-pointer transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <BlueFolderIcon className="w-6 h-5" />
-                    <span className="text-xs font-semibold text-slate-800 group-hover:text-[#2478b8]">
-                      Employers
-                    </span>
-                  </div>
-                  <span className="text-[11px] text-slate-400 font-normal">
-                    {isLoadingEmployers ? "..." : `${employersList.length} items`}
                   </span>
                 </div>
               </div>

@@ -518,7 +518,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
 
           <FormSection id="section-personal" title="2. Personal Details">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField label="First Name *" required>
+              <FormField label="First Name" required>
                 <FormInput
                   type="text"
                   placeholder="Driver's first name"
@@ -527,7 +527,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                   required
                 />
               </FormField>
-              <FormField label="Last Name *" required>
+              <FormField label="Last Name" required>
                 <FormInput
                   type="text"
                   placeholder="Driver's last name"
@@ -578,7 +578,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                 />
               </FormField>
 
-              <FormField label="Gender *" required>
+              <FormField label="Gender" required>
                 <FormSelect
                   value={gender}
                   onChange={(e) => setGender(e.target.value as "male" | "female")}
@@ -590,7 +590,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField label="Date of Birth *" required>
+              <FormField label="Date of Birth" required>
                 <FormInput
                   type="date"
                   value={dateOfBirth}
@@ -608,7 +608,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
         <div className="space-y-6 text-left animate-in fade-in duration-200">
           <FormSection id="section-education" title="3. Education Background">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField label="Level of Education *" required>
+              <FormField label="Level of Education" required>
                 <FormSelect
                   value={educationLevel}
                   onChange={(e) => setEducationLevel(e.target.value)}
@@ -621,7 +621,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                 </FormSelect>
               </FormField>
 
-              <FormField label="Field of Study (e.g. Mathematics, Software, Mechanical, Automotive) *" required>
+              <FormField label="Field of Study (e.g. Mathematics, Software, Mechanical, Automotive)" required>
                 <FormInput
                   type="text"
                   placeholder="e.g. Mathematics, Software Engineering, Automotive"
@@ -635,7 +635,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
 
           <FormSection id="section-permit" title="4. Driving Permit & Category">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField label="Permit Category *" required>
+              <FormField label="Permit Category" required>
                 <FormSelect
                   value={permitCategory}
                   onChange={(e) => setPermitCategory(e.target.value)}
@@ -648,7 +648,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                 </FormSelect>
               </FormField>
 
-              <FormField label="Driving Permit Number *" required>
+              <FormField label="Driving Permit Number" required>
                 <FormInput
                   type="text"
                   placeholder="e.g. DL-2024-9842"
@@ -660,7 +660,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField label="Permit Expiration Date *" required>
+              <FormField label="Permit Expiration Date" required>
                 <FormInput
                   type="date"
                   value={permitExpiryDate}
@@ -680,15 +680,14 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
             id="section-experience"
             title="5. Working Experience (Add where driver worked)"
           >
-            <div className="space-y-5">
+            <div className="space-y-6">
               {experiences.map((exp, index) => (
                 <div
                   key={exp.id}
-                  className="p-5 rounded-xl border border-slate-200 bg-[#f8fafd] space-y-4 relative"
+                  className={`space-y-4 relative ${index > 0 ? "pt-4 border-t border-slate-200" : ""}`}
                 >
-                  <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                      <Briefcase className="w-3.5 h-3.5 text-[#2478b8]" />
+                  <div className="flex items-center justify-between pb-1">
+                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                       Experience #{index + 1}
                     </span>
                     {experiences.length > 1 && (
@@ -704,7 +703,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormField label="Employer / Company Name *" required>
+                    <FormField label="Employer / Company Name" required>
                       <FormInput
                         type="text"
                         placeholder="Company or employer name"
@@ -714,7 +713,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                       />
                     </FormField>
 
-                    <FormField label="Job Role / Responsibilities *" required>
+                    <FormField label="Job Role / Responsibilities" required>
                       <FormInput
                         type="text"
                         placeholder="e.g. Heavy Truck Driver, Fleet Driver, Chauffeur"
@@ -726,7 +725,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormField label="Start Date *" required>
+                    <FormField label="Start Date" required>
                       <FormInput
                         type="date"
                         value={exp.start_date}
@@ -736,7 +735,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                     </FormField>
 
                     <div>
-                      <FormField label={exp.currently_working ? "End Date (Currently Working)" : "End Date *"} required={!exp.currently_working}>
+                      <FormField label={exp.currently_working ? "End Date (Currently Working)" : "End Date"} required={!exp.currently_working}>
                         <FormInput
                           type="date"
                           value={exp.end_date}
@@ -765,14 +764,15 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                 </div>
               ))}
 
-              <button
-                type="button"
-                onClick={handleAddExperience}
-                className="w-full py-3 border-2 border-dashed border-[#2478b8]/40 hover:border-[#2478b8] bg-blue-50/50 hover:bg-blue-50 text-[#2478b8] rounded-xl font-bold text-sm inline-flex items-center justify-center gap-2 transition-all cursor-pointer"
-              >
-                <Plus className="w-4 h-4" />
-                <span>+ Add Another Employer / Work Experience</span>
-              </button>
+              <div className="pt-1">
+                <button
+                  type="button"
+                  onClick={handleAddExperience}
+                  className="text-xs text-slate-500 hover:text-slate-800 transition-colors cursor-pointer bg-transparent border-0 p-0 font-normal outline-none"
+                >
+                  add another work expirience
+                </button>
+              </div>
             </div>
           </FormSection>
         </div>
