@@ -177,7 +177,7 @@ export const DashboardSidebar = ({
           {
             category: "FINANCIALS & SAFETY",
             items: [
-              { id: "revenue", label: "Revenue & Earnings", icon: ConsoleBillingIcon },
+              { id: "revenue", label: "Card Payments", icon: ConsoleBillingIcon },
               { id: "incidents", label: "Incident Management", icon: ConsoleAlertIcon },
             ],
           },
