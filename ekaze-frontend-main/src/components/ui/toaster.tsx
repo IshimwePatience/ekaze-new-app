@@ -12,9 +12,9 @@ export function Toaster() {
             key={id}
             {...props}
             className="
-              group relative flex items-center gap-3 w-full
-              !rounded-2xl !border-0 !shadow-2xl px-5 py-4
-              !bg-[#3565a1] !text-white
+              group relative flex items-center justify-between gap-3 w-full
+              !rounded-xl !border !border-white/10 !shadow-2xl px-4 py-3
+              !bg-[#1f1f1f] !text-white select-none
               data-[state=open]:animate-in
               data-[state=open]:slide-in-from-bottom-5
               data-[state=open]:fade-in
@@ -27,29 +27,31 @@ export function Toaster() {
               data-[state=closed]:ease-in
             "
           >
-            {/* White Circle Exclamation Icon matching Screenshot 2 */}
-            <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0 text-[#3565a1] font-black text-sm leading-none select-none shadow-xs">
-              !
-            </div>
-
-            <div className="flex flex-col gap-0.5 w-full pr-6">
+            <div className="flex flex-col gap-0.5 flex-1 min-w-0 pr-2">
               {title && (
-                <ToastTitle className="!text-left text-sm md:text-[15px] font-bold text-white leading-snug tracking-tight">
+                <ToastTitle className="!text-left text-[13px] font-semibold text-white leading-snug tracking-tight">
                   {title}
                 </ToastTitle>
               )}
               {description && description !== title && (
-                <ToastDescription className="!text-left text-xs text-white/95 font-medium leading-normal">
+                <ToastDescription className="!text-left text-xs text-gray-300 font-normal leading-normal line-clamp-2">
                   {description}
                 </ToastDescription>
               )}
             </div>
-            {action}
-            <ToastClose className="absolute right-3 top-3 text-white/80 hover:text-white transition-opacity" />
+
+            <div className="flex items-center gap-2 shrink-0">
+              {action ? (
+                <div className="text-xs font-semibold text-[#8ab4f8] hover:text-[#d3e3fd] transition-colors">
+                  {action}
+                </div>
+              ) : null}
+              <ToastClose className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10" />
+            </div>
           </Toast>
         );
       })}
-      <ToastViewport className="fixed bottom-6 right-6 flex flex-col-reverse gap-3 w-full max-w-[420px] z-[99999] p-0" />
+      <ToastViewport className="fixed bottom-5 right-6 flex flex-col-reverse gap-2.5 w-full max-w-[380px] sm:max-w-[420px] z-[99999] p-0" />
     </ToastProvider>
   );
 }

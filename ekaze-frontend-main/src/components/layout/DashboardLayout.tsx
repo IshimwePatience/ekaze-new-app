@@ -3,6 +3,13 @@ import { DashboardNavbar } from "./DashboardNavbar";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { AskEkazeRightSidebar } from "./AskEkazeRightSidebar";
 import DashboardTopAlertBanner from "./DashboardTopAlertBanner";
+import {
+  GoogleCalendarIcon,
+  GoogleKeepIcon,
+  GoogleTasksIcon,
+  GoogleContactsIcon
+} from "./GoogleDriveIcons";
+import { Plus } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSocketNotifications } from "@/hooks/useSocketNotifications";
 import { useNavigate } from "react-router-dom";
@@ -61,55 +68,97 @@ export const DashboardLayout = ({
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-white text-slate-800 flex font-sans selection:bg-[#2478b8]/20 dashboard-app-layout">
-      {/* Full-Height Left Navigation Sidebar (Extends to top-0) */}
-      <DashboardSidebar
-        role={role}
-        activeTab={activeTab}
-        onTabChange={onTabChange}
-        isCollapsed={isCollapsed}
-        onToggleCollapse={toggleSidebar}
+    <div className="h-screen w-screen overflow-hidden bg-[#f8fafd] text-slate-800 flex flex-col font-sans selection:bg-[#c2e7ff] dashboard-app-layout select-none">
+      {/* Top Google Drive Navbar across the top */}
+      <DashboardNavbar
+        onToggleSidebar={toggleSidebar}
+        onToggleAiSidebar={toggleAiSidebar}
+        isAiSidebarOpen={isAiSidebarOpen}
+        currentRole={role}
       />
 
-      {/* Center Column: Top Navbar + Page Main Content */}
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto bg-white">
-        {/* Top Rotating Alert Ticker (30s interval for shift requests & payment countdowns) */}
-        <DashboardTopAlertBanner role={role} onTabChange={onTabChange} />
-
-        {/* Top Navbar */}
-        <DashboardNavbar
-          onToggleSidebar={toggleSidebar}
-          onToggleAiSidebar={toggleAiSidebar}
-          isAiSidebarOpen={isAiSidebarOpen}
-          currentRole={role}
+      {/* Main Layout Row: Sidebar + White Content Card + Right Rail */}
+      <div className="flex-1 flex min-w-0 overflow-hidden relative">
+        {/* Left Google Drive Sidebar */}
+        <DashboardSidebar
+          role={role}
+          activeTab={activeTab}
+          onTabChange={onTabChange}
+          isCollapsed={isCollapsed}
+          onToggleCollapse={toggleSidebar}
         />
 
-        {/* Content Row Under Navbar */}
-        <div className="flex-1 flex min-w-0 overflow-hidden bg-white relative">
-          {/* Main View Area (Pushed to left with horizontal & vertical scroll for tables/content) */}
-          <main className={`flex-1 min-w-0 h-full overflow-y-auto overflow-x-auto bg-white transition-all duration-300 ${
-            activeTab === "profile" || activeTab === "schedule" || activeTab === "calendar"
-              ? ""
-              : activeTab === "overview" || activeTab === "dashboard"
-              ? "p-4 md:p-6 lg:p-8"
-              : "px-4 md:px-6 lg:px-8 pt-1 md:pt-2 pb-8"
-          }`}>
-            <div className="w-full min-w-0">
-              {children}
-            </div>
-          </main>
+        {/* Center: Inset White Rounded Card Container (Material You Drive Design) */}
+        <div className="flex-1 flex flex-col min-w-0 h-[calc(100vh-64px)] bg-white rounded-2xl shadow-[0_1px_3px_0_rgba(60,64,67,0.08)] border border-slate-200/60 my-1.5 mr-1 overflow-hidden transition-all">
+          {/* Top Rotating Alert Ticker */}
+          <DashboardTopAlertBanner role={role} onTabChange={onTabChange} />
 
-          {/* Docked YouTube Studio Style Right AI Sidebar (Standing side-by-side on right) */}
-          {isAiSidebarOpen && (
-            <div className="w-full sm:w-[410px] shrink-0 h-full p-2.5 pl-0 bg-white z-30 transition-all duration-300 animate-in slide-in-from-right border-l border-slate-100 flex flex-col overflow-hidden">
-              <AskEkazeRightSidebar
-                isOpen={isAiSidebarOpen}
-                onClose={handleCloseAiSidebar}
-                isDocked={true}
-              />
-            </div>
-          )}
+          {/* Main View Area */}
+          <main
+            className={`flex-1 min-w-0 h-full overflow-y-auto overflow-x-auto bg-white transition-all duration-300 ${
+              activeTab === "profile" || activeTab === "schedule" || activeTab === "calendar"
+                ? ""
+                : activeTab === "overview" || activeTab === "dashboard"
+                ? "p-4 md:p-6 lg:p-8"
+                : "px-4 md:px-6 lg:px-8 pt-2 pb-8"
+            }`}
+          >
+            <div className="w-full min-w-0">{children}</div>
+          </main>
         </div>
+
+        {/* Docked Right AI Sidebar when toggled */}
+        {isAiSidebarOpen && (
+          <div className="w-full sm:w-[410px] shrink-0 h-[calc(100vh-64px)] my-1.5 mr-1 bg-white rounded-2xl shadow-sm border border-slate-200/60 z-30 transition-all duration-300 animate-in slide-in-from-right flex flex-col overflow-hidden">
+            <AskEkazeRightSidebar
+              isOpen={isAiSidebarOpen}
+              onClose={handleCloseAiSidebar}
+              isDocked={true}
+            />
+          </div>
+        )}
+
+        {/* Far-Right Slim Google Workspace Rail */}
+        <aside className="w-14 bg-[#f8fafd] hidden md:flex flex-col items-center py-3 gap-5 shrink-0 select-none">
+          <button
+            onClick={() => onTabChange("calendar")}
+            className="p-2 rounded-full hover:bg-black/5 transition-colors cursor-pointer group"
+            title="Google Calendar"
+          >
+            <GoogleCalendarIcon className="w-5 h-5 transition-transform group-hover:scale-110" />
+          </button>
+          <button
+            onClick={() => toggleAiSidebar()}
+            className="p-2 rounded-full hover:bg-black/5 transition-colors cursor-pointer group"
+            title="Google Keep / Notes"
+          >
+            <GoogleKeepIcon className="w-5 h-5 transition-transform group-hover:scale-110" />
+          </button>
+          <button
+            onClick={() => onTabChange(role === "admin" ? "tasks" : "overview")}
+            className="p-2 rounded-full hover:bg-black/5 transition-colors cursor-pointer group"
+            title="Google Tasks"
+          >
+            <GoogleTasksIcon className="w-5 h-5 transition-transform group-hover:scale-110" />
+          </button>
+          <button
+            onClick={() => onTabChange(role === "admin" ? "users" : "profile")}
+            className="p-2 rounded-full hover:bg-black/5 transition-colors cursor-pointer group"
+            title="Contacts"
+          >
+            <GoogleContactsIcon className="w-5 h-5 transition-transform group-hover:scale-110" />
+          </button>
+
+          <div className="w-5 border-t border-slate-300 my-1" />
+
+          <button
+            onClick={() => toggleAiSidebar()}
+            className="p-2 rounded-full hover:bg-black/5 text-[#444746] transition-colors cursor-pointer"
+            title="Get Add-ons"
+          >
+            <Plus className="w-5 h-5 text-[#444746]" />
+          </button>
+        </aside>
       </div>
     </div>
   );
