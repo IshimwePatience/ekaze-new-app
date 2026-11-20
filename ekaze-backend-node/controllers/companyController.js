@@ -172,6 +172,12 @@ const getCompanyWorkers = async (req, res, next) => {
 
       const isSuspended = raw.user?.status === 'suspended' || raw.extended_profile?.is_suspended === true || raw.availability_status === 'suspended';
 
+      const ext = (typeof raw.extended_profile === 'object' && raw.extended_profile !== null)
+        ? raw.extended_profile
+        : (typeof raw.extended_profile === 'string' ? JSON.parse(raw.extended_profile || '{}') : {});
+
+      const exps = ext.past_experiences || ext.work_experiences || ext.previous_employers || raw.previous_employers || [];
+
       return {
         ...raw,
         full_name: cleanName,
@@ -181,10 +187,19 @@ const getCompanyWorkers = async (req, res, next) => {
         is_suspended: isSuspended,
         status: isSuspended ? 'suspended' : (raw.user?.status || raw.availability_status || 'active'),
         availability_status: isSuspended ? 'suspended' : (raw.availability_status || 'available'),
-        suspended_by_company_name: isSuspended ? (raw.extended_profile?.suspended_by_company_name || company.company_name) : null,
-        suspended_at: raw.extended_profile?.suspended_at || (isSuspended ? (raw.updated_at || raw.created_at) : null),
+        suspended_by_company_name: isSuspended ? (ext.suspended_by_company_name || company.company_name) : null,
+        suspended_at: ext.suspended_at || (isSuspended ? (raw.updated_at || raw.created_at) : null),
         created_at: raw.created_at || raw.user?.created_at || new Date().toISOString(),
         updated_at: raw.updated_at || raw.user?.updated_at || new Date().toISOString(),
+        extended_profile: ext,
+        past_experiences: exps,
+        work_experiences: exps,
+        education_level: ext.education_level || raw.education_level || null,
+        education_option: ext.education_option || ext.education_field || null,
+        education_field: ext.education_field || ext.education_option || null,
+        driving_licence_type: ext.driving_licence_type || raw.driving_licence_type || null,
+        driving_licence_number: ext.driving_licence_number || raw.driving_licence_number || null,
+        driving_licence_expiry: ext.driving_licence_expiry || raw.driving_licence_expiry || null,
       };
     });
 
@@ -232,6 +247,12 @@ const getCompanyWorkerById = async (req, res, next) => {
       ]
     }).catch(() => null);
 
+    const ext = (typeof rawWorker.extended_profile === 'object' && rawWorker.extended_profile !== null)
+      ? rawWorker.extended_profile
+      : (typeof rawWorker.extended_profile === 'string' ? JSON.parse(rawWorker.extended_profile || '{}') : {});
+
+    const expsList = ext.past_experiences || ext.work_experiences || ext.previous_employers || rawWorker.previous_employers || [];
+
     const formattedWorker = {
       ...rawWorker,
       id: rawWorker.id,
@@ -258,6 +279,15 @@ const getCompanyWorkerById = async (req, res, next) => {
       nida_verified: rawWorker.user?.is_verified ?? true,
       total_employments: employmentsCount,
       total_incidents: incidentsCount,
+      extended_profile: ext,
+      past_experiences: expsList,
+      work_experiences: expsList,
+      education_level: ext.education_level || rawWorker.education_level || null,
+      education_option: ext.education_option || ext.education_field || null,
+      education_field: ext.education_field || ext.education_option || null,
+      driving_licence_type: ext.driving_licence_type || rawWorker.driving_licence_type || null,
+      driving_licence_number: ext.driving_licence_number || rawWorker.driving_licence_number || null,
+      driving_licence_expiry: ext.driving_licence_expiry || rawWorker.driving_licence_expiry || null,
       average_rating: rawWorker.rating ? String(rawWorker.rating) : '4.8',
       total_ratings: rawWorker.rating_count || 5,
       job_title: (Array.isArray(rawWorker.professions) && rawWorker.professions.length > 0)
@@ -588,6 +618,11 @@ const updateCompanyWorker = async (req, res, next) => {
       accept_driving: true,
       profile_completion_percent: 100,
     };
+    worker.changed('extended_profile', true);
+    if (parsedExperiences) {
+      worker.previous_employers = parsedExperiences;
+      worker.changed('previous_employers', true);
+    }
     worker.profile_completed = true;
 
     await worker.save();

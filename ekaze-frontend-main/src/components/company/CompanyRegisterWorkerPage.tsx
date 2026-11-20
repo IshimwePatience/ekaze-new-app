@@ -169,21 +169,33 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
   );
 
   // 6. Working Experience Part (Dynamic past employers)
-  let parsedExperiences: WorkExperienceItem[] = [];
-  if (Array.isArray(ext.past_experiences) && ext.past_experiences.length > 0) {
-    parsedExperiences = ext.past_experiences;
-  } else if (Array.isArray(ext.work_experiences) && ext.work_experiences.length > 0) {
-    parsedExperiences = ext.work_experiences;
-  } else if (Array.isArray(initialWorker?.past_experiences) && initialWorker.past_experiences.length > 0) {
-    parsedExperiences = initialWorker.past_experiences;
-  } else if (typeof ext.past_experiences === "string") {
+  let rawInitialExps: any[] = [];
+  const rawCandidate =
+    ext.past_experiences ||
+    ext.work_experiences ||
+    ext.previous_employers ||
+    initialWorker?.past_experiences ||
+    initialWorker?.work_experiences ||
+    initialWorker?.previous_employers ||
+    [];
+
+  if (typeof rawCandidate === "string") {
     try {
-      parsedExperiences = JSON.parse(ext.past_experiences);
+      rawInitialExps = JSON.parse(rawCandidate);
     } catch {}
+  } else if (Array.isArray(rawCandidate)) {
+    rawInitialExps = rawCandidate;
   }
 
-  const initialExperiences: WorkExperienceItem[] = parsedExperiences.length > 0
-    ? parsedExperiences
+  const initialExperiences: WorkExperienceItem[] = rawInitialExps.length > 0
+    ? rawInitialExps.map((item: any, idx: number) => ({
+        id: item.id || `exp-${idx + 1}`,
+        employer: item.employer || item.company_name || item.company || item.name || "",
+        role: item.role || item.job_role || item.job_title || item.position || item.title || "",
+        start_date: item.start_date ? String(item.start_date).split("T")[0] : (item.startDate ? String(item.startDate).split("T")[0] : ""),
+        end_date: item.end_date ? String(item.end_date).split("T")[0] : (item.endDate ? String(item.endDate).split("T")[0] : ""),
+        currently_working: Boolean(item.currently_working ?? item.is_current ?? item.current ?? (!item.end_date && !item.endDate && (item.start_date || item.startDate))),
+      }))
     : [
         {
           id: "exp-1",
@@ -275,19 +287,37 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
       if (licNum) setPermitNumber(licNum);
 
       const licExp = e.driving_licence_expiry || workerData.driving_licence_expiry;
-      if (licExp) setPermitExpiryDate(licExp);
+      if (licExp) setPermitExpiryDate(String(licExp).split("T")[0]);
 
       // Past Experiences (Step 3)
-      let exps = e.past_experiences || e.work_experiences || workerData.past_experiences || workerData.work_experiences;
-      if (typeof exps === "string") {
+      let rawExps =
+        e.past_experiences ||
+        e.work_experiences ||
+        e.previous_employers ||
+        workerData.past_experiences ||
+        workerData.work_experiences ||
+        workerData.previous_employers ||
+        u?.past_experiences ||
+        [];
+
+      if (typeof rawExps === "string") {
         try {
-          exps = JSON.parse(exps);
+          rawExps = JSON.parse(rawExps);
         } catch {
-          exps = [];
+          rawExps = [];
         }
       }
-      if (Array.isArray(exps) && exps.length > 0) {
-        setExperiences(exps);
+
+      if (Array.isArray(rawExps) && rawExps.length > 0) {
+        const normalized: WorkExperienceItem[] = rawExps.map((item: any, idx: number) => ({
+          id: item.id || `exp-${idx + 1}`,
+          employer: item.employer || item.company_name || item.company || item.name || "",
+          role: item.role || item.job_role || item.job_title || item.position || item.title || "",
+          start_date: item.start_date ? String(item.start_date).split("T")[0] : (item.startDate ? String(item.startDate).split("T")[0] : ""),
+          end_date: item.end_date ? String(item.end_date).split("T")[0] : (item.endDate ? String(item.endDate).split("T")[0] : ""),
+          currently_working: Boolean(item.currently_working ?? item.is_current ?? item.current ?? (!item.end_date && !item.endDate && (item.start_date || item.startDate))),
+        }));
+        setExperiences(normalized);
       }
     };
 
