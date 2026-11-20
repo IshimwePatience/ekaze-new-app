@@ -37,7 +37,7 @@ import WorkerDetailsModal from "./WorkerDetailsModal";
 import CompanyRegisterWorkerPage from "./CompanyRegisterWorkerPage";
 import ImportWorkersModal from "./ImportWorkersModal";
 import EditWorkerModal from "./EditWorkerModal";
-import WorkerRatingModal from "./WorkerRatingModal";
+import CompanyWorkerRatingsPage from "./CompanyWorkerRatingsPage";
 import { companyApi } from "@/api/companyService";
 import {
   AlertDialog,
@@ -579,6 +579,16 @@ const WorkersContent = () => {
     );
   }
 
+  if (workerToRate) {
+    return (
+      <CompanyWorkerRatingsPage
+        worker={workerToRate}
+        onBack={() => setWorkerToRate(null)}
+        onRatingSubmitted={() => refetch()}
+      />
+    );
+  }
+
   // ── Render ─────────────────────────────────────────────────────────
   return (
     <div className="w-full bg-white space-y-0">
@@ -929,15 +939,6 @@ const WorkersContent = () => {
                       {/* Actions */}
                       <TableCell className="text-right pr-2 py-3">
                         <div className="flex items-center justify-end gap-1">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setWorkerToRate(worker)}
-                            className="h-8 w-8 p-0 text-slate-500 hover:text-[#2478b8] hover:bg-blue-50 rounded cursor-pointer"
-                            title="Rate Worker & Company Reviews"
-                          >
-                            <MessageSquare className="w-4 h-4" />
-                          </Button>
                           <CustomDropdown
                             widthClass="w-52"
                             trigger={
@@ -1030,14 +1031,6 @@ const WorkersContent = () => {
         worker={workerToEdit}
         isOpen={!!workerToEdit}
         onClose={() => setWorkerToEdit(null)}
-        onSuccess={() => refetch()}
-      />
-
-      {/* Rate Worker Modal */}
-      <WorkerRatingModal
-        worker={workerToRate}
-        isOpen={!!workerToRate}
-        onClose={() => setWorkerToRate(null)}
         onSuccess={() => refetch()}
       />
 

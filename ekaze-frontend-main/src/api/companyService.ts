@@ -54,10 +54,16 @@ getCompaniesList: async (): Promise<CompanyListItem[]> => {
     
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
-        if (Array.isArray(value)) {
-          value.forEach((item, index) => {
-            formData.append(`${key}[${index}]`, item);
-          });
+        if (key === 'past_experiences' || key === 'work_experiences' || key === 'previous_employers') {
+          formData.append(key, typeof value === 'string' ? value : JSON.stringify(value));
+        } else if (Array.isArray(value)) {
+          if (value.length > 0 && typeof value[0] === 'object' && !(value[0] instanceof File)) {
+            formData.append(key, JSON.stringify(value));
+          } else {
+            value.forEach((item, index) => {
+              formData.append(`${key}[${index}]`, item);
+            });
+          }
         } else if (value instanceof File) {
           formData.append(key, value);
         } else {
@@ -125,10 +131,16 @@ getCompaniesList: async (): Promise<CompanyListItem[]> => {
     
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
-        if (Array.isArray(value)) {
-          value.forEach((item, index) => {
-            formData.append(`${key}[${index}]`, item);
-          });
+        if (key === 'past_experiences' || key === 'work_experiences' || key === 'previous_employers') {
+          formData.append(key, typeof value === 'string' ? value : JSON.stringify(value));
+        } else if (Array.isArray(value)) {
+          if (value.length > 0 && typeof value[0] === 'object' && !(value[0] instanceof File)) {
+            formData.append(key, JSON.stringify(value));
+          } else {
+            value.forEach((item, index) => {
+              formData.append(`${key}[${index}]`, item);
+            });
+          }
         } else if (value instanceof File) {
           formData.append(key, value);
         } else {
