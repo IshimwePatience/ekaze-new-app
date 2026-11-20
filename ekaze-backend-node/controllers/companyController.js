@@ -484,6 +484,14 @@ const updateCompanyWorker = async (req, res, next) => {
       languages_spoken
     } = req.body;
 
+    let uploadedPhoto = null;
+    if (req.files && req.files.length > 0) {
+      const f = req.files.find(item => item.fieldname === 'photo' || item.fieldname === 'profile_photo') || req.files[0];
+      uploadedPhoto = `/uploads/${f.filename}`;
+    } else if (req.file) {
+      uploadedPhoto = `/uploads/${req.file.filename}`;
+    }
+
     if (worker.user) {
       const cleanName = name || (first_name || last_name ? `${first_name || ''} ${last_name || ''}`.trim() : null);
       if (cleanName) worker.user.name = cleanName;
@@ -499,6 +507,9 @@ const updateCompanyWorker = async (req, res, next) => {
       if (req.body.address) worker.user.address = req.body.address;
       if (req.body.gender) worker.user.gender = String(req.body.gender).toLowerCase();
       if (req.body.date_of_birth) worker.user.date_of_birth = req.body.date_of_birth;
+      if (req.body.passport_number) worker.user.passport_number = req.body.passport_number;
+      if (req.body.registration_document_type) worker.user.registration_document_type = req.body.registration_document_type;
+      if (uploadedPhoto) worker.user.profile_photo = uploadedPhoto;
       if (req.body.national_id && req.body.national_id !== worker.user.national_id) {
         const dupUser = await User.findOne({ where: { national_id: req.body.national_id } });
         if (dupUser && dupUser.id !== worker.user.id) {
@@ -528,11 +539,36 @@ const updateCompanyWorker = async (req, res, next) => {
     if (req.body.insurance_provider !== undefined) worker.insurance_provider = req.body.insurance_provider;
     if (req.body.insurance_number !== undefined) worker.insurance_number = req.body.insurance_number;
 
+    let parsedExperiences = null;
+    if (req.body.past_experiences || req.body.work_experiences) {
+      try {
+        const rawExp = req.body.past_experiences || req.body.work_experiences;
+        if (typeof rawExp === 'string') {
+          parsedExperiences = JSON.parse(rawExp);
+        } else if (Array.isArray(rawExp)) {
+          parsedExperiences = rawExp;
+        }
+      } catch (e) {
+        parsedExperiences = null;
+      }
+    }
+
     const existingExt = worker.extended_profile || {};
     worker.extended_profile = {
       ...existingExt,
       ...(req.body.marital_status && { marital_status: req.body.marital_status }),
       ...(req.body.education_level && { education_level: req.body.education_level }),
+      ...((req.body.education_option || req.body.education_field) && {
+        education_option: req.body.education_option || req.body.education_field,
+        education_field: req.body.education_field || req.body.education_option,
+      }),
+      ...(req.body.driving_licence_type && { driving_licence_type: req.body.driving_licence_type }),
+      ...(req.body.driving_licence_number && { driving_licence_number: req.body.driving_licence_number }),
+      ...(req.body.driving_licence_expiry && { driving_licence_expiry: req.body.driving_licence_expiry }),
+      ...(parsedExperiences && {
+        past_experiences: parsedExperiences,
+        previous_employers: parsedExperiences,
+      }),
       ...(req.body.bio && { bio: req.body.bio }),
       ...(req.body.referee_name && {
         referee_1_name: req.body.referee_name,

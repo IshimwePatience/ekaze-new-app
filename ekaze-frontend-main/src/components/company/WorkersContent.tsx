@@ -439,6 +439,9 @@ const WorkersContent = () => {
     if (!workerToEdit?.id) return;
     setIsUpdatingWorker(true);
     try {
+      const pastExperiencesRaw = (formData as any).past_experiences || (formData as any).work_experiences;
+      const pastExperiencesStr = Array.isArray(pastExperiencesRaw) ? JSON.stringify(pastExperiencesRaw) : pastExperiencesRaw;
+
       await companyApi.updateWorker(workerToEdit.id, {
         first_name: formData.first_name,
         last_name: formData.last_name,
@@ -448,6 +451,18 @@ const WorkersContent = () => {
         gender: formData.gender,
         date_of_birth: formData.date_of_birth,
         national_id: formData.national_id,
+        passport_number: (formData as any).passport_number,
+        registration_document_type: (formData as any).registration_document_type,
+        photo: (formData as any).photo,
+        profile_photo: (formData as any).photo,
+        education_level: (formData as any).education_level,
+        education_option: (formData as any).education_option,
+        education_field: (formData as any).education_field,
+        driving_licence_type: (formData as any).driving_licence_type,
+        driving_licence_number: (formData as any).driving_licence_number,
+        driving_licence_expiry: (formData as any).driving_licence_expiry,
+        past_experiences: pastExperiencesStr,
+        work_experiences: pastExperiencesStr,
         district: formData.district,
         sector: formData.sector,
         cell: formData.cell,
@@ -462,7 +477,6 @@ const WorkersContent = () => {
         insurance_type: (formData as any).insurance_type,
         insurance_provider: formData.insurance_provider,
         insurance_number: formData.insurance_number,
-        education_level: (formData as any).education_level,
         marital_status: (formData as any).marital_status,
         bio: (formData as any).bio,
         referee_name: (formData as any).referee_name,
@@ -570,14 +584,13 @@ const WorkersContent = () => {
         <PageHeaderBreadcrumb title="Drivers Management">
           <div className="flex items-center gap-2">
             {/* Import Excel */}
-            <Button
-              size="sm"
-              className="bg-[#2478b8] hover:bg-[#1b6296] text-white text-xs font-semibold px-3 py-1.5 rounded shadow-2xs flex items-center gap-1.5 cursor-pointer"
+            <button
+              type="button"
+              className="text-xs text-slate-500 hover:text-slate-800 transition-colors cursor-pointer bg-transparent border-0 px-2 py-1 font-medium"
               onClick={() => setIsImportModalOpen(true)}
             >
-              <FileSpreadsheet className="w-3.5 h-3.5" />
-              <span>Import Excel</span>
-            </Button>
+              Import Excel
+            </button>
 
             {/* Add Driver */}
             <Button
@@ -925,10 +938,6 @@ const WorkersContent = () => {
                           }
                           items={[
                             {
-                              label: "View Details",
-                              onClick: () => handleViewWorker(worker.id),
-                            },
-                            {
                               label: "Generate Card",
                               onClick: () => handleGenerateSingleCard(worker.id),
                             },
@@ -1108,52 +1117,100 @@ const WorkersContent = () => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* MTN MoMo payment for driver card generation */}
+      {/* MTN MoMo payment for driver card generation - Coursera Style */}
       <AlertDialog
         open={!!cardPayment}
         onOpenChange={(open) => {
           if (!open && cardPayStatus !== "sending" && cardPayStatus !== "waiting") setCardPayment(null);
         }}
       >
-        <AlertDialogContent className="max-w-md">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Pay for Driver Cards (MTN MoMo)</AlertDialogTitle>
-            <AlertDialogDescription asChild>
-              <div className="space-y-3 text-sm text-slate-600">
+        <AlertDialogContent className="max-w-lg p-6 bg-white rounded-xl shadow-2xl border border-slate-200">
+          <AlertDialogHeader className="text-left space-y-1 pb-1">
+            <AlertDialogTitle className="text-lg font-bold text-slate-900 tracking-tight">
+              Payment methods
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+
+          <AlertDialogDescription asChild>
+            <div className="space-y-4 text-left">
+              {/* Payment Method Card Container */}
+              <div className="border border-slate-300 rounded-lg p-5 bg-white space-y-4">
+                {/* Method Title */}
+                <div className="flex items-center gap-2.5 text-[#2478b8] font-bold text-sm">
+                  <CreditCard className="w-5 h-5 text-[#2478b8]" />
+                  <span>MTN Mobile Money (MoMo)</span>
+                </div>
+
+                {/* Summary Breakdown */}
                 {cardPayment && (
-                  <div className="rounded-md bg-slate-50 border border-slate-200 p-3 space-y-1">
-                    <div className="flex justify-between"><span>Fee per card</span><span className="font-semibold">{cardPayment.feePerCard.toLocaleString()} RWF</span></div>
-                    <div className="flex justify-between"><span>Cards to pay</span><span className="font-semibold">{cardPayment.unpaidCount}</span></div>
-                    <div className="flex justify-between border-t border-slate-200 pt-1 mt-1"><span className="font-semibold text-slate-800">Total</span><span className="font-bold text-slate-900">{cardPayment.totalAmount.toLocaleString()} RWF</span></div>
+                  <div className="rounded bg-slate-50 border border-slate-200 p-3 space-y-1.5 text-xs text-slate-600">
+                    <div className="flex justify-between">
+                      <span>Fee per card</span>
+                      <span className="font-semibold text-slate-800">{cardPayment.feePerCard.toLocaleString()} RWF</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Cards to pay</span>
+                      <span className="font-semibold text-slate-800">{cardPayment.unpaidCount}</span>
+                    </div>
+                    <div className="flex justify-between border-t border-slate-200 pt-1.5 mt-1 font-bold text-slate-900">
+                      <span>Total</span>
+                      <span className="text-[#2478b8] text-sm">{cardPayment.totalAmount.toLocaleString()} RWF</span>
+                    </div>
                   </div>
                 )}
-                <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-700">MTN MoMo number</label>
-                  <input
-                    type="tel"
-                    value={cardPayPhone}
-                    onChange={(e) => setCardPayPhone(e.target.value)}
-                    placeholder="078xxxxxxx"
-                    disabled={cardPayStatus === "sending" || cardPayStatus === "waiting"}
-                    className="w-full h-9 px-3 text-sm rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#2478b8]/30 focus:border-[#2478b8]"
-                  />
+
+                {/* Phone Input Box matching reference design */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-800">
+                    Phone Number
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="tel"
+                      value={cardPayPhone}
+                      onChange={(e) => setCardPayPhone(e.target.value)}
+                      placeholder="078xxxxxxx"
+                      disabled={cardPayStatus === "sending" || cardPayStatus === "waiting"}
+                      className="w-full h-10 px-3 pr-24 text-sm rounded border border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[#2478b8] focus:border-[#2478b8]"
+                    />
+                    <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#ffcc00] text-black">
+                        MTN
+                      </span>
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#2478b8] text-white">
+                        MoMo
+                      </span>
+                    </div>
+                  </div>
                 </div>
+
+                {/* Terms Disclaimer Text */}
+                <p className="text-xs text-slate-500 leading-relaxed font-normal">
+                  By providing your phone number, you allow Ekaze to initiate an MTN MoMo prompt of{" "}
+                  <span className="font-semibold text-slate-700">{cardPayment?.totalAmount.toLocaleString() || 100} RWF</span> to
+                  your device to complete driver card generation.
+                </p>
+
+                {/* Status Banners */}
                 {cardPayStatus === "waiting" && (
-                  <div className="flex items-center gap-2 text-[#2478b8]">
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>{cardPayMessage || "Waiting for MTN MoMo approval..."}</span>
+                  <div className="flex items-center gap-2 p-2.5 bg-blue-50 border border-blue-200 text-[#2478b8] rounded text-xs">
+                    <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+                    <span>{cardPayMessage || "Waiting for MTN MoMo approval on your phone (*182*7*1#)..."}</span>
                   </div>
                 )}
                 {cardPayStatus === "failed" && cardPayMessage && (
-                  <div className="text-red-600">{cardPayMessage}</div>
+                  <div className="p-2.5 bg-red-50 border border-red-200 text-red-600 rounded text-xs">
+                    {cardPayMessage}
+                  </div>
                 )}
               </div>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
+            </div>
+          </AlertDialogDescription>
+
+          <AlertDialogFooter className="flex items-center justify-end gap-2 pt-2">
             <AlertDialogCancel
               disabled={cardPayStatus === "sending" || cardPayStatus === "waiting"}
-              className="h-8 text-xs"
+              className="h-9 px-4 text-xs font-semibold text-slate-700 border border-slate-300 rounded hover:bg-slate-50 cursor-pointer"
             >
               Cancel
             </AlertDialogCancel>
@@ -1161,10 +1218,16 @@ const WorkersContent = () => {
               type="button"
               onClick={handlePayForCards}
               disabled={cardPayStatus === "sending" || cardPayStatus === "waiting"}
-              className="h-8 text-xs bg-[#ffcc00] hover:bg-[#e6b800] text-black flex items-center gap-1.5"
+              className="h-9 px-5 text-xs font-semibold bg-[#2478b8] hover:bg-[#1b6296] text-white rounded shadow-sm flex items-center gap-1.5 cursor-pointer"
             >
-              {(cardPayStatus === "sending" || cardPayStatus === "waiting") && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-              <span>{cardPayStatus === "failed" ? "Retry Payment" : "Pay with MoMo"}</span>
+              {(cardPayStatus === "sending" || cardPayStatus === "waiting") && (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              )}
+              <span>
+                {cardPayStatus === "failed"
+                  ? "Retry Payment"
+                  : `Pay ${cardPayment?.totalAmount.toLocaleString() || 100} RWF`}
+              </span>
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

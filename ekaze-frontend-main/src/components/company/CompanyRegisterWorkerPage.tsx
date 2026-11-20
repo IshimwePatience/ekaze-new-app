@@ -93,57 +93,94 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
   const { toast } = useToast();
   const isEditMode = Boolean(initialWorker);
   const userObj = initialWorker?.user || initialWorker || {};
+  const ext = initialWorker?.extended_profile || initialWorker?.extendedProfile || {};
 
   // Active step: 1 (Personal & Identity), 2 (Education & Permit), 3 (Work Experience)
   const [currentStep, setCurrentStep] = useState(1);
 
   // 1. Photo
   const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(userObj.profile_photo || null);
+  const rawPhoto = userObj.profile_photo || userObj.photo || userObj.avatar || initialWorker?.profile_photo || initialWorker?.photo || initialWorker?.business_card_path || null;
+  const initialPhotoPreview = rawPhoto
+    ? (rawPhoto.startsWith("http") || rawPhoto.startsWith("data:") ? rawPhoto : `http://localhost:5000${rawPhoto}`)
+    : null;
+  const [photoPreview, setPhotoPreview] = useState<string | null>(initialPhotoPreview);
 
   // 2. ID or Passport (Typing only, no NIDA verification)
   const [documentType, setDocumentType] = useState<"nida" | "passport">(
     userObj.registration_document_type === "passport" || userObj.passport_number ? "passport" : "nida"
   );
-  const [idNumber, setIdNumber] = useState(userObj.national_id || userObj.passport_number || "");
+  const [idNumber, setIdNumber] = useState(userObj.national_id || userObj.passport_number || initialWorker?.national_id || "");
 
   // 3. Personal Details
   const [firstName, setFirstName] = useState(userObj.first_name || (userObj.name ? userObj.name.split(" ")[0] : ""));
   const [lastName, setLastName] = useState(userObj.last_name || (userObj.name ? userObj.name.split(" ").slice(1).join(" ") : ""));
-  const [countryCode, setCountryCode] = useState("+250");
-  const [phoneRaw, setPhoneRaw] = useState(
-    userObj.phone ? userObj.phone.replace(/^\+\d{1,4}/, "") : ""
-  );
-  const [email, setEmail] = useState(userObj.email || ""); // Optional
+
+  // Extract country dial code and raw phone
+  let detectedCode = "+250";
+  let detectedPhone = "";
+  if (userObj.phone) {
+    const rawP = String(userObj.phone).trim();
+    const matchedDial = COUNTRY_DIAL_CODES.find((c) => rawP.startsWith(c.code));
+    if (matchedDial) {
+      detectedCode = matchedDial.code;
+      detectedPhone = rawP.slice(matchedDial.code.length);
+    } else if (rawP.startsWith("+")) {
+      const match = rawP.match(/^(\+\d{1,4})(.*)$/);
+      if (match) {
+        detectedCode = match[1];
+        detectedPhone = match[2];
+      }
+    } else {
+      detectedPhone = rawP;
+    }
+  }
+
+  const [countryCode, setCountryCode] = useState(detectedCode);
+  const [phoneRaw, setPhoneRaw] = useState(detectedPhone);
+  const [email, setEmail] = useState(userObj.email || initialWorker?.email || ""); // Optional
   const [gender, setGender] = useState<"male" | "female">(
-    (userObj.gender?.toLowerCase() === "female" ? "female" : "male")
+    ((userObj.gender || initialWorker?.gender)?.toLowerCase() === "female" ? "female" : "male")
   );
   const [dateOfBirth, setDateOfBirth] = useState(
-    userObj.date_of_birth ? String(userObj.date_of_birth).split("T")[0] : ""
+    userObj.date_of_birth ? String(userObj.date_of_birth).split("T")[0] : (initialWorker?.date_of_birth ? String(initialWorker.date_of_birth).split("T")[0] : "")
   );
 
   // 4. Education Background
   const [educationLevel, setEducationLevel] = useState(
-    initialWorker?.extended_profile?.education_level || "secondary"
+    ext.education_level || initialWorker?.education_level || "secondary"
   );
   const [educationField, setEducationField] = useState(
-    initialWorker?.extended_profile?.education_option || initialWorker?.extended_profile?.education_field || ""
+    ext.education_option || ext.education_field || initialWorker?.education_option || initialWorker?.education_field || ""
   );
 
   // 5. Category Permit (Driving License)
   const [permitCategory, setPermitCategory] = useState(
-    initialWorker?.extended_profile?.driving_licence_type || "C"
+    ext.driving_licence_type || initialWorker?.driving_licence_type || "C"
   );
   const [permitNumber, setPermitNumber] = useState(
-    initialWorker?.extended_profile?.driving_licence_number || ""
+    ext.driving_licence_number || initialWorker?.driving_licence_number || ""
   );
   const [permitExpiryDate, setPermitExpiryDate] = useState(
-    initialWorker?.extended_profile?.driving_licence_expiry || ""
+    ext.driving_licence_expiry || initialWorker?.driving_licence_expiry || ""
   );
 
   // 6. Working Experience Part (Dynamic past employers)
-  const initialExperiences: WorkExperienceItem[] = Array.isArray(initialWorker?.extended_profile?.past_experiences) && initialWorker.extended_profile.past_experiences.length > 0
-    ? initialWorker.extended_profile.past_experiences
+  let parsedExperiences: WorkExperienceItem[] = [];
+  if (Array.isArray(ext.past_experiences) && ext.past_experiences.length > 0) {
+    parsedExperiences = ext.past_experiences;
+  } else if (Array.isArray(ext.work_experiences) && ext.work_experiences.length > 0) {
+    parsedExperiences = ext.work_experiences;
+  } else if (Array.isArray(initialWorker?.past_experiences) && initialWorker.past_experiences.length > 0) {
+    parsedExperiences = initialWorker.past_experiences;
+  } else if (typeof ext.past_experiences === "string") {
+    try {
+      parsedExperiences = JSON.parse(ext.past_experiences);
+    } catch {}
+  }
+
+  const initialExperiences: WorkExperienceItem[] = parsedExperiences.length > 0
+    ? parsedExperiences
     : [
         {
           id: "exp-1",
