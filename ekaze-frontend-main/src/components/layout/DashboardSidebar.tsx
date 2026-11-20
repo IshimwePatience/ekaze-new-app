@@ -278,31 +278,12 @@ export const DashboardSidebar = ({
   return (
     <aside
       className={cn(
-        "bg-[#f8fafd] text-[#444746] flex flex-col h-full transition-all duration-300 z-30 select-none shrink-0 border-r border-slate-200/50",
+        "bg-[#f8fafd] text-[#444746] flex flex-col h-full transition-all duration-300 z-30 select-none shrink-0 border-r-0",
         isCollapsed ? "w-16 px-1.5" : "w-64 min-w-[256px] px-3"
       )}
     >
-      {/* Top Sidebar Header: Burger Menu + Logo */}
-      <div className="h-16 flex items-center justify-between px-2 shrink-0">
-        <div className="flex items-center gap-3 min-w-0">
-          <button
-            onClick={onToggleCollapse}
-            className="p-2 rounded-full text-[#444746] hover:bg-black/5 transition-colors cursor-pointer outline-none shrink-0"
-            title="Toggle Navigation Menu"
-          >
-            <Menu className="w-5 h-5 stroke-[2.2] text-[#444746]" />
-          </button>
-
-          {!isCollapsed && (
-            <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer">
-              <img src={logo} alt="Ekaze" className="h-7 w-auto object-contain" />
-            </a>
-          )}
-        </div>
-      </div>
-
       {/* Navigation Links List */}
-      <nav className="flex-1 py-2 space-y-1 overflow-y-auto">
+      <nav className="flex-1 py-3 space-y-1 overflow-y-auto">
         {menuGroups.map((group, groupIdx) => (
           <div key={groupIdx} className="space-y-1">
             {!isCollapsed && group.category && (

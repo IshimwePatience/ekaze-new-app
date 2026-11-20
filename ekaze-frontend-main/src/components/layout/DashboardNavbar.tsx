@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Menu,
   Search,
@@ -394,13 +394,30 @@ export const DashboardNavbar = ({
 
   return (
     <>
-      <header className="sticky top-0 z-40 h-16 bg-white border-b border-slate-200/90 shadow-2xs flex items-center justify-between px-4 md:px-6 flex-shrink-0 select-none">
+      <header className="sticky top-0 z-40 h-16 bg-[#f8fafd] border-b-0 shadow-none flex items-center justify-between px-4 md:px-6 flex-shrink-0 select-none">
+
+        {/* LEFT LOGO & TOGGLE */}
+        <div className="flex items-center gap-2 shrink-0 mr-2 md:mr-4">
+          {onToggleSidebar && (
+            <button
+              onClick={onToggleSidebar}
+              className="p-2 rounded-full text-[#444746] hover:bg-black/5 transition-colors cursor-pointer outline-none"
+              title="Toggle Menu"
+            >
+              <Menu className="w-5 h-5 text-[#444746]" />
+            </button>
+          )}
+
+          <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer">
+            <img src={logo} alt="Ekaze" className="h-7 w-auto object-contain" />
+          </a>
+        </div>
 
         {/* LEFT ALIGNED SEARCH BAR */}
         <div className="flex-1 max-w-xl md:max-w-2xl flex justify-start pl-2 md:pl-4 mr-auto">
           <div
             onClick={() => setIsSearchOpen(true)}
-            className="w-full flex items-center justify-between h-9 px-3.5 rounded-xl border border-slate-300 bg-white hover:border-[#2478b8] hover:shadow-xs transition-all cursor-pointer group"
+            className="w-full flex items-center justify-between h-10 px-4 rounded-full bg-[#edf2fc] hover:bg-[#e9eef6] focus-within:bg-white focus-within:shadow-[0_1px_3px_0_rgba(60,64,67,0.3)] transition-all cursor-pointer group"
           >
             <span className="text-xs text-slate-500 group-hover:text-slate-700 truncate font-normal">
               {searchPlaceholder}
