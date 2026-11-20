@@ -259,7 +259,6 @@ export const DashboardSidebar = ({
             category: "DETECT & MONITOR",
             items: [
               { id: "incidents", label: "Incident Reports", icon: ConsoleAlertIcon },
-              { id: "payments", label: "Transactions & Revenue", icon: ConsoleBillingIcon },
               { id: "help-center", label: "Help & Feedback Center", icon: HelpCircle },
             ],
           },

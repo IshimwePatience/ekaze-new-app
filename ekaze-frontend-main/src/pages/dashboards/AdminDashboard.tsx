@@ -19,9 +19,9 @@ const AdminDashboard = () => {
 
   const getInitialTab = () => {
     const urlTab = searchParams.get("tab");
-    if (urlTab) return urlTab;
+    if (urlTab && urlTab !== "payments") return urlTab;
     const localTab = localStorage.getItem("admin_active_tab");
-    if (localTab) return localTab;
+    if (localTab && localTab !== "payments") return localTab;
     return "overview";
   };
 

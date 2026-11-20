@@ -433,7 +433,6 @@ const AdminHeader = ({ isCollapsed, setIsCollapsed, setIsMobileOpen }: AdminHead
     { id: "companies", label: t("admin.adminSidebar.items.companies"),  icon: Building2 },
     { id: "workers",   label: t("admin.adminSidebar.items.workers"),    icon: UserCheck },
     { id: "incidents", label: t("admin.adminSidebar.items.incidents"),  icon: AlertTriangle },
-    { id: "payments",  label: t("admin.adminSidebar.items.payments"),   icon: CreditCard },
     { id: "users",     label: t("admin.adminSidebar.items.users"),      icon: Users },
     { id: "analytics", label: t("admin.adminSidebar.items.analytics"),  icon: BarChart3 },
     { id: "settings",  label: t("admin.adminSidebar.items.settings"),   icon: Settings },

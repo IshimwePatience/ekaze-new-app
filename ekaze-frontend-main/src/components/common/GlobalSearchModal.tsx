@@ -344,14 +344,6 @@ const ROLE_SEARCH_CATALOG: Record<string, { recommended: SearchItem[]; allItems:
         keywords: ["companies", "agencies", "accreditation"],
       },
       {
-        id: "a-payments",
-        title: "Transactions & Revenue",
-        desc: "System-wide transactions, MoMo fees & escrow audit",
-        path: "/admin?tab=payments",
-        icon: ConsoleBillingIcon,
-        keywords: ["payments", "transactions", "finance", "ledger", "revenue"],
-      },
-      {
         id: "a-incidents",
         title: "Incident Reports",
         desc: "Platform security alerts, disputes & police escalations",
@@ -408,14 +400,6 @@ const ROLE_SEARCH_CATALOG: Record<string, { recommended: SearchItem[]; allItems:
         path: "/admin?tab=incidents",
         icon: ConsoleAlertIcon,
         keywords: ["incidents", "safety", "police", "alerts", "escalations"],
-      },
-      {
-        id: "a-payments",
-        title: "Transactions & Revenue",
-        desc: "System-wide transactions, MoMo fees & escrow audit",
-        path: "/admin?tab=payments",
-        icon: ConsoleBillingIcon,
-        keywords: ["payments", "transactions", "finance", "ledger", "revenue"],
       },
       {
         id: "a-settings",

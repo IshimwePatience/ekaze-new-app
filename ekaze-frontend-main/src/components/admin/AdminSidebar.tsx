@@ -65,7 +65,6 @@ const AdminSidebar = ({
     {
       sectionKey: "admin.adminSidebar.sections.operations" as const,
       items: [
-        { id: "payments", labelKey: "admin.adminSidebar.items.payments" as const, icon: CreditCard },
         { id: "agents", labelKey: "Agents" as const, icon: Users },
         { id: "users", labelKey: "admin.adminSidebar.items.users" as const, icon: Users },
         { id: "map", labelKey: "Map" as const, icon: MapPin },
