@@ -75,10 +75,13 @@ export const CompanyWorkerRatingsPage: React.FC<CompanyWorkerRatingsPageProps> =
     worker?.business_card_path ||
     null;
 
-  const resolvePhotoUrl = (p: string | null) => {
+  const resolvePhotoUrl = (p: string | null | undefined) => {
     if (!p) return null;
     if (p.startsWith("http://") || p.startsWith("https://") || p.startsWith("data:")) return p;
-    return `${window.location.origin}${p.startsWith("/") ? "" : "/"}${p}`;
+    const base = import.meta.env.VITE_API_URL
+      ? import.meta.env.VITE_API_URL.replace(/\/api(\/v1)?\/?$/, "")
+      : (typeof window !== "undefined" && window.location.hostname === "localhost" ? "http://localhost:5000" : "https://ekaze.benofinance.rw");
+    return `${base}${p.startsWith("/") ? "" : "/"}${p}`;
   };
 
   const driverPhoto = resolvePhotoUrl(rawPhoto);
@@ -331,16 +334,20 @@ export const CompanyWorkerRatingsPage: React.FC<CompanyWorkerRatingsPageProps> =
             return (
               <div
                 key={rev.id || idx}
-                className="flex items-start gap-5 sm:gap-6 p-4 rounded-xl hover:bg-slate-50/50 transition-colors"
+                className="flex items-start gap-5 sm:gap-6 p-2 rounded-xl"
               >
                 {/* Left Circular Avatar with Red Background/Border (Cloning Picture 2) */}
                 <div className="shrink-0">
                   <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#c9302c] p-1 flex items-center justify-center overflow-hidden shadow-sm">
-                    {rev.reviewer_photo ? (
+                    {(rev.reviewer_photo || (rev as any).company_logo || (rev as any).logo || (rev as any).photo) ? (
                       <img
-                        src={resolvePhotoUrl(rev.reviewer_photo) || ""}
+                        src={resolvePhotoUrl(rev.reviewer_photo || (rev as any).company_logo || (rev as any).logo || (rev as any).photo) || ""}
                         alt={companyName}
-                        className="w-full h-full rounded-full object-cover grayscale"
+                        className="w-full h-full rounded-full object-cover"
+                        onError={(e) => {
+                          // Hide broken image so initial fallback shows
+                          (e.target as HTMLElement).style.display = "none";
+                        }}
                       />
                     ) : (
                       <div className="w-full h-full rounded-full bg-[#b82a26] flex items-center justify-center text-white font-bold text-2xl sm:text-3xl">

@@ -41,7 +41,7 @@ const CompanyTransactions = () => {
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
 
   const filters: CompanyTransactionFilters = {
-    status: statusFilter !== "all" ? statusFilter : undefined,
+    status: "completed",
     search: searchTerm || undefined,
     per_page: perPage,
   };
@@ -49,7 +49,14 @@ const CompanyTransactions = () => {
   const { data, isLoading, isError } = useCompanyTransactions(currentPage, filters);
 
   const transactions: CompanyTransactionItem[] = useMemo(() => {
-    const list = data?.data?.data || [];
+    const rawList = data?.data?.data || [];
+    // Only show successful payments as requested
+    const list = rawList.filter(
+      (t) =>
+        t.status === "completed" ||
+        t.status === "successful" ||
+        t.status === "paid"
+    );
     if (!searchTerm.trim()) return list;
     const term = searchTerm.toLowerCase();
     return list.filter(
@@ -94,7 +101,7 @@ const CompanyTransactions = () => {
   const handleExport = async (fmt: "csv" | "pdf" | "json" = "pdf") => {
     try {
       const blob = await companyTransactionApi.exportTransactions(fmt, {
-        status: statusFilter !== "all" ? statusFilter : undefined,
+        status: "completed",
       });
       const mimeTypes = { json: "application/json", csv: "text/csv", pdf: "application/pdf" };
       const url = window.URL.createObjectURL(new Blob([blob], { type: mimeTypes[fmt] }));
@@ -110,18 +117,7 @@ const CompanyTransactions = () => {
     }
   };
 
-  const filterCategories: FilterCategory[] = [
-    {
-      id: "status",
-      label: "Payment Status",
-      options: [
-        { value: "all", label: "All Status" },
-        { value: "completed", label: "Completed" },
-        { value: "pending", label: "Pending" },
-        { value: "failed", label: "Failed" },
-      ],
-    },
-  ];
+  const filterCategories: FilterCategory[] = [];
 
   return (
     <div className="w-full space-y-4 animate-in fade-in duration-300">
@@ -258,9 +254,6 @@ const CompanyTransactions = () => {
                     />
                   </TableHead>
                   <TableHead className="text-xs font-semibold text-slate-900 font-sans py-3">
-                    Reference ID
-                  </TableHead>
-                  <TableHead className="text-xs font-semibold text-slate-900 font-sans py-3">
                     Cards Paid For
                   </TableHead>
                   <TableHead className="text-xs font-semibold text-slate-900 font-sans py-3">
@@ -275,11 +268,8 @@ const CompanyTransactions = () => {
                   <TableHead className="text-xs font-semibold text-slate-900 font-sans py-3">
                     Status
                   </TableHead>
-                  <TableHead className="text-xs font-semibold text-slate-900 font-sans py-3">
+                  <TableHead className="text-xs font-semibold text-slate-900 font-sans py-3 pr-4">
                     Date Paid
-                  </TableHead>
-                  <TableHead className="text-xs font-semibold text-slate-900 font-sans py-3 pr-4 text-right">
-                    Actions
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -316,13 +306,6 @@ const CompanyTransactions = () => {
                           onCheckedChange={() => handleToggleSelect(transaction.id)}
                           className="border-slate-400 rounded-sm"
                         />
-                      </TableCell>
-
-                      {/* Reference ID */}
-                      <TableCell className="py-3">
-                        <span className="text-xs font-semibold text-slate-900 font-mono">
-                          {transaction.payment_reference || transaction.transaction_id || `REF-${transaction.id}`}
-                        </span>
                       </TableCell>
 
                       {/* Cards Paid For */}
@@ -375,28 +358,12 @@ const CompanyTransactions = () => {
                       </TableCell>
 
                       {/* Date */}
-                      <TableCell className="py-3">
+                      <TableCell className="py-3 pr-4">
                         <span className="text-xs text-slate-600 font-sans">
                           {transaction.created_at
                             ? format(new Date(transaction.created_at), "MMM dd, yyyy 'at' h:mm a")
                             : "—"}
                         </span>
-                      </TableCell>
-
-                      {/* Actions */}
-                      <TableCell className="py-3 pr-4 text-right">
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => {
-                            setSelectedTransactionId(transaction.id);
-                            setDetailsModalOpen(true);
-                          }}
-                          className="h-8 w-8 p-0 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded cursor-pointer"
-                          title="View Details"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </Button>
                       </TableCell>
                     </TableRow>
                   );

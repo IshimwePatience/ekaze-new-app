@@ -3196,10 +3196,46 @@ const getCompanyWorkerRatings = async (req, res, next) => {
 
     const ratings = Array.isArray(ext.ratings) ? ext.ratings : [];
 
+    // Enrich ratings with company logo / profile photo if missing
+    const enrichedRatings = await Promise.all(
+      ratings.map(async (r) => {
+        let photo = r.reviewer_photo || r.company_logo || r.logo || null;
+        if (!photo) {
+          let comp = null;
+          if (r.company_id) {
+            comp = await Company.findByPk(r.company_id, {
+              include: [{ model: User, as: 'user' }]
+            }).catch(() => null);
+          }
+          if (!comp && (r.company_name || r.reviewer_name)) {
+            const nameToFind = r.company_name || r.reviewer_name;
+            comp = await Company.findOne({
+              where: { company_name: nameToFind },
+              include: [{ model: User, as: 'user' }]
+            }).catch(() => null);
+            if (!comp) {
+              const u = await User.findOne({ where: { name: nameToFind } }).catch(() => null);
+              if (u) {
+                photo = u.profile_photo;
+              }
+            }
+          }
+          if (comp) {
+            photo = comp.logo || comp.user?.profile_photo || null;
+          }
+        }
+        return {
+          ...r,
+          reviewer_photo: photo,
+          company_logo: photo
+        };
+      })
+    );
+
     return res.status(200).json({
       success: true,
-      data: ratings,
-      total_reviews: ratings.length,
+      data: enrichedRatings,
+      total_reviews: enrichedRatings.length,
       average_rating: worker.rating ? parseFloat(worker.rating) : 5.0
     });
   } catch (error) {
@@ -3214,8 +3250,13 @@ const rateCompanyWorker = async (req, res, next) => {
     const numericRating = Math.max(1, Math.min(5, Number(rating) || 5));
     const feedbackText = (comment || review || '').trim();
 
-    const company = await Company.findOne({ where: { user_id: req.user.id } }).catch(() => null);
-    const companyName = company?.company_name || req.user?.name || 'Partner Company';
+    const company = await Company.findOne({
+      where: { user_id: req.user.id },
+      include: [{ model: User, as: 'user' }]
+    }).catch(() => null);
+    const userRecord = await User.findByPk(req.user.id).catch(() => null);
+    const companyName = company?.company_name || req.user?.name || userRecord?.name || 'Partner Company';
+    const companyLogo = company?.logo || company?.user?.profile_photo || userRecord?.profile_photo || req.user?.profile_photo || null;
 
     let worker = await Worker.findByPk(workerId, {
       include: [{ model: User, as: 'user' }]
@@ -3245,6 +3286,8 @@ const rateCompanyWorker = async (req, res, next) => {
       company_name: companyName,
       reviewer_name: companyName,
       reviewer_role: 'company',
+      reviewer_photo: companyLogo,
+      company_logo: companyLogo,
       created_at: new Date().toISOString()
     };
 
