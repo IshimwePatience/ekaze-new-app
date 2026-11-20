@@ -324,8 +324,8 @@ const Features = () => {
           {/* Right Column: Eyebrow, Big Title, Body Description (Exact match to User's Image 1) */}
           <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
             
-            {/* Emerald Eyebrow text */}
-            <p className="text-[#059669] font-bold text-sm sm:text-base tracking-normal">
+            {/* Blue Eyebrow text */}
+            <p className="text-[#2478b8] font-bold text-sm sm:text-base tracking-normal">
               {isRw ? current.eyebrowRw : current.eyebrow}
             </p>
 
@@ -356,25 +356,9 @@ const Features = () => {
 
             {/* Find Driver CTA Button */}
             <div className="pt-2 flex items-center gap-4">
-              {/* PREVIOUS WORKER BUTTONS:
               <button
                 onClick={() => navigate(`/search-worker?category=${current.categoryFilter}`)}
-                className="bg-[#059669] hover:bg-[#047857] text-white font-bold text-xs sm:text-sm px-7 py-3 rounded-xl transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2 cursor-pointer border-0"
-              >
-                <span>{isRw ? "Shaka Uyu Mukozi" : `Find ${current.title.split(",")[0]}`}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-
-              <button
-                onClick={() => navigate("/search-worker")}
-                className="text-slate-600 hover:text-slate-900 font-semibold text-xs sm:text-sm hover:underline cursor-pointer bg-transparent border-0"
-              >
-                {isRw ? "Reba Abakozi Bose" : "Browse All Workers"}
-              </button>
-              */}
-              <button
-                onClick={() => navigate(`/search-worker?category=${current.categoryFilter}`)}
-                className="bg-[#059669] hover:bg-[#047857] text-white font-bold text-xs sm:text-sm px-7 py-3 rounded-xl transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2 cursor-pointer border-0"
+                className="bg-[#2478b8] hover:bg-[#1b6296] text-white font-bold text-xs sm:text-sm px-7 py-3 rounded-xl transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2 cursor-pointer border-0"
               >
                 <span>{isRw ? "Shaka Uyu Mushoferi" : `Find ${current.title.split(",")[0]}`}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -418,9 +402,9 @@ const Features = () => {
               aria-valuemin={0}
               aria-valuemax={100}
             >
-              {/* Sliding emerald progress thumb */}
+              {/* Sliding blue progress thumb */}
               <div
-                className="h-full bg-[#059669] rounded-full transition-all duration-300 ease-out"
+                className="h-full bg-[#2478b8] rounded-full transition-all duration-300 ease-out"
                 style={{
                   width: `${thumbWidthPercent}%`,
                   transform: `translateX(${thumbOffsetPercent * (100 / thumbWidthPercent)}%)`,
@@ -431,7 +415,7 @@ const Features = () => {
             <button
               onClick={handleNext}
               aria-label="Next Worker"
-              className="w-9 h-9 rounded-full bg-[#059669] text-white hover:bg-[#047857] flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95"
+              className="w-9 h-9 rounded-full bg-[#2478b8] text-white hover:bg-[#1b6296] flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -445,7 +429,7 @@ const Features = () => {
                 onClick={() => setCurrentIndex(idx)}
                 aria-label={`Go to ${slide.title}`}
                 className={`h-2 rounded-full transition-all duration-300 cursor-pointer border-0 ${
-                  currentIndex === idx ? "w-7 bg-[#059669]" : "w-2 bg-slate-300 hover:bg-slate-400"
+                  currentIndex === idx ? "w-7 bg-[#2478b8]" : "w-2 bg-slate-300 hover:bg-slate-400"
                 }`}
               />
             ))}

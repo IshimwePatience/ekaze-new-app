@@ -165,7 +165,7 @@ resendOtp: async (data: OtpResendRequest): Promise<OtpResendResponse> => {
   },
 
   // Set Initial / First Login Password
-  setInitialPassword: async (data: { new_password: string; confirm_password: string }): Promise<{ success: boolean; message: string; user?: any }> => {
+  setInitialPassword: async (data: { new_password: string; confirm_password: string; user_id?: string | number }): Promise<{ success: boolean; message: string; user?: any }> => {
     const response = await api.post<{ success: boolean; message: string; user?: any }>('/auth/set-initial-password', data);
     return response.data;
   },

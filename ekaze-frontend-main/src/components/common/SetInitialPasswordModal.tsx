@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { authApi } from "@/api/authApi";
+import { useAuth } from "@/hooks/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -15,10 +16,16 @@ export const SetInitialPasswordModal: React.FC<SetInitialPasswordModalProps> = (
   onSuccess,
 }) => {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
+  const [open, setOpen] = useState(isOpen);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setOpen(isOpen);
+  }, [isOpen]);
 
   const isMinLength = newPassword.length >= 6;
   const isMatching = newPassword.length > 0 && newPassword === confirmPassword;
@@ -47,28 +54,55 @@ export const SetInitialPasswordModal: React.FC<SetInitialPasswordModalProps> = (
       const res = await authApi.setInitialPassword({
         new_password: newPassword,
         confirm_password: confirmPassword,
+        user_id: user?.id,
       });
 
       if (res.success) {
         toast.success("Password updated successfully! Welcome to your dashboard.");
 
-        // Update user state across query cache and localStorage
+        // 1. Immediately close modal locally
+        setOpen(false);
+
+        // 2. Update user in localStorage & sessionStorage under standard keys ('user' and 'ekaze_user')
+        ['user', 'ekaze_user'].forEach((key) => {
+          try {
+            const raw = localStorage.getItem(key);
+            if (raw) {
+              const parsed = JSON.parse(raw);
+              parsed.must_change_password = false;
+              localStorage.setItem(key, JSON.stringify(parsed));
+            }
+          } catch (e) {}
+
+          try {
+            const raw = sessionStorage.getItem(key);
+            if (raw) {
+              const parsed = JSON.parse(raw);
+              parsed.must_change_password = false;
+              sessionStorage.setItem(key, JSON.stringify(parsed));
+            }
+          } catch (e) {}
+        });
+
+        // 3. Update query cache
+        queryClient.setQueryData(["user"], (old: any) => {
+          if (!old) return old;
+          return {
+            ...old,
+            must_change_password: false,
+            user: { ...(old.user || {}), must_change_password: false },
+          };
+        });
         queryClient.invalidateQueries({ queryKey: ["currentUser"] });
         queryClient.invalidateQueries({ queryKey: ["user"] });
 
-        const storedUser = localStorage.getItem("ekaze_user");
-        if (storedUser) {
-          try {
-            const parsed = JSON.parse(storedUser);
-            parsed.must_change_password = false;
-            localStorage.setItem("ekaze_user", JSON.stringify(parsed));
-          } catch (e) {
-            // ignore
-          }
-        }
-
+        // 4. Trigger events & callback
         window.dispatchEvent(new Event("user_updated"));
         if (onSuccess) onSuccess();
+      } else {
+        const msg = res.message || "Failed to update password. Please try again.";
+        setError(msg);
+        toast.error(msg);
       }
     } catch (err: any) {
       const msg =
@@ -83,7 +117,7 @@ export const SetInitialPasswordModal: React.FC<SetInitialPasswordModalProps> = (
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
+    <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent
         hideCloseButton={true}
         className="sm:max-w-md bg-white rounded-[8px] p-6 shadow-xl border border-slate-200 z-[9999] [&>button]:hidden"

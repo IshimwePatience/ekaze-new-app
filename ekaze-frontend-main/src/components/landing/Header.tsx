@@ -284,10 +284,10 @@ const Header = () => {
                 onClick={(e) => handleNavClick(e, "#features")}
                 className={`font-semibold whitespace-nowrap transition-colors cursor-pointer drop-shadow-xs ${
                   isActiveLink("#features")
-                    ? "text-[#34D399]"
+                    ? "text-[#60a5fa]"
                     : isHomePage
-                      ? "text-white/95 hover:text-[#34D399]"
-                      : "text-slate-800 hover:text-[#059669]"
+                      ? "text-white/95 hover:text-[#60a5fa]"
+                      : "text-slate-800 hover:text-[#2478b8]"
                 }`}
               >
                 {language === "kin" ? "Abashoferi" : "Fleet & Drivers"}
@@ -296,7 +296,7 @@ const Header = () => {
                 type="button"
                 onClick={() => navigate("/who-we-are")}
                 className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${
-                  isHomePage ? "text-white/95 hover:text-[#34D399]" : "text-slate-800 hover:text-[#059669]"
+                  isHomePage ? "text-white/95 hover:text-[#60a5fa]" : "text-slate-800 hover:text-[#2478b8]"
                 }`}
               >
                 {language === "kin" ? "Ibiciro" : "Pricing"}
@@ -305,7 +305,7 @@ const Header = () => {
                 type="button"
                 onClick={() => setIsHelpOpen(true)}
                 className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${
-                  isHomePage ? "text-white/95 hover:text-[#34D399]" : "text-slate-800 hover:text-[#059669]"
+                  isHomePage ? "text-white/95 hover:text-[#60a5fa]" : "text-slate-800 hover:text-[#2478b8]"
                 }`}
               >
                 {language === "kin" ? "Ubufasha" : "Support"}
@@ -318,15 +318,15 @@ const Header = () => {
                 widthClass="w-28 min-w-[7rem]"
                 trigger={
                   <button
-                    className={`bg-transparent hover:text-[#34D399] transition-all cursor-pointer flex items-center gap-1.5 px-2 py-0.5 border-0 shadow-none outline-none drop-shadow-xs ${
+                    className={`bg-transparent hover:text-[#60a5fa] transition-all cursor-pointer flex items-center gap-1.5 px-2 py-0.5 border-0 shadow-none outline-none drop-shadow-xs ${
                       isHomePage ? "text-white" : "text-slate-800"
                     }`}
                   >
-                    <Languages className="w-3.5 h-3.5 text-[#34D399]" />
+                    <Languages className="w-3.5 h-3.5 text-[#60a5fa]" />
                     <span className="text-xs font-bold tracking-tight">
                       {currentLanguage?.short || (language === "kin" ? "KIN" : "EN")}
                     </span>
-                    <span className="text-[#34D399] text-[9px] transform scale-y-75 font-bold">▼</span>
+                    <span className="text-[#60a5fa] text-[9px] transform scale-y-75 font-bold">▼</span>
                   </button>
                 }
                 items={languages.map((lang) => ({
@@ -339,9 +339,9 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Tier 2: Floating Rounded Emerald Green Pill Navbar (#059669 with crisp white text) */}
+        {/* Tier 2: Floating Rounded Blue Pill Navbar (#2478b8 with crisp white text) */}
         <div className={`container mx-auto max-w-6xl px-4 sm:px-6 pointer-events-auto transition-all duration-300 ${scrolled ? "py-2.5" : "pb-3 pt-1"}`}>
-          <div className="w-full h-[60px] sm:h-[64px] bg-[#059669] text-white rounded-xl sm:rounded-2xl shadow-lg border border-emerald-400/25 px-4 sm:px-7 flex items-center justify-between">
+          <div className="w-full h-[60px] sm:h-[64px] bg-[#2478b8] text-white rounded-xl sm:rounded-2xl shadow-lg border border-sky-400/25 px-4 sm:px-7 flex items-center justify-between">
             {/* Left Group: Brand Logo + Navigation Links */}
             <div className="flex items-center gap-5 lg:gap-8">
               <a
@@ -361,11 +361,10 @@ const Header = () => {
                       key={link.label}
                       href={link.href}
                       onClick={(e) => handleNavClick(e, link.href)}
-                      className={`relative px-3.5 py-2 text-sm md:text-[14.5px] rounded-xl transition-all duration-200 cursor-pointer inline-flex items-center gap-1 ${
-                        active
-                          ? "bg-white/20 text-white font-bold shadow-2xs"
-                          : "text-white/90 hover:text-white hover:bg-white/10 font-semibold"
-                      }`}
+                      className={`relative px-3.5 py-2 text-sm md:text-[14.5px] rounded-xl transition-all duration-200 cursor-pointer inline-flex items-center gap-1 ${active
+                        ? "bg-white/20 text-white font-bold shadow-2xs"
+                        : "text-white/90 hover:text-white hover:bg-white/10 font-semibold"
+                        }`}
                     >
                       <span>{link.label}</span>
                     </a>
@@ -385,7 +384,7 @@ const Header = () => {
                       className="h-9 gap-2 px-3 rounded-full transition-all shadow-none bg-white/15 hover:bg-white/25 text-white cursor-pointer"
                     >
                       <div className="h-6 w-6 rounded-full bg-white flex items-center justify-center">
-                        <span className="text-[10px] font-bold text-[#059669]">{getUserInitials()}</span>
+                        <span className="text-[10px] font-bold text-[#2478b8]">{getUserInitials()}</span>
                       </div>
                       <span className="text-xs font-semibold">{user?.name}</span>
                       <ChevronDown className="h-3.5 w-3.5 text-white/80" />
@@ -411,14 +410,14 @@ const Header = () => {
                     <button
                       type="button"
                       onClick={() => setIsLoginDropdownOpen(!isLoginDropdownOpen)}
-                      className="border border-white bg-white hover:bg-emerald-50 text-[#059669] font-bold text-sm px-4 py-2 rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                      className="border border-white bg-white hover:bg-blue-50 text-[#2478b8] font-bold text-sm px-4 py-2 rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm"
                     >
-                      <div className="w-5 h-5 rounded-full bg-[#059669] text-white flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full bg-[#2478b8] text-white flex items-center justify-center">
                         <User className="w-3 h-3 fill-white" />
                       </div>
                       <span>Log In</span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 text-[#059669] transition-transform duration-200 ${
+                        className={`w-3.5 h-3.5 text-[#2478b8] transition-transform duration-200 ${
                           isLoginDropdownOpen ? "rotate-180" : ""
                         }`}
                       />
@@ -460,17 +459,16 @@ const Header = () => {
 
         {/* Mobile Dropdown */}
         {isMenuOpen && (
-          <div className="md:hidden pointer-events-auto border border-emerald-400/25 mx-4 mb-3 rounded-xl p-4 space-y-2 bg-[#047857] text-white shadow-xl">
+          <div className="md:hidden pointer-events-auto border border-sky-400/25 mx-4 mb-3 rounded-xl p-4 space-y-2 bg-[#1b6296] text-white shadow-xl">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`block text-sm py-2 px-3.5 rounded-xl cursor-pointer transition-colors ${
-                  isActiveLink(link.href)
-                    ? "bg-white/20 text-white font-bold"
-                    : "text-white/90 hover:text-white hover:bg-white/10 font-medium"
-                }`}
+                className={`block text-sm py-2 px-3.5 rounded-xl cursor-pointer transition-colors ${isActiveLink(link.href)
+                  ? "bg-white/20 text-white font-bold"
+                  : "text-white/90 hover:text-white hover:bg-white/10 font-medium"
+                  }`}
               >
                 {link.label}
               </a>
@@ -480,7 +478,7 @@ const Header = () => {
                 <button
                   type="button"
                   onClick={() => { setIsLoginDropdownOpen(true); setIsMenuOpen(false); }}
-                  className="text-center text-sm font-bold py-2.5 rounded-xl bg-white text-[#059669] hover:bg-emerald-50 cursor-pointer"
+                  className="text-center text-sm font-bold py-2.5 rounded-xl bg-white text-[#2478b8] hover:bg-blue-50 cursor-pointer"
                 >
                   Log In
                 </button>
@@ -527,7 +525,7 @@ const Header = () => {
                     onChange={(e) => setHelpContact(e.target.value)}
                     placeholder={language === "kin" ? "Injiza imeri yawe" : "Enter your email address"}
                     style={{ fontSize: "17px", fontFamily: "Arial, Helvetica, sans-serif", lineHeight: "24px", height: "50px" }}
-                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#059669] focus:outline-none transition-colors bg-white"
+                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#2478b8] focus:outline-none transition-colors bg-white"
                     required
                   />
                 </div>
@@ -547,7 +545,7 @@ const Header = () => {
                         : "Describe your question, request, or issue in detail here..."
                     }
                     style={{ fontSize: "17px", fontFamily: "Arial, Helvetica, sans-serif", lineHeight: "24px", height: "auto", minHeight: "115px" }}
-                    className="login-dropdown-input w-full p-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#059669] focus:outline-none transition-colors bg-white leading-relaxed resize-none"
+                    className="login-dropdown-input w-full p-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#2478b8] focus:outline-none transition-colors bg-white leading-relaxed resize-none"
                     required
                   />
                 </div>
@@ -557,7 +555,7 @@ const Header = () => {
                   <button
                     type="submit"
                     disabled={isSubmittingHelp}
-                    className="w-full h-11 bg-[#059669] hover:bg-[#047857] text-white font-bold text-base rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                    className="w-full h-11 bg-[#2478b8] hover:bg-[#1b6296] text-white font-bold text-base rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
                   >
                     {isSubmittingHelp ? (
                       <span>{language === "kin" ? "Kohereza..." : "Submitting..."}</span>
@@ -601,22 +599,22 @@ const Header = () => {
                 {/* Bullet Points with Checkmarks */}
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-center gap-3 text-[#333333] text-[14px]">
-                    <Check className="w-5 h-5 text-[#059669] stroke-[3.5] shrink-0" />
+                    <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
                     <span>{language === "kin" ? "Ubufasha bwa telefoni: 0783202922" : "Phone & WhatsApp: 0783202922"}</span>
                   </li>
 
                   <li className="flex items-center gap-3 text-[#333333] text-[14px]">
-                    <Check className="w-5 h-5 text-[#059669] stroke-[3.5] shrink-0" />
+                    <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
                     <span>{language === "kin" ? "Igisubizo mu minota 15" : "Quick response within 15 minutes"}</span>
                   </li>
 
                   <li className="flex items-center gap-3 text-[#333333] text-[14px]">
-                    <Check className="w-5 h-5 text-[#059669] stroke-[3.5] shrink-0" />
+                    <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
                     <span>{language === "kin" ? "Igenzura ry'abakozi & amasezerano" : "Worker verification & contracts"}</span>
                   </li>
 
                   <li className="flex items-center gap-3 text-[#333333] text-[14px]">
-                    <Check className="w-5 h-5 text-[#059669] stroke-[3.5] shrink-0" />
+                    <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
                     <span>{language === "kin" ? "Ubufasha bwihuse bwa 24/7" : "24/7 dedicated platform support"}</span>
                   </li>
                 </ul>
@@ -626,14 +624,14 @@ const Header = () => {
               <div className="pt-2 select-none">
                 <div className="flex items-baseline gap-1.5">
                   <span
-                    className="text-2xl font-bold italic tracking-tight text-[#059669]"
+                    className="text-2xl font-bold italic tracking-tight text-[#2478b8]"
                     style={{ fontFamily: "'Brush Script MT', 'Dancing Script', 'Segoe Script', cursive, sans-serif" }}
                   >
                     Ekaze
                   </span>
                   <span className="text-[10px] text-slate-400 font-sans font-semibold">™</span>
                 </div>
-                <p className="text-[11px] text-[#059669] font-medium tracking-tight">
+                <p className="text-[11px] text-[#2478b8] font-medium tracking-tight">
                   {language === "kin" ? "Genzura n'uhembe abakozi bo mu rugo igihe cyose" : "Earn trust whenever you manage with us"}
                 </p>
               </div>
@@ -653,7 +651,7 @@ const Header = () => {
               href="https://wa.me/250783202922"
               target="_blank"
               rel="noopener noreferrer"
-              className="h-9 px-5 bg-[#059669] hover:bg-[#047857] text-white font-bold text-xs sm:text-sm rounded-[6px] transition-colors cursor-pointer shadow-xs inline-flex items-center justify-center gap-2"
+              className="h-9 px-5 bg-[#2478b8] hover:bg-[#1b6296] text-white font-bold text-xs sm:text-sm rounded-[6px] transition-colors cursor-pointer shadow-xs inline-flex items-center justify-center gap-2"
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                 <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.18-.544-1.898-.788-3.13-2.73-3.224-2.856-.095-.126-.774-1.031-.774-1.968 0-.936.491-1.396.666-1.587.175-.19.382-.238.509-.238.127 0 .254.002.366.007.119.006.277-.045.433.328.16.381.545 1.332.593 1.43.048.098.08.212.016.339-.064.127-.096.207-.191.318-.095.111-.2.248-.286.333-.095.096-.195.2-.084.391.111.191.494.814 1.059 1.318.729.648 1.343.85 1.534.945.191.096.302.08.414-.047.111-.127.476-.556.603-.746.127-.19.254-.159.429-.095.175.064 1.11.523 1.301.618.191.096.318.143.366.223.048.079.048.461-.096.866zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.174L2 22l4.981-1.306C8.423 21.532 10.15 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.273c-1.636 0-3.161-.489-4.439-1.328l-.318-.21-2.955.775.789-2.879-.231-.368C3.93 14.938 3.4 13.513 3.4 12c0-4.742 3.858-8.6 8.6-8.6 4.743 0 8.6 3.858 8.6 8.6 0 4.742-3.857 8.273-8.6 8.273z" />

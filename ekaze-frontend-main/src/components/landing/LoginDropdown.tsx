@@ -420,7 +420,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                     onChange={(e) => setLoginInput(e.target.value)}
                     placeholder={isRw ? "Injiza imeri cyangwa numero ya telefoni" : "Enter your email or phone number"}
                     style={{ fontSize: "17px", fontFamily: "Arial, Helvetica, sans-serif", lineHeight: "24px", height: "50px" }}
-                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#059669] focus:outline-none transition-colors bg-white"
+                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#2478b8] focus:outline-none transition-colors bg-white"
                     autoFocus
                     required
                   />
@@ -434,7 +434,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder={isRw ? "Ijambobanga" : "Password"}
                     style={{ fontSize: "17px", fontFamily: "Arial, Helvetica, sans-serif", lineHeight: "24px", height: "50px" }}
-                    className="login-dropdown-input w-full px-3.5 pr-11 rounded-[4px] border border-[#a5b2c0] focus:border-[#059669] focus:outline-none transition-colors bg-white"
+                    className="login-dropdown-input w-full px-3.5 pr-11 rounded-[4px] border border-[#a5b2c0] focus:border-[#2478b8] focus:outline-none transition-colors bg-white"
                     required
                   />
                   <button
@@ -447,12 +447,12 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                   </button>
                 </div>
 
-                {/* Solid Dark Blue Login Button */}
+                {/* Solid Blue Login Button */}
                 <div className="pt-2">
                   <button
                     type="submit"
                     disabled={isLoggingIn}
-                    className="w-full h-11 bg-[#059669] hover:bg-[#047857] text-white font-bold text-base rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                    className="w-full h-11 bg-[#2478b8] hover:bg-[#1b6296] text-white font-bold text-base rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
                   >
                     {isLoggingIn ? (
                       <>
@@ -473,7 +473,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                       setViewMode("forgot_phone");
                       setForgotError("");
                     }}
-                    className="text-xs font-semibold text-[#059669] hover:underline cursor-pointer"
+                    className="text-xs font-semibold text-[#2478b8] hover:underline cursor-pointer"
                   >
                     {isRw ? "Wibagiwe ijambobanga?" : "Forgot Password"}
                   </button>
@@ -532,7 +532,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                 <button
                   type="submit"
                   disabled={isVerifyingMfa || mfaCode.length !== 6}
-                  className="w-full h-11 bg-[#059669] hover:bg-[#047857] disabled:opacity-50 text-white font-bold text-base rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                  className="w-full h-11 bg-[#2478b8] hover:bg-[#1b6296] disabled:opacity-50 text-white font-bold text-base rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
                 >
                   {isVerifyingMfa ? (
                     <>
@@ -554,7 +554,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                       setMfaCode("");
                       setMfaError("");
                     }}
-                    className="text-xs font-semibold text-[#059669] hover:underline cursor-pointer"
+                    className="text-xs font-semibold text-[#2478b8] hover:underline cursor-pointer"
                   >
                     {isRw ? "Subira ku Kwinjira" : "Back to Login"}
                   </button>
@@ -563,7 +563,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                     type="button"
                     onClick={handleResendMfa}
                     disabled={isResendingMfa}
-                    className="text-xs font-semibold text-[#059669] hover:underline cursor-pointer"
+                    className="text-xs font-semibold text-[#2478b8] hover:underline cursor-pointer"
                   >
                     {isResendingMfa ? "Sending..." : (isRw ? "Ongera wohereze" : "Resend Code")}
                   </button>
@@ -600,7 +600,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                     onChange={(e) => setForgotPhone(e.target.value)}
                     placeholder={isRw ? "Injiza imeri cyangwa numero ya telefoni" : "Enter your email or phone number"}
                     style={{ fontSize: "17px", fontFamily: "Arial, Helvetica, sans-serif", lineHeight: "24px", height: "50px" }}
-                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#059669] focus:outline-none transition-colors bg-white"
+                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#2478b8] focus:outline-none transition-colors bg-white"
                     autoFocus
                     required
                   />
@@ -609,7 +609,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                 <button
                   type="submit"
                   disabled={isSendingForgotOtp}
-                  className="w-full h-11 bg-[#059669] hover:bg-[#047857] text-white font-bold text-base rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                  className="w-full h-11 bg-[#2478b8] hover:bg-[#1b6296] text-white font-bold text-base rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
                 >
                   {isSendingForgotOtp ? (
                     <>
@@ -625,7 +625,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                   <button
                     type="button"
                     onClick={() => setViewMode("login")}
-                    className="text-xs font-semibold text-[#059669] hover:underline cursor-pointer"
+                    className="text-xs font-semibold text-[#2478b8] hover:underline cursor-pointer"
                   >
                     {isRw ? "Subira ku Kwinjira" : "Back to Login"}
                   </button>
@@ -657,7 +657,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                     onChange={(e) => setForgotOtp(e.target.value.replace(/\D/g, ""))}
                     placeholder="6-Digit SMS Code"
                     style={{ fontSize: "17px", fontFamily: "Arial, Helvetica, sans-serif", lineHeight: "24px", height: "50px" }}
-                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#059669] focus:outline-none transition-colors tracking-widest font-mono bg-white"
+                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#2478b8] focus:outline-none transition-colors tracking-widest font-mono bg-white"
                     autoFocus
                     required
                   />
@@ -670,7 +670,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder={isRw ? "Ijambobanga Rishya" : "New Password"}
                     style={{ fontSize: "17px", fontFamily: "Arial, Helvetica, sans-serif", lineHeight: "24px", height: "50px" }}
-                    className="login-dropdown-input w-full px-3.5 pr-11 rounded-[4px] border border-[#a5b2c0] focus:border-[#059669] focus:outline-none transition-colors bg-white"
+                    className="login-dropdown-input w-full px-3.5 pr-11 rounded-[4px] border border-[#a5b2c0] focus:border-[#2478b8] focus:outline-none transition-colors bg-white"
                     required
                   />
                   <button
@@ -690,7 +690,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder={isRw ? "Emeza Ijambobanga" : "Confirm Password"}
                     style={{ fontSize: "17px", fontFamily: "Arial, Helvetica, sans-serif", lineHeight: "24px", height: "50px" }}
-                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#059669] focus:outline-none transition-colors bg-white"
+                    className="login-dropdown-input w-full px-3.5 rounded-[4px] border border-[#a5b2c0] focus:border-[#2478b8] focus:outline-none transition-colors bg-white"
                     required
                   />
                 </div>
@@ -698,7 +698,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                 <button
                   type="submit"
                   disabled={isResettingPassword}
-                  className="w-full h-10 bg-[#059669] hover:bg-[#047857] text-white font-bold text-sm rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+                  className="w-full h-10 bg-[#2478b8] hover:bg-[#1b6296] text-white font-bold text-sm rounded-[6px] transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-xs"
                 >
                   {isResettingPassword ? (
                     <>
@@ -714,7 +714,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                   <button
                     type="button"
                     onClick={() => setViewMode("forgot_phone")}
-                    className="text-xs font-semibold text-[#059669] hover:underline cursor-pointer"
+                    className="text-xs font-semibold text-[#2478b8] hover:underline cursor-pointer"
                   >
                     {isRw ? "Subira Inyuma" : "Back"}
                   </button>
@@ -758,22 +758,22 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
               {/* Exact Checkmark Bullet Items with blue tick ✔ (no circle) */}
               <ul className="space-y-3.5 mb-7">
                 <li className="flex items-center gap-3 text-[#333333] text-[15px] font-normal">
-                  <Check className="w-5 h-5 text-[#059669] stroke-[3.5] shrink-0" />
+                  <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
                   <span>{isRw ? "Abakozi b'umwuga bujuje ibyangombwa" : "Free tickets & verified workers"}</span>
                 </li>
 
                 <li className="flex items-center gap-3 text-[#333333] text-[15px] font-normal">
-                  <Check className="w-5 h-5 text-[#059669] stroke-[3.5] shrink-0" />
+                  <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
                   <span>{isRw ? "Kwishyura imishahara kuri MoMo & Banki" : "Instant salary payments"}</span>
                 </li>
 
                 <li className="flex items-center gap-3 text-[#333333] text-[15px] font-normal">
-                  <Check className="w-5 h-5 text-[#059669] stroke-[3.5] shrink-0" />
+                  <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
                   <span>{isRw ? "Amasezerano yemewe & RSSB" : "Extra protection & RSSB"}</span>
                 </li>
 
                 <li className="flex items-center gap-3 text-[#333333] text-[15px] font-normal">
-                  <Check className="w-5 h-5 text-[#059669] stroke-[3.5] shrink-0" />
+                  <Check className="w-5 h-5 text-[#2478b8] stroke-[3.5] shrink-0" />
                   <span>{isRw ? "Ubufasha bwihuse bwa 24/7" : "Partners deals & 24/7 support"}</span>
                 </li>
               </ul>
@@ -791,7 +791,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                       navigate("/auth/register");
                     }
                   }}
-                  className="font-medium text-[#059669] underline hover:text-[#047857] cursor-pointer"
+                  className="font-medium text-[#2478b8] underline hover:text-[#1b6296] cursor-pointer"
                 >
                   {isRw ? "Iyandikishe Ubu" : "Join Now"}
                 </button>
@@ -802,14 +802,14 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
             <div className="pt-2 select-none">
               <div className="flex items-baseline gap-1.5">
                 <span
-                  className="text-2xl font-bold italic tracking-tight text-[#059669]"
+                  className="text-2xl font-bold italic tracking-tight text-[#2478b8]"
                   style={{ fontFamily: "'Brush Script MT', 'Dancing Script', 'Segoe Script', cursive, sans-serif" }}
                 >
                   Ekaze
                 </span>
                 <span className="text-[10px] text-slate-400 font-sans font-semibold">™</span>
               </div>
-              <p className="text-[11px] text-[#059669] font-medium tracking-tight">
+              <p className="text-[11px] text-[#2478b8] font-medium tracking-tight">
                 {isRw ? "Genzura n'uhembe abakozi bo mu rugo igihe cyose" : "Earn trust whenever you manage with us"}
               </p>
             </div>
@@ -835,7 +835,7 @@ export const LoginDropdown: React.FC<LoginDropdownProps> = ({ isOpen, onClose, o
                 navigate("/auth/register");
               }
             }}
-            className="h-10 px-6 bg-[#059669] hover:bg-[#047857] text-white font-bold text-sm rounded-[6px] transition-colors cursor-pointer shadow-xs inline-flex items-center justify-center"
+            className="h-10 px-6 bg-[#2478b8] hover:bg-[#1b6296] text-white font-bold text-sm rounded-[6px] transition-colors cursor-pointer shadow-xs inline-flex items-center justify-center"
           >
             <span>{isRw ? "Fungura Konte" : "Create Account"}</span>
           </button>

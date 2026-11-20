@@ -39,7 +39,13 @@ export const DashboardLayout = ({
         const timer = setTimeout(() => {
           navigate("/mfa-setup");
         }, 800);
-        return () => clearTimeout(timer);
+        const [showPasswordModal, setShowPasswordModal] = useState(Boolean(user?.must_change_password));
+
+  useEffect(() => {
+    setShowPasswordModal(Boolean(user?.must_change_password));
+  }, [user?.must_change_password]);
+
+  return () => clearTimeout(timer);
       }
     }
   }, [user, navigate]);
@@ -60,6 +66,12 @@ export const DashboardLayout = ({
     setIsAiSidebarOpen(false);
     localStorage.setItem("ekaze_ai_sidebar_open", "false");
   };
+
+  const [showPasswordModal, setShowPasswordModal] = useState(Boolean(user?.must_change_password));
+
+  useEffect(() => {
+    setShowPasswordModal(Boolean(user?.must_change_password));
+  }, [user?.must_change_password]);
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-[#f8fafd] text-slate-800 flex flex-col font-sans selection:bg-[#c2e7ff] dashboard-app-layout select-none">
@@ -114,7 +126,10 @@ export const DashboardLayout = ({
       </div>
 
       {/* Force Set Initial Permanent Password Modal if temporary password was used */}
-      <SetInitialPasswordModal isOpen={Boolean(user?.must_change_password)} />
+      <SetInitialPasswordModal
+        isOpen={showPasswordModal}
+        onSuccess={() => setShowPasswordModal(false)}
+      />
     </div>
   );
 };

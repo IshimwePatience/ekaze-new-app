@@ -17,8 +17,8 @@ const Integrations = () => {
       <span id="integrations" className="absolute -top-20" aria-hidden="true" />
 
       <div className="container mx-auto px-5 sm:px-8 lg:px-12 max-w-7xl">
-        {/* Main Outer Rounded Emerald Green Banner Card (#059669) */}
-        <div className="relative rounded-[28px] sm:rounded-[36px] bg-[#059669] text-white p-7 sm:p-10 lg:p-12 shadow-2xl border border-emerald-400/30 overflow-hidden">
+        {/* Main Outer Rounded Blue Banner Card (#2478b8) */}
+        <div className="relative rounded-[28px] sm:rounded-[36px] bg-[#2478b8] text-white p-7 sm:p-10 lg:p-12 shadow-2xl border border-sky-400/30 overflow-hidden">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             
@@ -52,12 +52,12 @@ const Integrations = () => {
                 </p>
               </div>
 
-              {/* White Pill Button with Emerald Text */}
+              {/* White Pill Button with Blue Text */}
               <div className="pt-2">
                 <button
                   type="button"
                   onClick={handleContactClick}
-                  className="inline-flex items-center justify-center rounded-full bg-white hover:bg-emerald-50 text-[#059669] font-bold text-xs sm:text-sm px-8 py-3 transition-all shadow-md hover:shadow-lg cursor-pointer border-0"
+                  className="inline-flex items-center justify-center rounded-full bg-white hover:bg-blue-50 text-[#2478b8] font-bold text-xs sm:text-sm px-8 py-3 transition-all shadow-md hover:shadow-lg cursor-pointer border-0"
                 >
                   {isRw ? "Twandikire" : "Contact us"}
                 </button>

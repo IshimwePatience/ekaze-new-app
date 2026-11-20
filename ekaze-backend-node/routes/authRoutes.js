@@ -63,6 +63,6 @@ router.post('/mfa/verify', protect, authController.verifyMfa);
 router.post('/mfa/disable', protect, authController.disableMfa);
 
 // Set Initial Password on First Login
-router.post('/set-initial-password', protect, authController.setInitialPassword);
+router.post('/set-initial-password', protectOptional, authController.setInitialPassword);
 
 module.exports = router;

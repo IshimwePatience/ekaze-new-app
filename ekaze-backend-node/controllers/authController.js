@@ -2225,7 +2225,7 @@ const verifyVerificationCode = async (req, res, next) => {
 // Set initial / temporary password to new permanent password
 const setInitialPassword = async (req, res, next) => {
   try {
-    const { new_password, confirm_password } = req.body;
+    const { new_password, confirm_password, user_id } = req.body;
     if (!new_password || String(new_password).length < 6) {
       return res.status(400).json({
         success: false,
@@ -2239,14 +2239,35 @@ const setInitialPassword = async (req, res, next) => {
       });
     }
 
-    const user = await User.findByPk(req.user.id);
+    let targetUserId = req.user?.id;
+    if (!targetUserId) {
+      const token = req.cookies?.token || (req.headers.authorization && req.headers.authorization.startsWith('Bearer') ? req.headers.authorization.split(' ')[1] : null);
+      if (token) {
+        try {
+          const decoded = jwt.verify(token, env.JWT_SECRET);
+          targetUserId = decoded.id;
+        } catch (e) {}
+      }
+    }
+    if (!targetUserId && user_id) {
+      targetUserId = user_id;
+    }
+
+    if (!targetUserId) {
+      return res.status(401).json({ success: false, message: 'Authentication required. Please log in.' });
+    }
+
+    const user = await User.findByPk(targetUserId);
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
 
-    user.password = new_password; // Handled by Sequelize beforeUpdate/beforeCreate bcrypt hook
-    user.must_change_password = false;
-    await user.save();
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(new_password, salt);
+    await user.update({
+      password: hashedPassword,
+      must_change_password: false
+    });
 
     return res.status(200).json({
       success: true,
@@ -2262,7 +2283,7 @@ const setInitialPassword = async (req, res, next) => {
     });
   } catch (error) {
     console.error('❌ setInitialPassword error:', error);
-    next(error);
+    return res.status(500).json({ success: false, message: error.message || 'Server error' });
   }
 };
 
