@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DedicatedFormPage,
   FormSection,
@@ -9,6 +9,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import type { NewWorkerRegistrationPayload } from "@/types/company.types";
 import { Plus, Trash2, Check, Briefcase, GraduationCap, Award, User, ShieldCheck } from "lucide-react";
+import { companyApi } from "@/api/companyService";
 
 interface WorkExperienceItem {
   id: string;
@@ -101,10 +102,12 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
   // 1. Photo
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const rawPhoto = userObj.profile_photo || userObj.photo || userObj.avatar || initialWorker?.profile_photo || initialWorker?.photo || initialWorker?.business_card_path || null;
-  const initialPhotoPreview = rawPhoto
-    ? (rawPhoto.startsWith("http") || rawPhoto.startsWith("data:") ? rawPhoto : `http://localhost:5000${rawPhoto}`)
-    : null;
-  const [photoPreview, setPhotoPreview] = useState<string | null>(initialPhotoPreview);
+  const resolvePhotoUrl = (p: string | null) => {
+    if (!p) return null;
+    if (p.startsWith("http://") || p.startsWith("https://") || p.startsWith("data:")) return p;
+    return `${window.location.origin}${p.startsWith("/") ? "" : "/"}${p}`;
+  };
+  const [photoPreview, setPhotoPreview] = useState<string | null>(resolvePhotoUrl(rawPhoto));
 
   // 2. ID or Passport (Typing only, no NIDA verification)
   const [documentType, setDocumentType] = useState<"nida" | "passport">(
@@ -193,6 +196,114 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
       ];
 
   const [experiences, setExperiences] = useState<WorkExperienceItem[]>(initialExperiences);
+
+  // Robust retriever: updates all fields whenever initialWorker is provided or loaded
+  useEffect(() => {
+    if (!initialWorker) return;
+
+    const populate = (workerData: any) => {
+      const u = workerData?.user || workerData || {};
+      let e: any =
+        workerData?.extended_profile ||
+        workerData?.extendedProfile ||
+        u?.extended_profile ||
+        {};
+      if (typeof e === "string") {
+        try {
+          e = JSON.parse(e);
+        } catch {
+          e = {};
+        }
+      }
+
+      // Names
+      if (u.first_name) setFirstName(u.first_name);
+      else if (u.name) setFirstName(u.name.split(" ")[0]);
+      if (u.last_name) setLastName(u.last_name);
+      else if (u.name) setLastName(u.name.split(" ").slice(1).join(" "));
+
+      // Document
+      const docType = u.registration_document_type === "passport" || u.passport_number ? "passport" : "nida";
+      setDocumentType(docType);
+      const docNum = u.national_id || u.passport_number || workerData.national_id || "";
+      if (docNum) setIdNumber(docNum);
+
+      // Phone
+      const phoneStr = String(u.phone || workerData.phone || "").trim();
+      if (phoneStr) {
+        const matched = COUNTRY_DIAL_CODES.find((c) => phoneStr.startsWith(c.code));
+        if (matched) {
+          setCountryCode(matched.code);
+          setPhoneRaw(phoneStr.slice(matched.code.length));
+        } else if (phoneStr.startsWith("+")) {
+          const match = phoneStr.match(/^(\+\d{1,4})(.*)$/);
+          if (match) {
+            setCountryCode(match[1]);
+            setPhoneRaw(match[2]);
+          }
+        } else {
+          setPhoneRaw(phoneStr);
+        }
+      }
+
+      // Email, Gender, DOB
+      if (u.email || workerData.email) setEmail(u.email || workerData.email);
+      if (u.gender || workerData.gender) {
+        setGender((u.gender || workerData.gender).toLowerCase() === "female" ? "female" : "male");
+      }
+      if (u.date_of_birth || workerData.date_of_birth) {
+        setDateOfBirth(String(u.date_of_birth || workerData.date_of_birth).split("T")[0]);
+      }
+
+      // Photo
+      const photoPath = u.profile_photo || u.photo || workerData.profile_photo || workerData.photo || workerData.business_card_path;
+      if (photoPath) {
+        setPhotoPreview(resolvePhotoUrl(photoPath));
+      }
+
+      // Education & Permit (Step 2)
+      const eduLevel = e.education_level || workerData.education_level;
+      if (eduLevel) setEducationLevel(eduLevel);
+
+      const eduField = e.education_option || e.education_field || workerData.education_option || workerData.education_field;
+      if (eduField) setEducationField(eduField);
+
+      const licType = e.driving_licence_type || workerData.driving_licence_type;
+      if (licType) setPermitCategory(licType);
+
+      const licNum = e.driving_licence_number || workerData.driving_licence_number;
+      if (licNum) setPermitNumber(licNum);
+
+      const licExp = e.driving_licence_expiry || workerData.driving_licence_expiry;
+      if (licExp) setPermitExpiryDate(licExp);
+
+      // Past Experiences (Step 3)
+      let exps = e.past_experiences || e.work_experiences || workerData.past_experiences || workerData.work_experiences;
+      if (typeof exps === "string") {
+        try {
+          exps = JSON.parse(exps);
+        } catch {
+          exps = [];
+        }
+      }
+      if (Array.isArray(exps) && exps.length > 0) {
+        setExperiences(exps);
+      }
+    };
+
+    populate(initialWorker);
+
+    // Also query backend for full worker profile in case list had partial data
+    if (initialWorker?.id) {
+      companyApi
+        .getWorkerDetails(initialWorker.id)
+        .then((res: any) => {
+          const fresh = res?.data?.worker || res?.data || res;
+          if (fresh) populate(fresh);
+        })
+        .catch(() => {});
+    }
+  }, [initialWorker]);
 
   const handleAddExperience = () => {
     setExperiences((prev) => [

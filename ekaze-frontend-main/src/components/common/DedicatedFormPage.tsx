@@ -224,8 +224,15 @@ export const DedicatedFormPage: React.FC<DedicatedFormPageProps> = ({
                     {profileAvatar.src ? (
                       <img
                         src={profileAvatar.src}
-                        alt={profileAvatar.name || "Profile Avatar"}
+                        alt=""
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          target.style.display = 'none';
+                          if (target.parentElement) {
+                            target.parentElement.innerHTML = '<svg class="w-14 h-14 text-white fill-white/80" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+                          }
+                        }}
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-[#D9DDE2]">
