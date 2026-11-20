@@ -197,8 +197,8 @@ export const CreateUserFormPage: React.FC<CreateUserFormPageProps> = ({
       });
 
       toast({
-        title: "User created successfully",
-        description: `New ${role} account has been created.`,
+        title: "Account created successfully",
+        description: `Temporary password and login instructions dispatched to ${formData.email || formData.phone}.`,
         variant: "success",
       });
       onBack();
@@ -357,13 +357,16 @@ export const CreateUserFormPage: React.FC<CreateUserFormPageProps> = ({
             </div>
           </FormField>
 
-          <FormField label="Account password (optional)">
+          <FormField label="Temporary Account Password (optional)">
             <FormInput
               type="password"
-              placeholder="Leave blank for auto-generated password"
+              placeholder="Leave blank for auto-generated temporary password"
               value={formData.password}
               onChange={(e) => handleChange("password", e.target.value)}
             />
+            <p className="text-[11px] text-slate-500 mt-1.5 leading-normal">
+              An email will be sent with their login credentials (Email/Phone and Temporary Password). After completing 2-step verification on their first login, they will be required to set their own permanent password.
+            </p>
           </FormField>
 
           {role === "company" && (

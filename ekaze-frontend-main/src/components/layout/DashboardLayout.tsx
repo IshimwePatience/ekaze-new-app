@@ -3,13 +3,7 @@ import { DashboardNavbar } from "./DashboardNavbar";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { AskEkazeRightSidebar } from "./AskEkazeRightSidebar";
 import DashboardTopAlertBanner from "./DashboardTopAlertBanner";
-import {
-  GoogleCalendarIcon,
-  GoogleKeepIcon,
-  GoogleTasksIcon,
-  GoogleContactsIcon
-} from "./GoogleDriveIcons";
-import { Plus } from "lucide-react";
+import { SetInitialPasswordModal } from "@/components/common/SetInitialPasswordModal";
 import { useAuth } from "@/hooks/useAuth";
 import { useSocketNotifications } from "@/hooks/useSocketNotifications";
 import { useNavigate } from "react-router-dom";
@@ -89,7 +83,7 @@ export const DashboardLayout = ({
         />
 
         {/* Center: Inset White Rounded Card Container (Material You Drive Design) */}
-        <div className="flex-1 flex flex-col min-w-0 h-[calc(100vh-64px)] bg-white rounded-2xl shadow-[0_1px_3px_0_rgba(60,64,67,0.08)] border border-slate-200/60 my-1.5 mr-1 overflow-hidden transition-all">
+        <div className="flex-1 flex flex-col min-w-0 h-[calc(100vh-64px)] bg-white rounded-2xl shadow-[0_1px_3px_0_rgba(60,64,67,0.08)] border border-slate-200/60 my-1.5 mr-2 overflow-hidden transition-all">
           {/* Top Rotating Alert Ticker */}
           <DashboardTopAlertBanner role={role} onTabChange={onTabChange} />
 
@@ -109,7 +103,7 @@ export const DashboardLayout = ({
 
         {/* Docked Right AI Sidebar when toggled */}
         {isAiSidebarOpen && (
-          <div className="w-full sm:w-[410px] shrink-0 h-[calc(100vh-64px)] my-1.5 mr-1 bg-white rounded-2xl shadow-sm border border-slate-200/60 z-30 transition-all duration-300 animate-in slide-in-from-right flex flex-col overflow-hidden">
+          <div className="w-full sm:w-[410px] shrink-0 h-[calc(100vh-64px)] my-1.5 mr-2 bg-white rounded-2xl shadow-sm border border-slate-200/60 z-30 transition-all duration-300 animate-in slide-in-from-right flex flex-col overflow-hidden">
             <AskEkazeRightSidebar
               isOpen={isAiSidebarOpen}
               onClose={handleCloseAiSidebar}
@@ -117,49 +111,10 @@ export const DashboardLayout = ({
             />
           </div>
         )}
-
-        {/* Far-Right Slim Google Workspace Rail */}
-        <aside className="w-14 bg-[#f8fafd] hidden md:flex flex-col items-center py-3 gap-5 shrink-0 select-none">
-          <button
-            onClick={() => onTabChange("calendar")}
-            className="p-2 rounded-full hover:bg-black/5 transition-colors cursor-pointer group"
-            title="Google Calendar"
-          >
-            <GoogleCalendarIcon className="w-5 h-5 transition-transform group-hover:scale-110" />
-          </button>
-          <button
-            onClick={() => toggleAiSidebar()}
-            className="p-2 rounded-full hover:bg-black/5 transition-colors cursor-pointer group"
-            title="Google Keep / Notes"
-          >
-            <GoogleKeepIcon className="w-5 h-5 transition-transform group-hover:scale-110" />
-          </button>
-          <button
-            onClick={() => onTabChange(role === "admin" ? "tasks" : "overview")}
-            className="p-2 rounded-full hover:bg-black/5 transition-colors cursor-pointer group"
-            title="Google Tasks"
-          >
-            <GoogleTasksIcon className="w-5 h-5 transition-transform group-hover:scale-110" />
-          </button>
-          <button
-            onClick={() => onTabChange(role === "admin" ? "users" : "profile")}
-            className="p-2 rounded-full hover:bg-black/5 transition-colors cursor-pointer group"
-            title="Contacts"
-          >
-            <GoogleContactsIcon className="w-5 h-5 transition-transform group-hover:scale-110" />
-          </button>
-
-          <div className="w-5 border-t border-slate-300 my-1" />
-
-          <button
-            onClick={() => toggleAiSidebar()}
-            className="p-2 rounded-full hover:bg-black/5 text-[#444746] transition-colors cursor-pointer"
-            title="Get Add-ons"
-          >
-            <Plus className="w-5 h-5 text-[#444746]" />
-          </button>
-        </aside>
       </div>
+
+      {/* Force Set Initial Permanent Password Modal if temporary password was used */}
+      <SetInitialPasswordModal isOpen={Boolean(user?.must_change_password)} />
     </div>
   );
 };

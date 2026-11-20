@@ -23,7 +23,9 @@ export interface User {
   last_login_at: string | null;
   last_login_ip: string | null;
   otp_blocked_until: string;
-  otp_verified: boolean
+  otp_verified: boolean;
+  mfa_enabled?: boolean;
+  must_change_password?: boolean;
   created_at: string;
   updated_at: string;
   

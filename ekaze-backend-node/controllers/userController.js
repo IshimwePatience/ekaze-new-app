@@ -1,6 +1,8 @@
 const { User, Company, Worker, Employer, Admin, Supervisor, Police, Session, Transaction, AuditLog } = require('../models');
 const { Op } = require('sequelize');
 const { ensureUserRoleProfile } = require('../services/roleIsolationService');
+const { sendEmail } = require('../services/emailService');
+const { sendSMS } = require('../services/smsService');
 
 const getUsers = async (req, res, next) => {
   try {
@@ -249,7 +251,11 @@ const createUser = async (req, res, next) => {
       }
     }
 
-    const userPassword = password && String(password).trim() ? String(password).trim() : 'Password123!';
+    const isSpecialRole = ['admin', 'company'].includes(cleanRole);
+    // Auto-generate a secure temporary password if not provided
+    const tempPassword = password && String(password).trim() ? String(password).trim() : 'Ekaze@' + Math.floor(100000 + Math.random() * 900000);
+    const userPassword = tempPassword;
+    const mustChangePassword = isSpecialRole || Boolean(req.body.must_change_password);
 
     const newUser = await User.create({
       name: String(name).trim(),
@@ -257,6 +263,7 @@ const createUser = async (req, res, next) => {
       phone: String(phone).trim(),
       password: userPassword,
       role: cleanRole,
+      must_change_password: mustChangePassword,
       national_id: cleanNationalId,
       province: province || null,
       district: district || null,
@@ -269,6 +276,64 @@ const createUser = async (req, res, next) => {
       status: status || 'active',
       is_verified: isIdExempt ? true : Boolean(cleanNationalId)
     });
+
+    // Send email with login credentials and instructions
+    if (newUser.email) {
+      try {
+        const loginUrl = process.env.FRONTEND_URL || 'https://ekaze.rw';
+        const roleLabel = cleanRole === 'company' ? 'Company Account' : cleanRole === 'admin' ? 'Administrator Account' : `${cleanRole} Account`;
+        
+        sendEmail({
+          to: newUser.email,
+          subject: `Welcome to Ekaze - Your ${roleLabel} Login Credentials`,
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 580px; margin: 0 auto; padding: 28px 20px; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px;">
+              <div style="text-align: center; margin-bottom: 24px;">
+                <h1 style="color: #0b57d0; font-size: 26px; font-weight: bold; margin: 0 0 6px 0;">Ekaze Platform</h1>
+                <p style="color: #475569; font-size: 15px; margin: 0;">Welcome, ${newUser.name}!</p>
+              </div>
+
+              <div style="background-color: #f8fafd; border: 1px solid #e0e7f5; border-radius: 12px; padding: 20px; margin-bottom: 22px;">
+                <h3 style="color: #0f172a; font-size: 15px; font-weight: bold; margin: 0 0 14px 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Your Login Credentials</h3>
+                <p style="margin: 8px 0; font-size: 14px; color: #334155;"><strong>Login Email:</strong> <span style="color: #0b57d0;">${newUser.email}</span></p>
+                <p style="margin: 8px 0; font-size: 14px; color: #334155;"><strong>Login Phone:</strong> <span style="color: #0b57d0;">${newUser.phone}</span></p>
+                <p style="margin: 8px 0; font-size: 14px; color: #334155;"><strong>Temporary Password:</strong> <code style="background-color: #e2e8f0; color: #0b57d0; font-size: 15px; font-weight: bold; padding: 3px 8px; border-radius: 6px;">${tempPassword}</code></p>
+                <p style="margin: 12px 0 0 0; font-size: 12px; color: #64748b;">You can log in using either your email address or your phone number.</p>
+              </div>
+
+              <div style="background-color: #eff6ff; border-left: 4px solid #2563eb; border-radius: 6px; padding: 14px 16px; margin-bottom: 24px;">
+                <h4 style="margin: 0 0 6px 0; color: #1e40af; font-size: 13px; font-weight: bold;">Important Security Notice & Next Steps:</h4>
+                <ol style="margin: 0; padding-left: 18px; color: #1e3a8a; font-size: 13px; line-height: 1.6;">
+                  <li>Log in with your email or phone and this temporary password.</li>
+                  <li>Complete your <strong>2-Step Verification (Two-Factor Authentication)</strong>.</li>
+                  <li>You will then be prompted to <strong>set your own permanent password</strong> to secure your account.</li>
+                </ol>
+              </div>
+
+              <div style="text-align: center; margin-bottom: 20px;">
+                <a href="${loginUrl}/login" style="display: inline-block; background-color: #0b57d0; color: #ffffff; text-decoration: none; padding: 12px 32px; border-radius: 9999px; font-weight: 600; font-size: 14px;">Sign in to Ekaze</a>
+              </div>
+
+              <p style="font-size: 12px; color: #94a3b8; text-align: center; margin: 0; border-top: 1px solid #f1f5f9; padding-top: 16px;">
+                If you did not request this account, please contact the Ekaze system administrator immediately.
+              </p>
+            </div>
+          `,
+          text: `Welcome to Ekaze! Your ${roleLabel} account has been created.\n\nLogin Email: ${newUser.email}\nLogin Phone: ${newUser.phone}\nTemporary Password: ${tempPassword}\n\nPlease sign in at ${loginUrl}/login, complete 2-step verification, and set your permanent password.`
+        }).catch(err => console.warn('⚠️ Welcome email dispatch notice:', err.message));
+      } catch (mailErr) {
+        console.warn('⚠️ Welcome email error (non-blocking):', mailErr.message);
+      }
+    }
+
+    if (newUser.phone) {
+      try {
+        const smsMsg = `Ekaze: Your ${cleanRole} account has been created. Login with your email/phone (${newUser.phone}) and temporary password: ${tempPassword}. Complete 2-step verification to set your new permanent password.`;
+        sendSMS(newUser.phone, smsMsg).catch(err => console.warn('⚠️ Welcome SMS warning:', err.message));
+      } catch (smsErr) {
+        console.warn('⚠️ Welcome SMS error (non-blocking):', smsErr.message);
+      }
+    }
 
     try {
       await ensureUserRoleProfile(newUser);

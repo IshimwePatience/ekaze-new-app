@@ -58,7 +58,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import logo from "@/assets/reallogo.png";
+import logo from "@/assets/dashboard logo.png";
 import { cn } from "@/lib/utils";
 import { useAuth, useLogout, useCurrentUser } from "@/hooks/useAuth";
 import { useQueryClient } from "@tanstack/react-query";

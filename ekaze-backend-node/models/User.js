@@ -134,6 +134,10 @@ const User = sequelize.define('User', {
   ussd_pin: {
     type: DataTypes.STRING(255),
     allowNull: true
+  },
+  must_change_password: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 }, {
   tableName: 'users',

@@ -27,6 +27,7 @@ const startServer = async () => {
         ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "ussd_pin" varchar(255);
         ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "email_verified" boolean DEFAULT false;
         ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "phone_verified" boolean DEFAULT false;
+        ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "must_change_password" boolean DEFAULT false;
         ALTER TABLE "workers" ADD COLUMN IF NOT EXISTS "professions" text[] DEFAULT '{}';
         ALTER TABLE "workers" ADD COLUMN IF NOT EXISTS "experience_level" varchar(50);
         ALTER TABLE "workers" ADD COLUMN IF NOT EXISTS "languages_spoken" text[] DEFAULT '{}';

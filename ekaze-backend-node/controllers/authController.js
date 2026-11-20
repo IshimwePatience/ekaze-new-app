@@ -414,6 +414,7 @@ const sendTokenResponse = async (user, statusCode, req, res, message = 'Success'
     google_email: fullUser.google_email,
     mfa_enabled: !!fullUser.mfa_enabled,
     mfa_method: fullUser.mfa_method || 'authenticator',
+    must_change_password: !!fullUser.must_change_password,
     profile_photo: (typeof fullUser.profile_photo === 'string' && fullUser.profile_photo.length > 50000 && fullUser.profile_photo.startsWith('data:'))
       ? null
       : fullUser.profile_photo,
@@ -2221,6 +2222,50 @@ const verifyVerificationCode = async (req, res, next) => {
   }
 };
 
+// Set initial / temporary password to new permanent password
+const setInitialPassword = async (req, res, next) => {
+  try {
+    const { new_password, confirm_password } = req.body;
+    if (!new_password || String(new_password).length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password must be at least 6 characters long.'
+      });
+    }
+    if (confirm_password && new_password !== confirm_password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password confirmation does not match.'
+      });
+    }
+
+    const user = await User.findByPk(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    user.password = new_password; // Handled by Sequelize beforeUpdate/beforeCreate bcrypt hook
+    user.must_change_password = false;
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Password updated successfully! Your account is now secured.',
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        must_change_password: false
+      }
+    });
+  } catch (error) {
+    console.error('❌ setInitialPassword error:', error);
+    next(error);
+  }
+};
+
 module.exports = {
   login,
   googleLogin,
@@ -2243,5 +2288,6 @@ module.exports = {
   sendVerificationCode,
   verifyVerificationCode,
   getActiveSessions,
-  revokeSession
+  revokeSession,
+  setInitialPassword
 };
