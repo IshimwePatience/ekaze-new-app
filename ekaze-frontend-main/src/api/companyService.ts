@@ -82,6 +82,16 @@ getCompaniesList: async (): Promise<CompanyListItem[]> => {
     return response.data;
   },
 
+  getWorkerRatings: async (workerId: number): Promise<any> => {
+    const response = await api.get(`/company/workers/${workerId}/ratings`);
+    return response.data;
+  },
+
+  rateWorker: async (workerId: number, data: { rating: number; comment: string }): Promise<any> => {
+    const response = await api.post(`/company/workers/${workerId}/rate`, data);
+    return response.data;
+  },
+
   registerWorker: async (data: WorkerRegistrationData): Promise<WorkerRegistrationResponse> => {
     const formData = new FormData();
     

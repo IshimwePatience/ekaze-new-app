@@ -28,6 +28,7 @@ import {
   UserX,
   UserCheck,
   Clock,
+  MessageSquare,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useCompanyWorkers } from "@/hooks/useWorkers";
@@ -36,6 +37,7 @@ import WorkerDetailsModal from "./WorkerDetailsModal";
 import CompanyRegisterWorkerPage from "./CompanyRegisterWorkerPage";
 import ImportWorkersModal from "./ImportWorkersModal";
 import EditWorkerModal from "./EditWorkerModal";
+import WorkerRatingModal from "./WorkerRatingModal";
 import { companyApi } from "@/api/companyService";
 import {
   AlertDialog,
@@ -102,6 +104,7 @@ const WorkersContent = () => {
 
   // Worker action modals & dialogs
   const [workerToEdit, setWorkerToEdit] = useState<any | null>(null);
+  const [workerToRate, setWorkerToRate] = useState<any | null>(null);
   const [workerToSuspend, setWorkerToSuspend] = useState<any | null>(null);
   const [workerToReactivate, setWorkerToReactivate] = useState<any | null>(null);
   const [workerToDelete, setWorkerToDelete] = useState<any | null>(null);
@@ -925,45 +928,60 @@ const WorkersContent = () => {
 
                       {/* Actions */}
                       <TableCell className="text-right pr-2 py-3">
-                        <CustomDropdown
-                          widthClass="w-52"
-                          trigger={
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-8 w-8 p-0 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded cursor-pointer"
-                            >
-                              <MoreVertical className="w-4 h-4" />
-                            </Button>
-                          }
-                          items={[
-                            {
-                              label: "Generate Card",
-                              onClick: () => handleGenerateSingleCard(worker.id),
-                            },
-                            {
-                              label: "Edit Worker",
-                              onClick: () => setWorkerToEdit(worker),
-                            },
-                            ...(activeTab === "current"
-                              ? [
-                                  {
-                                    label: "Suspend Worker",
-                                    onClick: () => setWorkerToSuspend(worker),
-                                  },
-                                ]
-                              : [
-                                  {
-                                    label: "Bring Back to Current",
-                                    onClick: () => setWorkerToReactivate(worker),
-                                  },
-                                ]),
-                            {
-                              label: "Delete Worker",
-                              onClick: () => setWorkerToDelete(worker),
-                            },
-                          ]}
-                        />
+                        <div className="flex items-center justify-end gap-1">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setWorkerToRate(worker)}
+                            className="h-8 w-8 p-0 text-slate-500 hover:text-[#2478b8] hover:bg-blue-50 rounded cursor-pointer"
+                            title="Rate Worker & Company Reviews"
+                          >
+                            <MessageSquare className="w-4 h-4" />
+                          </Button>
+                          <CustomDropdown
+                            widthClass="w-52"
+                            trigger={
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-8 w-8 p-0 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded cursor-pointer"
+                              >
+                                <MoreVertical className="w-4 h-4" />
+                              </Button>
+                            }
+                            items={[
+                              {
+                                label: "Rate Worker",
+                                onClick: () => setWorkerToRate(worker),
+                              },
+                              {
+                                label: "Generate Card",
+                                onClick: () => handleGenerateSingleCard(worker.id),
+                              },
+                              {
+                                label: "Edit Worker",
+                                onClick: () => setWorkerToEdit(worker),
+                              },
+                              ...(activeTab === "current"
+                                ? [
+                                    {
+                                      label: "Suspend Worker",
+                                      onClick: () => setWorkerToSuspend(worker),
+                                    },
+                                  ]
+                                : [
+                                    {
+                                      label: "Bring Back to Current",
+                                      onClick: () => setWorkerToReactivate(worker),
+                                    },
+                                  ]),
+                              {
+                                label: "Delete Worker",
+                                onClick: () => setWorkerToDelete(worker),
+                              },
+                            ]}
+                          />
+                        </div>
                       </TableCell>
                     </TableRow>
                   );
@@ -1012,6 +1030,14 @@ const WorkersContent = () => {
         worker={workerToEdit}
         isOpen={!!workerToEdit}
         onClose={() => setWorkerToEdit(null)}
+        onSuccess={() => refetch()}
+      />
+
+      {/* Rate Worker Modal */}
+      <WorkerRatingModal
+        worker={workerToRate}
+        isOpen={!!workerToRate}
+        onClose={() => setWorkerToRate(null)}
         onSuccess={() => refetch()}
       />
 

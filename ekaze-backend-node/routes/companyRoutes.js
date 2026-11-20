@@ -31,6 +31,8 @@ router.post('/workers', upload.any(), companyController.createCompanyWorker);
 // Admin adjust company trial
 router.post('/:id/adjust-trial', companyController.adjustCompanyTrial);
 
+router.get('/workers/:id/ratings', companyController.getCompanyWorkerRatings);
+router.post('/workers/:id/rate', companyController.rateCompanyWorker);
 router.get('/workers/list', companyController.getCompanyWorkers);
 router.get('/workers/:id/history', companyController.getCompanyWorkerHistory);
 router.get('/workers/:id', companyController.getCompanyWorkerById);

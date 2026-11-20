@@ -2,6 +2,8 @@ const { Company, Worker, User, Employer, HiringRequest, Employment, Transaction,
 const { Op } = require('sequelize');
 const QRCode = require('qrcode');
 const paymentService = require('../services/paymentService');
+const { sendEmail } = require('../services/emailService');
+const { sendSMS } = require('../services/smsService');
 
 const getCompanyDashboard = async (req, res, next) => {
   try {
@@ -2891,19 +2893,18 @@ const createCompanyWorker = async (req, res, next) => {
     const resolvedFirstName = getVal('first_name', 'firstName') || (b.name ? b.name.split(' ')[0] : 'Driver');
     const resolvedLastName = getVal('last_name', 'lastName') || (b.name ? b.name.split(' ').slice(1).join(' ') : '');
     const fullName = (getVal('name') || `${resolvedFirstName} ${resolvedLastName}`).trim();
-    const finalPassword = getVal('password') || ('Ekaze' + Math.random().toString(36).slice(-6) + '!');
+    const tempPassword = getVal('password') || ('Ekaze@' + Math.floor(100000 + Math.random() * 900000));
+    const finalPassword = tempPassword;
 
+    let existingUser = null;
     if (resolvedNationalId) {
-      const existing = await User.findOne({ where: { national_id: resolvedNationalId } });
-      if (existing) {
-        return res.status(400).json({ success: false, message: 'User with this National ID already exists.' });
-      }
+      existingUser = await User.findOne({ where: { national_id: resolvedNationalId } });
     }
-    if (resolvedPhone) {
-      const existingPhone = await User.findOne({ where: { phone: resolvedPhone } });
-      if (existingPhone) {
-        return res.status(400).json({ success: false, message: 'User with this phone number already exists.' });
-      }
+    if (!existingUser && resolvedPhone) {
+      existingUser = await User.findOne({ where: { phone: resolvedPhone } });
+    }
+    if (!existingUser && resolvedEmail) {
+      existingUser = await User.findOne({ where: { email: resolvedEmail } });
     }
 
     let uploadedPhoto = null;
@@ -2958,31 +2959,57 @@ const createCompanyWorker = async (req, res, next) => {
       profile_completion_percent: isFullRegistration ? 100 : 50,
     };
 
-    const newUser = await User.create({
-      role: 'worker',
-      name: fullName,
-      first_name: resolvedFirstName,
-      last_name: resolvedLastName,
-      email: resolvedEmail,
-      phone: resolvedPhone,
-      national_id: resolvedNationalId,
-      passport_number: resolvedPassportNumber,
-      registration_document_type: resolvedPassportNumber ? 'passport' : 'nida',
-      password: finalPassword,
-      gender: getVal('gender') ? String(getVal('gender')).toLowerCase() : null,
-      date_of_birth: getVal('date_of_birth', 'dob'),
-      profile_photo: uploadedPhoto,
-      province: getVal('province'),
-      district: getVal('district') || 'Kigali',
-      sector: getVal('sector'),
-      cell: getVal('cell'),
-      village: getVal('village'),
-      address: getVal('address'),
-      status: 'active',
-      is_verified: Boolean(resolvedNationalId || resolvedPassportNumber),
-      profile_completed: isFullRegistration,
-      verified_at: new Date()
-    });
+    let targetUser = existingUser;
+    if (existingUser) {
+      await existingUser.update({
+        name: fullName || existingUser.name,
+        first_name: resolvedFirstName || existingUser.first_name,
+        last_name: resolvedLastName || existingUser.last_name,
+        email: resolvedEmail || existingUser.email,
+        phone: resolvedPhone || existingUser.phone,
+        national_id: resolvedNationalId || existingUser.national_id,
+        passport_number: resolvedPassportNumber || existingUser.passport_number,
+        password: finalPassword,
+        must_change_password: true,
+        profile_photo: uploadedPhoto || existingUser.profile_photo,
+        province: getVal('province') || existingUser.province,
+        district: getVal('district') || existingUser.district || 'Kigali',
+        sector: getVal('sector') || existingUser.sector,
+        cell: getVal('cell') || existingUser.cell,
+        village: getVal('village') || existingUser.village,
+        address: getVal('address') || existingUser.address,
+        status: 'active',
+        is_verified: true,
+        profile_completed: isFullRegistration
+      });
+    } else {
+      targetUser = await User.create({
+        role: 'worker',
+        name: fullName,
+        first_name: resolvedFirstName,
+        last_name: resolvedLastName,
+        email: resolvedEmail,
+        phone: resolvedPhone,
+        national_id: resolvedNationalId,
+        passport_number: resolvedPassportNumber,
+        registration_document_type: resolvedPassportNumber ? 'passport' : 'nida',
+        password: finalPassword,
+        must_change_password: true,
+        gender: getVal('gender') ? String(getVal('gender')).toLowerCase() : null,
+        date_of_birth: getVal('date_of_birth', 'dob'),
+        profile_photo: uploadedPhoto,
+        province: getVal('province'),
+        district: getVal('district') || 'Kigali',
+        sector: getVal('sector'),
+        cell: getVal('cell'),
+        village: getVal('village'),
+        address: getVal('address'),
+        status: 'active',
+        is_verified: Boolean(resolvedNationalId || resolvedPassportNumber),
+        profile_completed: isFullRegistration,
+        verified_at: new Date()
+      });
+    }
 
     const parsedLanguages = b.languages_spoken
       ? (Array.isArray(b.languages_spoken) ? b.languages_spoken : [b.languages_spoken])
@@ -2992,10 +3019,10 @@ const createCompanyWorker = async (req, res, next) => {
       ? (Array.isArray(b.work_type_preferences) ? b.work_type_preferences : [b.work_type_preferences])
       : [getVal('work_type') || 'full_time'];
 
-    const [workerRecord] = await Worker.findOrCreate({
-      where: { user_id: newUser.id },
+    let [workerRecord] = await Worker.findOrCreate({
+      where: { user_id: targetUser.id },
       defaults: {
-        user_id: newUser.id,
+        user_id: targetUser.id,
         company_id: company ? company.id : null,
         skills: ['Driver'],
         professions: ['Driver'],
@@ -3018,10 +3045,85 @@ const createCompanyWorker = async (req, res, next) => {
       }
     });
 
-    if (company && workerRecord.company_id !== company.id) {
-      await workerRecord.update({
-        company_id: company.id
-      });
+    const existingExtended = (typeof workerRecord.extended_profile === 'object' && workerRecord.extended_profile !== null)
+      ? workerRecord.extended_profile
+      : {};
+
+    await workerRecord.update({
+      company_id: company ? company.id : workerRecord.company_id,
+      skills: ['Driver'],
+      professions: ['Driver'],
+      experience_level: getVal('experience_level') || workerRecord.experience_level || 'intermediate',
+      experience_years: Number(getVal('experience_years')) || workerRecord.experience_years || 2,
+      languages_spoken: parsedLanguages,
+      work_type_preferences: parsedWorkTypes,
+      availability_status: 'available',
+      profile_completed: isFullRegistration,
+      business_card_path: uploadedPhoto || workerRecord.business_card_path,
+      extended_profile: {
+        ...existingExtended,
+        ...extendedProfileData,
+        ratings: existingExtended.ratings || []
+      }
+    });
+
+    // Send email with login credentials and instructions
+    const loginUrl = process.env.FRONTEND_URL || 'https://ekaze.benofinance.rw';
+    const companyDisplayName = company?.name || 'Company Fleet';
+
+    if (targetUser.email) {
+      try {
+        sendEmail({
+          to: targetUser.email,
+          subject: 'Welcome to Ekaze - Your Driver Login Credentials',
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 580px; margin: 0 auto; padding: 28px 20px; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px;">
+              <div style="text-align: center; margin-bottom: 24px;">
+                <h1 style="color: #0b57d0; font-size: 26px; font-weight: bold; margin: 0 0 6px 0;">Ekaze Platform</h1>
+                <p style="color: #475569; font-size: 15px; margin: 0;">Welcome, ${targetUser.name}!</p>
+                <p style="color: #64748b; font-size: 13px; margin: 4px 0 0 0;">You have been registered as a verified commercial fleet driver for <strong>${companyDisplayName}</strong>.</p>
+              </div>
+
+              <div style="background-color: #f8fafd; border: 1px solid #e0e7f5; border-radius: 12px; padding: 20px; margin-bottom: 22px;">
+                <h3 style="color: #0f172a; font-size: 15px; font-weight: bold; margin: 0 0 14px 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Your Login Credentials</h3>
+                <p style="margin: 8px 0; font-size: 14px; color: #334155;"><strong>Login Email:</strong> <span style="color: #0b57d0;">${targetUser.email}</span></p>
+                <p style="margin: 8px 0; font-size: 14px; color: #334155;"><strong>Login Phone:</strong> <span style="color: #0b57d0;">${targetUser.phone || 'Not provided'}</span></p>
+                <p style="margin: 8px 0; font-size: 14px; color: #334155;"><strong>Temporary Password:</strong> <code style="background-color: #e2e8f0; color: #0b57d0; font-size: 15px; font-weight: bold; padding: 3px 8px; border-radius: 6px;">${tempPassword}</code></p>
+                <p style="margin: 12px 0 0 0; font-size: 12px; color: #64748b;">You can log in using either your email address or your phone number.</p>
+              </div>
+
+              <div style="background-color: #eff6ff; border-left: 4px solid #2563eb; border-radius: 6px; padding: 14px 16px; margin-bottom: 24px;">
+                <h4 style="margin: 0 0 6px 0; color: #1e40af; font-size: 13px; font-weight: bold;">Important Next Steps:</h4>
+                <ol style="margin: 0; padding-left: 18px; color: #1e3a8a; font-size: 13px; line-height: 1.6;">
+                  <li>Log in with your email or phone and this temporary password.</li>
+                  <li>Complete your <strong>2-Step Verification (Two-Factor Authentication)</strong>.</li>
+                  <li>You will then be prompted to <strong>set your own permanent password</strong> to secure your account.</li>
+                </ol>
+              </div>
+
+              <div style="text-align: center; margin-bottom: 20px;">
+                <a href="${loginUrl}/login" style="display: inline-block; background-color: #0b57d0; color: #ffffff; text-decoration: none; padding: 12px 32px; border-radius: 9999px; font-weight: 600; font-size: 14px;">Sign in to Ekaze</a>
+              </div>
+
+              <p style="font-size: 12px; color: #94a3b8; text-align: center; margin: 0; border-top: 1px solid #f1f5f9; padding-top: 16px;">
+                If you have any questions or need support, contact your company fleet manager or the Ekaze support team.
+              </p>
+            </div>
+          `,
+          text: `Welcome to Ekaze! Your Driver account has been registered with ${companyDisplayName}.\n\nLogin Email: ${targetUser.email}\nLogin Phone: ${targetUser.phone}\nTemporary Password: ${tempPassword}\n\nPlease sign in at ${loginUrl}/login, complete 2-step verification, and set your new permanent password.`
+        }).catch(err => console.warn('⚠️ Driver welcome email dispatch notice:', err.message));
+      } catch (mailErr) {
+        console.warn('⚠️ Driver welcome email error (non-blocking):', mailErr.message);
+      }
+    }
+
+    if (targetUser.phone) {
+      try {
+        const smsMsg = `Ekaze: Your Driver account has been created for ${companyDisplayName}. Login with phone (${targetUser.phone}) or email and temporary password: ${tempPassword}. You will set your new permanent password upon login.`;
+        sendSMS(targetUser.phone, smsMsg).catch(err => console.warn('⚠️ Driver welcome SMS warning:', err.message));
+      } catch (smsErr) {
+        console.warn('⚠️ Driver welcome SMS error (non-blocking):', smsErr.message);
+      }
     }
 
     return res.status(201).json({
@@ -3029,7 +3131,108 @@ const createCompanyWorker = async (req, res, next) => {
       message: 'Driver registered successfully into company roster.',
       data: {
         worker: workerRecord,
-        user: newUser
+        user: targetUser
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getCompanyWorkerRatings = async (req, res, next) => {
+  try {
+    const workerId = parseInt(req.params.id, 10);
+    let worker = await Worker.findByPk(workerId, {
+      include: [{ model: User, as: 'user' }]
+    }).catch(() => null);
+    if (!worker) {
+      worker = await Worker.findOne({
+        where: { user_id: workerId },
+        include: [{ model: User, as: 'user' }]
+      }).catch(() => null);
+    }
+    if (!worker) {
+      return res.status(404).json({ success: false, message: 'Worker not found' });
+    }
+
+    const ext = (typeof worker.extended_profile === 'string')
+      ? JSON.parse(worker.extended_profile || '{}')
+      : (worker.extended_profile || {});
+
+    const ratings = Array.isArray(ext.ratings) ? ext.ratings : [];
+
+    return res.status(200).json({
+      success: true,
+      data: ratings,
+      total_reviews: ratings.length,
+      average_rating: worker.rating ? parseFloat(worker.rating) : 5.0
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const rateCompanyWorker = async (req, res, next) => {
+  try {
+    const workerId = parseInt(req.params.id, 10);
+    const { rating, comment, review } = req.body;
+    const numericRating = Math.max(1, Math.min(5, Number(rating) || 5));
+    const feedbackText = (comment || review || '').trim();
+
+    const company = await Company.findOne({ where: { user_id: req.user.id } }).catch(() => null);
+    const companyName = company?.company_name || req.user?.name || 'Partner Company';
+
+    let worker = await Worker.findByPk(workerId, {
+      include: [{ model: User, as: 'user' }]
+    }).catch(() => null);
+    if (!worker) {
+      worker = await Worker.findOne({
+        where: { user_id: workerId },
+        include: [{ model: User, as: 'user' }]
+      }).catch(() => null);
+    }
+    if (!worker) {
+      return res.status(404).json({ success: false, message: 'Worker not found' });
+    }
+
+    let ext = (typeof worker.extended_profile === 'string')
+      ? JSON.parse(worker.extended_profile || '{}')
+      : (worker.extended_profile || {});
+
+    const currentRatings = Array.isArray(ext.ratings) ? [...ext.ratings] : [];
+
+    const newRatingEntry = {
+      id: Date.now(),
+      rating: numericRating,
+      comment: feedbackText || 'Good driving performance and dependable conduct.',
+      review: feedbackText || 'Good driving performance and dependable conduct.',
+      company_id: company ? company.id : null,
+      company_name: companyName,
+      reviewer_name: companyName,
+      reviewer_role: 'company',
+      created_at: new Date().toISOString()
+    };
+
+    currentRatings.unshift(newRatingEntry);
+
+    const totalStars = currentRatings.reduce((sum, r) => sum + (Number(r.rating) || 5), 0);
+    const avgRating = (totalStars / currentRatings.length).toFixed(1);
+
+    ext.ratings = currentRatings;
+    worker.extended_profile = ext;
+    worker.rating = parseFloat(avgRating);
+    worker.rating_count = currentRatings.length;
+
+    await worker.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Driver rating and review submitted successfully.',
+      data: {
+        new_rating: newRatingEntry,
+        average_rating: worker.rating,
+        total_reviews: worker.rating_count,
+        ratings: currentRatings
       }
     });
   } catch (error) {
@@ -3082,7 +3285,9 @@ module.exports = {
   generateBusinessCards,
   printBusinessCards,
   getWorkersCardsData,
-  adjustCompanyTrial
+  adjustCompanyTrial,
+  getCompanyWorkerRatings,
+  rateCompanyWorker
 };
 
 
