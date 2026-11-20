@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   DedicatedFormPage,
   FormSection,
@@ -6,15 +6,18 @@ import {
   FormInput,
   FormSelect,
 } from "../common/DedicatedFormPage";
-import { useNidaCheck, useNidaVerify } from "@/hooks/useNida";
 import { useToast } from "@/hooks/use-toast";
 import type { NewWorkerRegistrationPayload } from "@/types/company.types";
-import {
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
-  Check,
-} from "lucide-react";
+import { Plus, Trash2, Check, Briefcase, GraduationCap, Award, User, ShieldCheck } from "lucide-react";
+
+interface WorkExperienceItem {
+  id: string;
+  employer: string;
+  role: string;
+  start_date: string;
+  end_date: string;
+  currently_working: boolean;
+}
 
 interface CompanyRegisterWorkerPageProps {
   onBack: () => void;
@@ -24,6 +27,62 @@ interface CompanyRegisterWorkerPageProps {
   initialWorker?: any;
 }
 
+// ── Comprehensive International Country Codes ──────────────────────────────
+const COUNTRY_DIAL_CODES = [
+  { code: "+250", country: "Rwanda", flag: "🇷🇼" },
+  { code: "+254", country: "Kenya", flag: "🇰🇪" },
+  { code: "+256", country: "Uganda", flag: "🇺🇬" },
+  { code: "+255", country: "Tanzania", flag: "🇹🇿" },
+  { code: "+257", country: "Burundi", flag: "🇧🇮" },
+  { code: "+243", country: "DR Congo", flag: "🇨🇩" },
+  { code: "+211", country: "South Sudan", flag: "🇸🇸" },
+  { code: "+251", country: "Ethiopia", flag: "🇪🇹" },
+  { code: "+252", country: "Somalia", flag: "🇸🇴" },
+  { code: "+234", country: "Nigeria", flag: "🇳🇬" },
+  { code: "+27", country: "South Africa", flag: "🇿🇦" },
+  { code: "+233", country: "Ghana", flag: "🇬🇭" },
+  { code: "+260", country: "Zambia", flag: "🇿🇲" },
+  { code: "+263", country: "Zimbabwe", flag: "🇿🇼" },
+  { code: "+265", country: "Malawi", flag: "🇲🇼" },
+  { code: "+258", country: "Mozambique", flag: "🇲🇿" },
+  { code: "+1", country: "USA / Canada", flag: "🇺🇸" },
+  { code: "+44", country: "United Kingdom", flag: "🇬🇧" },
+  { code: "+33", country: "France", flag: "🇫🇷" },
+  { code: "+32", country: "Belgium", flag: "🇧🇪" },
+  { code: "+49", country: "Germany", flag: "🇩🇪" },
+  { code: "+31", country: "Netherlands", flag: "🇳🇱" },
+  { code: "+41", country: "Switzerland", flag: "🇨🇭" },
+  { code: "+39", country: "Italy", flag: "🇮🇹" },
+  { code: "+34", country: "Spain", flag: "🇪🇸" },
+  { code: "+971", country: "UAE", flag: "🇦🇪" },
+  { code: "+966", country: "Saudi Arabia", flag: "🇸🇦" },
+  { code: "+974", country: "Qatar", flag: "🇶🇦" },
+  { code: "+91", country: "India", flag: "🇮🇳" },
+  { code: "+86", country: "China", flag: "🇨🇳" },
+  { code: "+81", country: "Japan", flag: "🇯🇵" },
+  { code: "+61", country: "Australia", flag: "🇦🇺" },
+];
+
+const EDUCATION_LEVEL_OPTIONS = [
+  { value: "none", label: "No formal education" },
+  { value: "primary", label: "Primary School" },
+  { value: "secondary", label: "Secondary / O-Level" },
+  { value: "advanced", label: "Advanced / A-Level" },
+  { value: "tvet", label: "TVET / Technical Vocational" },
+  { value: "bachelor", label: "Bachelor's Degree" },
+  { value: "masters", label: "Master's Degree" },
+  { value: "phd", label: "PhD / Doctorate" },
+];
+
+const PERMIT_CATEGORIES = [
+  { value: "A", label: "Category A - Motorcycle" },
+  { value: "B", label: "Category B - Light Vehicle / Car" },
+  { value: "C", label: "Category C - Commercial Truck / Heavy Vehicle" },
+  { value: "D", label: "Category D - Bus / Passenger Transport" },
+  { value: "E", label: "Category E - Trailer / Articulated Vehicle" },
+  { value: "F", label: "Category F - Special / Agricultural Machine" },
+];
+
 export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps> = ({
   onBack,
   onSubmit,
@@ -32,160 +91,102 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
   initialWorker,
 }) => {
   const { toast } = useToast();
-
   const isEditMode = Boolean(initialWorker);
   const userObj = initialWorker?.user || initialWorker || {};
 
-  // Active step: 1 (Identity & Verification), 2 (Personal & Account Details)
-  const [currentStep, setCurrentStep] = useState(isEditMode ? 2 : 1);
+  // Active step: 1 (Personal & Identity), 2 (Education & Permit), 3 (Work Experience)
+  const [currentStep, setCurrentStep] = useState(1);
 
-  // Document type: 'nida' | 'passport'
-  const [documentType, setDocumentType] = useState<"nida" | "passport">(
-    userObj.registration_document_type === "passport" || userObj.passport_number ? "passport" : "nida"
-  );
-  const [passportNumber, setPassportNumber] = useState(userObj.passport_number || "");
-
-  // ── Form State ─────────────────────────────────────────────────────────
-  const [formData, setFormData] = useState({
-    national_id: userObj.national_id || "",
-    first_name: userObj.first_name || (userObj.name ? userObj.name.split(" ")[0] : ""),
-    last_name: userObj.last_name || (userObj.name ? userObj.name.split(" ").slice(1).join(" ") : ""),
-    phone: userObj.phone || "",
-    email: userObj.email || "",
-    password: "",
-    password_confirmation: "",
-    gender: (userObj.gender?.toLowerCase() === "male" ? "male" : "female") as "male" | "female",
-    date_of_birth: userObj.date_of_birth ? String(userObj.date_of_birth).split("T")[0] : "",
-    province: userObj.province || "",
-    district: userObj.district || "",
-    sector: userObj.sector || "",
-    cell: userObj.cell || "",
-    village: userObj.village || "",
-    address: userObj.address || "",
-    experience_level: initialWorker?.experience_level || "intermediate",
-    min_salary: initialWorker?.min_salary ? String(initialWorker.min_salary) : "60000",
-    max_salary: initialWorker?.max_salary ? String(initialWorker.max_salary) : "120000",
-  });
-
+  // 1. Photo
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(userObj.profile_photo || null);
 
-  // ── NIDA Verification State ─────────────────────────────────────────────
-  const [nidCheckPassed, setNidCheckPassed] = useState(false);
-  const [nidaVerified, setNidaVerified] = useState(Boolean(isEditMode && userObj.national_id));
-  const [nidaVerifyField, setNidaVerifyField] = useState<"fullname" | "date_of_birth">("fullname");
-  const [nidaVerifyValue, setNidaVerifyValue] = useState("");
-  const [nidaVerifyDob, setNidaVerifyDob] = useState("");
-  const [nidaError, setNidaError] = useState("");
-  const prevNidRef = useRef(userObj.national_id || "");
+  // 2. ID or Passport (Typing only, no NIDA verification)
+  const [documentType, setDocumentType] = useState<"nida" | "passport">(
+    userObj.registration_document_type === "passport" || userObj.passport_number ? "passport" : "nida"
+  );
+  const [idNumber, setIdNumber] = useState(userObj.national_id || userObj.passport_number || "");
 
-  const { mutateAsync: nidaCheck, isPending: nidaCheckLoading } = useNidaCheck();
-  const { mutateAsync: nidaVerify, isPending: nidaVerifyLoading } = useNidaVerify();
+  // 3. Personal Details
+  const [firstName, setFirstName] = useState(userObj.first_name || (userObj.name ? userObj.name.split(" ")[0] : ""));
+  const [lastName, setLastName] = useState(userObj.last_name || (userObj.name ? userObj.name.split(" ").slice(1).join(" ") : ""));
+  const [countryCode, setCountryCode] = useState("+250");
+  const [phoneRaw, setPhoneRaw] = useState(
+    userObj.phone ? userObj.phone.replace(/^\+\d{1,4}/, "") : ""
+  );
+  const [email, setEmail] = useState(userObj.email || ""); // Optional
+  const [gender, setGender] = useState<"male" | "female">(
+    (userObj.gender?.toLowerCase() === "female" ? "female" : "male")
+  );
+  const [dateOfBirth, setDateOfBirth] = useState(
+    userObj.date_of_birth ? String(userObj.date_of_birth).split("T")[0] : ""
+  );
 
-  // Auto NIDA trigger when 16 digits entered
-  useEffect(() => {
-    if (documentType !== "nida" || isEditMode) return;
-    const cleanNid = formData.national_id.trim();
+  // 4. Education Background
+  const [educationLevel, setEducationLevel] = useState(
+    initialWorker?.extended_profile?.education_level || "secondary"
+  );
+  const [educationField, setEducationField] = useState(
+    initialWorker?.extended_profile?.education_option || initialWorker?.extended_profile?.education_field || ""
+  );
 
-    if (cleanNid.length === 16 && cleanNid !== prevNidRef.current && !nidaVerified) {
-      prevNidRef.current = cleanNid;
-      setNidaError("");
+  // 5. Category Permit (Driving License)
+  const [permitCategory, setPermitCategory] = useState(
+    initialWorker?.extended_profile?.driving_licence_type || "C"
+  );
+  const [permitNumber, setPermitNumber] = useState(
+    initialWorker?.extended_profile?.driving_licence_number || ""
+  );
+  const [permitExpiryDate, setPermitExpiryDate] = useState(
+    initialWorker?.extended_profile?.driving_licence_expiry || ""
+  );
 
-      nidaCheck(cleanNid)
-        .then((res: any) => {
-          // nidaApi.check returns r.data directly (no extra .data wrapper)
-          const passed = res?.passed ?? res?.data?.passed;
-          if (passed) {
-            setNidCheckPassed(true);
-            const verificationField = res?.verification_field ?? res?.data?.verification_field;
-            const reqField = verificationField === "dob" ? "date_of_birth" : "fullname";
-            setNidaVerifyField(reqField);
-          } else {
-            setNidCheckPassed(false);
-            setNidaError(res?.message ?? res?.data?.message ?? "National ID not recognized by NIDA database.");
-          }
-        })
-        .catch((err: any) => {
-          setNidCheckPassed(false);
-          setNidaError(err?.response?.data?.message || err?.message || "Failed to query NIDA service.");
-        });
-    } else if (cleanNid.length < 16) {
-      prevNidRef.current = "";
-      setNidCheckPassed(false);
-      setNidaVerified(false);
-      setNidaError("");
-    }
-  }, [formData.national_id, documentType, isEditMode, nidaCheck, nidaVerified]);
+  // 6. Working Experience Part (Dynamic past employers)
+  const initialExperiences: WorkExperienceItem[] = Array.isArray(initialWorker?.extended_profile?.past_experiences) && initialWorker.extended_profile.past_experiences.length > 0
+    ? initialWorker.extended_profile.past_experiences
+    : [
+        {
+          id: "exp-1",
+          employer: "",
+          role: "",
+          start_date: "",
+          end_date: "",
+          currently_working: false,
+        },
+      ];
 
-  const handleNidaVerify = async () => {
-    setNidaError("");
-    try {
-      if (nidaVerifyField === "fullname" && !nidaVerifyValue.trim()) {
-        setNidaError("Please enter the driver's full name.");
-        return;
-      }
-      if (nidaVerifyField === "date_of_birth" && !nidaVerifyDob) {
-        setNidaError("Please select the driver's date of birth.");
-        return;
-      }
+  const [experiences, setExperiences] = useState<WorkExperienceItem[]>(initialExperiences);
 
-      // Build payload matching nidaApi.verify: { nid, fullname?, date_of_birth? }
-      const verifyPayload: { nid: string; fullname?: string; date_of_birth?: string } = {
-        nid: formData.national_id,
-      };
-      if (nidaVerifyField === "fullname") {
-        verifyPayload.fullname = nidaVerifyValue.trim();
-      } else {
-        verifyPayload.date_of_birth = nidaVerifyDob;
-      }
-
-      const res = await nidaVerify(verifyPayload);
-
-      // nidaApi.verify returns r.data directly (no extra .data wrapper)
-      const verified = res?.verified ?? res?.data?.verified;
-      const citizenData = res?.citizen_data ?? res?.data?.citizen_data ?? {};
-
-      if (verified) {
-        setNidaVerified(true);
-        const parsedDob = citizenData.date_of_birth
-          ? String(citizenData.date_of_birth).split("T")[0]
-          : "";
-
-        setFormData((prev) => ({
-          ...prev,
-          first_name: citizenData.first_name || prev.first_name,
-          last_name: citizenData.last_name || prev.last_name,
-          date_of_birth: parsedDob || prev.date_of_birth,
-          gender:
-            citizenData.gender?.toLowerCase() === "male"
-              ? "male"
-              : citizenData.gender?.toLowerCase() === "female"
-              ? "female"
-              : prev.gender,
-          photo: citizenData.photo_url || prev.photo,
-        }));
-
-        if (citizenData.photo_url) {
-          setPhotoPreview(citizenData.photo_url);
-        }
-
-        toast({
-          title: "Identity Verified",
-          description: `Identity confirmed for ${citizenData.first_name || "driver"} ${citizenData.last_name || ""}.`,
-        });
-
-        // Automatically move to Step 2
-        setCurrentStep(2);
-      } else {
-        setNidaError(res?.message ?? res?.data?.message ?? "Verification mismatch. Please check spelling.");
-      }
-    } catch (err: any) {
-      setNidaError(err?.response?.data?.message || err?.message || "Failed to confirm identity.");
-    }
+  const handleAddExperience = () => {
+    setExperiences((prev) => [
+      ...prev,
+      {
+        id: `exp-${Date.now()}`,
+        employer: "",
+        role: "",
+        start_date: "",
+        end_date: "",
+        currently_working: false,
+      },
+    ]);
   };
 
-  const handleFieldChange = (field: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const handleRemoveExperience = (id: string) => {
+    if (experiences.length === 1) {
+      toast({
+        title: "At least one experience required",
+        description: "Please provide at least one past or current employer.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setExperiences((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleExperienceChange = (id: string, field: keyof WorkExperienceItem, value: any) => {
+    setExperiences((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
+    );
   };
 
   const handlePhotoUpload = (file: File) => {
@@ -195,17 +196,44 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
     reader.readAsDataURL(file);
   };
 
-  // ── Step Navigation & Validation ───────────────────────────────────────
-  const canProceedIdentity = isEditMode || (documentType === "nida" ? nidaVerified : Boolean(passportNumber.trim()));
-
+  // ── Validation per Step ──────────────────────────────────────────────────
   const validateStep1 = () => {
-    if (!canProceedIdentity) {
+    if (!photoPreview && !photoFile) {
       toast({
-        title: "Identity Verification Required",
-        description:
-          documentType === "nida"
-            ? "Please enter your 16-digit Rwandan NIDA number and verify identity."
-            : "Please enter a valid passport number.",
+        title: "Profile Picture Required",
+        description: "Please upload the driver's profile picture.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    if (!idNumber.trim()) {
+      toast({
+        title: "ID / Passport Required",
+        description: `Please enter the driver's ${documentType === "nida" ? "National ID number" : "Passport number"}.`,
+        variant: "destructive",
+      });
+      return false;
+    }
+    if (!firstName.trim() || !lastName.trim()) {
+      toast({
+        title: "Names Required",
+        description: "Please enter both first name and last name.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    if (!phoneRaw.trim()) {
+      toast({
+        title: "Phone Number Required",
+        description: "Please enter a valid contact phone number.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    if (!dateOfBirth) {
+      toast({
+        title: "Date of Birth Required",
+        description: "Please enter the driver's date of birth.",
         variant: "destructive",
       });
       return false;
@@ -214,21 +242,84 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
   };
 
   const validateStep2 = () => {
-    if (!formData.first_name?.trim() || !formData.last_name?.trim()) {
+    if (!educationLevel) {
       toast({
-        title: "Name Required",
-        description: "Driver first and last name are required.",
+        title: "Education Level Required",
+        description: "Please select the driver's level of education.",
         variant: "destructive",
       });
       return false;
     }
-    if (!formData.phone?.trim()) {
+    if (!educationField.trim()) {
       toast({
-        title: "Contact Phone Required",
-        description: "Please enter driver contact phone number.",
+        title: "Education Field Required",
+        description: "Please enter the field of study (e.g. Mathematics, Software, Mechanical, Automotive).",
         variant: "destructive",
       });
       return false;
+    }
+    if (!permitCategory) {
+      toast({
+        title: "Permit Category Required",
+        description: "Please select the driver's permit category (e.g. Category C, B, D).",
+        variant: "destructive",
+      });
+      return false;
+    }
+    if (!permitNumber.trim()) {
+      toast({
+        title: "Permit Number Required",
+        description: "Please enter the driver's permit / license number.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    if (!permitExpiryDate) {
+      toast({
+        title: "Permit Expiration Date Required",
+        description: "Please provide the expiration date of the driving permit.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const validateStep3 = () => {
+    for (let i = 0; i < experiences.length; i++) {
+      const exp = experiences[i];
+      if (!exp.employer.trim()) {
+        toast({
+          title: "Employer Name Required",
+          description: `Please enter employer name for experience #${i + 1}.`,
+          variant: "destructive",
+        });
+        return false;
+      }
+      if (!exp.role.trim()) {
+        toast({
+          title: "Job Role Required",
+          description: `Please enter the job role/title for experience #${i + 1}.`,
+          variant: "destructive",
+        });
+        return false;
+      }
+      if (!exp.start_date) {
+        toast({
+          title: "Start Date Required",
+          description: `Please provide start date for experience #${i + 1}.`,
+          variant: "destructive",
+        });
+        return false;
+      }
+      if (!exp.currently_working && !exp.end_date) {
+        toast({
+          title: "End Date Required",
+          description: `Please provide end date or mark currently working for experience #${i + 1}.`,
+          variant: "destructive",
+        });
+        return false;
+      }
     }
     return true;
   };
@@ -239,37 +330,48 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
       setCurrentStep(2);
     } else if (currentStep === 2) {
       if (!validateStep2()) return;
+      setCurrentStep(3);
+    } else if (currentStep === 3) {
+      if (!validateStep3()) return;
       handleSubmitFinal();
     }
   };
 
   const handleSubmitFinal = () => {
+    const fullPhoneNumber = `${countryCode}${phoneRaw.replace(/^0+/, "")}`;
+
     const payload: NewWorkerRegistrationPayload = {
-      national_id: formData.national_id || passportNumber,
-      first_name: formData.first_name,
-      last_name: formData.last_name,
-      phone: formData.phone,
-      email: formData.email || undefined,
-      password: formData.password || undefined,
-      gender: formData.gender,
-      date_of_birth: formData.date_of_birth,
+      national_id: idNumber.trim(),
+      first_name: firstName.trim(),
+      last_name: lastName.trim(),
+      phone: fullPhoneNumber,
+      email: email.trim() ? email.trim() : undefined,
+      gender: gender,
+      date_of_birth: dateOfBirth,
       photo: photoFile,
-      registration_mode: "quick",
-      province: formData.province || undefined,
-      district: formData.district || "Kigali",
-      sector: formData.sector || "Remera",
-      cell: formData.cell || undefined,
-      village: formData.village || undefined,
-      address: formData.address || undefined,
-      experience_level: formData.experience_level as any,
-      languages_spoken: ["Kinyarwanda"],
+      registration_mode: "full",
+      experience_level: "expert",
+      languages_spoken: ["Kinyarwanda", "English"],
       work_type_preferences: ["full_time"],
       professions: ["Driver"],
-      preferred_districts: formData.district ? [formData.district] : ["Gasabo"],
+      preferred_districts: ["Kigali"],
+      district: "Kigali",
+      sector: "Gasabo",
       has_driving_licence: true,
-      min_salary: formData.min_salary,
-      max_salary: formData.max_salary,
+      has_insurance: true,
     };
+
+    // Attach all extended profile details
+    (payload as any).passport_number = documentType === "passport" ? idNumber.trim() : undefined;
+    (payload as any).registration_document_type = documentType;
+    (payload as any).education_level = educationLevel;
+    (payload as any).education_option = educationField.trim();
+    (payload as any).education_field = educationField.trim();
+    (payload as any).driving_licence_type = permitCategory;
+    (payload as any).driving_licence_number = permitNumber.trim();
+    (payload as any).driving_licence_expiry = permitExpiryDate;
+    (payload as any).past_experiences = experiences;
+    (payload as any).work_experiences = experiences;
 
     if (companyId) {
       (payload as any).company_id = companyId;
@@ -282,20 +384,27 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
     {
       id: "1",
       stepNumber: "Step 01",
-      title: "Identity & Verification",
-      description: "Verify Rwandan NIDA or Passport",
-      completed: canProceedIdentity,
+      title: "Identity & Personal Details",
+      description: "Photo, ID/Passport, names & phone",
+      completed: Boolean(photoPreview && idNumber && firstName && lastName && phoneRaw && dateOfBirth),
     },
     {
       id: "2",
       stepNumber: "Step 02",
-      title: "Personal & Account Details",
-      description: "Names, contact phone & password",
-      completed: Boolean(formData.phone?.trim() && formData.first_name?.trim()),
+      title: "Education & Permit Category",
+      description: "Level, field & driving permit",
+      completed: Boolean(educationLevel && educationField && permitCategory && permitNumber && permitExpiryDate),
+    },
+    {
+      id: "3",
+      stepNumber: "Step 03",
+      title: "Working Experience",
+      description: "Past employers, start & end dates",
+      completed: experiences.every((e) => e.employer && e.role && e.start_date && (e.end_date || e.currently_working)),
     },
   ];
 
-  const fullName = `${formData.first_name} ${formData.last_name}`.trim();
+  const fullName = `${firstName} ${lastName}`.trim();
 
   return (
     <DedicatedFormPage
@@ -304,58 +413,58 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
       title={isEditMode ? "Edit Driver Details" : "Driver Registration"}
       subtitle={
         isEditMode
-          ? "Update driver profile and account information."
-          : "Register verified driver into company workforce roster."
+          ? "Update driver profile and professional credentials."
+          : "Register verified commercial fleet driver into company roster."
       }
       steps={STEPS}
       currentStep={currentStep - 1}
       onStepClick={(stepIndex) => {
-        if (!isEditMode && stepIndex > 0 && !canProceedIdentity) {
-          toast({
-            title: "Identity Verification Required",
-            description: "Please verify identity on Step 1 first.",
-            variant: "destructive",
-          });
-          return;
-        }
+        if (stepIndex === 1 && !validateStep1()) return;
+        if (stepIndex === 2 && (!validateStep1() || !validateStep2())) return;
         setCurrentStep(stepIndex + 1);
       }}
-      summaryTitle="Driver profile"
+      summaryTitle="Driver Summary"
+      summaryItems={[
+        { label: "Document", value: `${documentType === "nida" ? "National ID" : "Passport"}: ${idNumber || "Not entered"}` },
+        { label: "Phone", value: phoneRaw ? `${countryCode} ${phoneRaw}` : "Not entered" },
+        { label: "Permit Category", value: permitCategory ? `Category ${permitCategory}` : "Not selected" },
+        { label: "Education", value: educationLevel ? `${educationLevel} (${educationField || "Field"})` : "Not specified" },
+        { label: "Work History", value: `${experiences.length} employer(s)` },
+      ]}
       profileAvatar={{
         src: photoPreview,
-        name: fullName || "New driver account",
-        role: "Driver",
+        name: fullName || "Driver Account",
+        role: `Driver - Category ${permitCategory}`,
         onPhotoChange: handlePhotoUpload,
       }}
       primaryActionLabel={
-        currentStep === 2
+        currentStep === 3
           ? isLoading
             ? isEditMode
               ? "Saving changes..."
               : "Registering driver..."
             : isEditMode
             ? "Save changes"
-            : "Register driver"
+            : "Register Driver"
           : "Continue"
       }
       onPrimaryAction={handleNextStep}
       isLoading={isLoading}
-      secondaryActionLabel={currentStep > 1 && !isEditMode ? "Back" : undefined}
-      onSecondaryAction={currentStep > 1 && !isEditMode ? () => setCurrentStep(1) : undefined}
+      secondaryActionLabel={currentStep > 1 ? "Back" : undefined}
+      onSecondaryAction={currentStep > 1 ? () => setCurrentStep(currentStep - 1) : undefined}
     >
-      {/* ── STEP 1: IDENTITY & VERIFICATION ── */}
+      {/* ── STEP 1: IDENTITY & PERSONAL DETAILS ── */}
       {currentStep === 1 && (
         <div className="space-y-6 text-left animate-in fade-in duration-200">
-          <FormSection id="section-identity" title="1. Identity Verification">
-            {/* Identity Switcher */}
+          <FormSection id="section-identity" title="1. Identity & Document Verification">
+            {/* Document Selection */}
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-2">
-                Select Document Type *
+                Select Document Type <span className="text-red-500 font-bold">*</span>
               </label>
               <div className="flex flex-wrap items-center gap-6 py-1">
                 <button
                   type="button"
-                  disabled={isEditMode}
                   onClick={() => setDocumentType("nida")}
                   className="flex items-center gap-2.5 cursor-pointer group"
                 >
@@ -366,12 +475,11 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                   ) : (
                     <div className="w-5 h-5 rounded border-2 border-slate-400 bg-transparent shrink-0" />
                   )}
-                  <span className="font-bold text-sm text-slate-900">Rwandan Citizen (National ID)</span>
+                  <span className="font-bold text-sm text-slate-900">National ID</span>
                 </button>
 
                 <button
                   type="button"
-                  disabled={isEditMode}
                   onClick={() => setDocumentType("passport")}
                   className="flex items-center gap-2.5 cursor-pointer group"
                 >
@@ -382,207 +490,290 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                   ) : (
                     <div className="w-5 h-5 rounded border-2 border-slate-400 bg-transparent shrink-0" />
                   )}
-                  <span className="font-bold text-sm text-slate-900">Foreign Worker (Passport)</span>
+                  <span className="font-bold text-sm text-slate-900">Passport</span>
                 </button>
               </div>
             </div>
 
-            {/* NIDA Verification Box */}
-            {documentType === "nida" && (
-              <div className="space-y-4 pt-2">
-                <FormField label="National ID Number *" required>
-                  <div className="flex items-center gap-2">
-                    <div className="relative flex-1">
-                      <FormInput
-                        type="text"
-                        maxLength={16}
-                        placeholder="Enter 16-digit Rwandan NIDA number"
-                        value={formData.national_id}
-                        disabled={nidaVerified || isEditMode}
-                        onChange={(e) => {
-                          const cleanDigits = e.target.value.replace(/\D/g, "");
-                          handleFieldChange("national_id", cleanDigits);
-                          if (cleanDigits.length !== 16) {
-                            setNidCheckPassed(false);
-                            setNidaVerified(false);
-                          }
-                        }}
-                        className={`${formData.national_id.length > 0 && formData.national_id.length < 16 ? "border-red-500" : ""} ${
-                          nidaVerified ? "bg-slate-100 cursor-not-allowed border-emerald-400" : ""
-                        }`}
-                      />
-                    </div>
-                    {nidaVerified && (
-                      <div className="px-3.5 py-3 rounded-xl gap-1.5 shrink-0 bg-[#2478b8] text-white font-bold text-xs shadow-xs flex items-center">
-                        <CheckCircle2 className="h-4 w-4" />
-                        <span>Verified</span>
-                      </div>
-                    )}
-                    {nidaCheckLoading && (
-                      <div className="mt-2 shrink-0">
-                        <Loader2 className="h-5 w-5 animate-spin text-[#2478b8]" />
-                      </div>
-                    )}
-                  </div>
-                </FormField>
-
-                {/* Inline NIDA confirmation box */}
-                <div
-                  className={`overflow-hidden transition-all duration-300 ${
-                    nidCheckPassed && formData.national_id.length === 16 ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"
-                  }`}
-                >
-                  <div className="border-t border-slate-200/80 pt-4 space-y-4">
-                    <div className="flex items-start gap-2.5 p-3.5 bg-[#f4f6f8] border border-slate-200 rounded-xl">
-                      <p className="text-xs sm:text-sm font-semibold text-[#4f687a] leading-relaxed">
-                        {nidaVerifyField === "fullname"
-                          ? "Please enter the driver's full name as it appears on their National ID card to confirm ownership."
-                          : "Please select the driver's date of birth as it appears on their National ID card."}
-                      </p>
-                    </div>
-
-                    {nidaVerifyField === "fullname" ? (
-                      <FormField label="Full Name *" required>
-                        <FormInput
-                          type="text"
-                          placeholder="Worker full name as on ID"
-                          value={nidaVerifyValue}
-                          onChange={(e) => setNidaVerifyValue(e.target.value)}
-                        />
-                      </FormField>
-                    ) : (
-                      <FormField label="Date of Birth *" required>
-                        <FormInput
-                          type="date"
-                          value={nidaVerifyDob}
-                          onChange={(e) => setNidaVerifyDob(e.target.value)}
-                        />
-                      </FormField>
-                    )}
-
-                    {nidaError && (
-                      <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-xl">
-                        <AlertCircle className="h-4 w-4 text-red-600 shrink-0" />
-                        <p className="text-xs font-semibold text-red-600">{nidaError}</p>
-                      </div>
-                    )}
-
-                    <div className="flex justify-end pt-1">
-                      <button
-                        type="button"
-                        onClick={handleNidaVerify}
-                        disabled={nidaVerifyLoading || (nidaVerifyField === "fullname" ? !nidaVerifyValue.trim() : !nidaVerifyDob)}
-                        className="px-8 py-3.5 rounded-xl text-xs sm:text-sm font-bold bg-[#2478b8] hover:bg-[#1b6296] text-white disabled:opacity-50 cursor-pointer"
-                      >
-                        {nidaVerifyLoading ? "Verifying with NIDA..." : "Verify Identity"}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {documentType === "passport" && (
-              <div className="space-y-4 pt-2">
-                <FormField label="Passport Number *" required>
-                  <FormInput
-                    type="text"
-                    maxLength={20}
-                    placeholder="Enter passport number"
-                    value={passportNumber}
-                    onChange={(e) => setPassportNumber(e.target.value.toUpperCase())}
-                  />
-                </FormField>
-              </div>
-            )}
-          </FormSection>
-        </div>
-      )}
-
-      {/* ── STEP 2: PERSONAL & ACCOUNT DETAILS ── */}
-      {currentStep === 2 && (
-        <div className="space-y-6 text-left animate-in fade-in duration-200">
-          <FormSection id="section-personal-account" title="2. Personal & Account Information">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField label="First name *" required>
+            {/* Direct Typing Input for ID or Passport (No NIDA checks) */}
+            <div className="pt-2">
+              <FormField
+                label={`${documentType === "nida" ? "National ID Number" : "Passport Number"} *`}
+                required
+              >
                 <FormInput
                   type="text"
-                  placeholder="First name"
-                  value={formData.first_name}
-                  onChange={(e) => handleFieldChange("first_name", e.target.value)}
+                  placeholder={
+                    documentType === "nida"
+                      ? "Type National ID number (e.g. 1199...)"
+                      : "Type Passport number (e.g. PC1234567)"
+                  }
+                  value={idNumber}
+                  onChange={(e) => setIdNumber(e.target.value)}
+                  required
                 />
               </FormField>
-              <FormField label="Last name *" required>
+            </div>
+          </FormSection>
+
+          <FormSection id="section-personal" title="2. Personal Details">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField label="First Name *" required>
                 <FormInput
                   type="text"
-                  placeholder="Last name"
-                  value={formData.last_name}
-                  onChange={(e) => handleFieldChange("last_name", e.target.value)}
+                  placeholder="Driver's first name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                />
+              </FormField>
+              <FormField label="Last Name *" required>
+                <FormInput
+                  type="text"
+                  placeholder="Driver's last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
                 />
               </FormField>
             </div>
 
+            {/* Phone Number with International Country Codes */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-slate-700">
+                Contact Phone Number <span className="text-red-500 font-bold">*</span>
+              </label>
+              <div className="flex gap-2">
+                <div className="w-44 sm:w-52 shrink-0">
+                  <FormSelect
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
+                  >
+                    {COUNTRY_DIAL_CODES.map((item) => (
+                      <option key={`${item.code}-${item.country}`} value={item.code}>
+                        {item.flag} {item.code} ({item.country})
+                      </option>
+                    ))}
+                  </FormSelect>
+                </div>
+                <div className="flex-1">
+                  <FormInput
+                    type="tel"
+                    placeholder="Enter phone number without leading 0"
+                    value={phoneRaw}
+                    onChange={(e) => setPhoneRaw(e.target.value.replace(/[^\d]/g, ""))}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField label="Email Address (Optional)">
+                <FormInput
+                  type="email"
+                  placeholder="driver@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </FormField>
+
               <FormField label="Gender *" required>
                 <FormSelect
-                  value={formData.gender}
-                  onChange={(e) => handleFieldChange("gender", e.target.value)}
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value as "male" | "female")}
                 >
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </FormSelect>
               </FormField>
+            </div>
 
-              <FormField label="Date of birth *" required>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField label="Date of Birth *" required>
                 <FormInput
                   type="date"
-                  value={formData.date_of_birth}
-                  onChange={(e) => handleFieldChange("date_of_birth", e.target.value)}
+                  value={dateOfBirth}
+                  onChange={(e) => setDateOfBirth(e.target.value)}
+                  required
+                />
+              </FormField>
+            </div>
+          </FormSection>
+        </div>
+      )}
+
+      {/* ── STEP 2: EDUCATION & CATEGORY PERMIT ── */}
+      {currentStep === 2 && (
+        <div className="space-y-6 text-left animate-in fade-in duration-200">
+          <FormSection id="section-education" title="3. Education Background">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField label="Level of Education *" required>
+                <FormSelect
+                  value={educationLevel}
+                  onChange={(e) => setEducationLevel(e.target.value)}
+                >
+                  {EDUCATION_LEVEL_OPTIONS.map((lvl) => (
+                    <option key={lvl.value} value={lvl.value}>
+                      {lvl.label}
+                    </option>
+                  ))}
+                </FormSelect>
+              </FormField>
+
+              <FormField label="Field of Study (e.g. Mathematics, Software, Mechanical, Automotive) *" required>
+                <FormInput
+                  type="text"
+                  placeholder="e.g. Mathematics, Software Engineering, Automotive"
+                  value={educationField}
+                  onChange={(e) => setEducationField(e.target.value)}
+                  required
+                />
+              </FormField>
+            </div>
+          </FormSection>
+
+          <FormSection id="section-permit" title="4. Driving Permit & Category">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField label="Permit Category *" required>
+                <FormSelect
+                  value={permitCategory}
+                  onChange={(e) => setPermitCategory(e.target.value)}
+                >
+                  {PERMIT_CATEGORIES.map((cat) => (
+                    <option key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </option>
+                  ))}
+                </FormSelect>
+              </FormField>
+
+              <FormField label="Driving Permit Number *" required>
+                <FormInput
+                  type="text"
+                  placeholder="e.g. DL-2024-9842"
+                  value={permitNumber}
+                  onChange={(e) => setPermitNumber(e.target.value.toUpperCase())}
+                  required
                 />
               </FormField>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField label="Contact phone *" required>
+              <FormField label="Permit Expiration Date *" required>
                 <FormInput
-                  type="tel"
-                  maxLength={10}
-                  placeholder="078XXXXXXX"
-                  value={formData.phone}
-                  onChange={(e) => handleFieldChange("phone", e.target.value)}
-                />
-              </FormField>
-
-              <FormField label="Email address (optional)">
-                <FormInput
-                  type="email"
-                  placeholder="driver@example.com"
-                  value={formData.email}
-                  onChange={(e) => handleFieldChange("email", e.target.value)}
+                  type="date"
+                  value={permitExpiryDate}
+                  onChange={(e) => setPermitExpiryDate(e.target.value)}
+                  required
                 />
               </FormField>
             </div>
+          </FormSection>
+        </div>
+      )}
 
-            {!isEditMode && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FormField label="Account password (optional)">
-                  <FormInput
-                    type="password"
-                    placeholder="Leave blank for auto password"
-                    value={formData.password}
-                    onChange={(e) => handleFieldChange("password", e.target.value)}
-                  />
-                </FormField>
-                <FormField label="Confirm password">
-                  <FormInput
-                    type="password"
-                    placeholder="Confirm password"
-                    value={formData.password_confirmation}
-                    onChange={(e) => handleFieldChange("password_confirmation", e.target.value)}
-                  />
-                </FormField>
-              </div>
-            )}
+      {/* ── STEP 3: WORKING EXPERIENCE ── */}
+      {currentStep === 3 && (
+        <div className="space-y-6 text-left animate-in fade-in duration-200">
+          <FormSection
+            id="section-experience"
+            title="5. Working Experience (Add where driver worked)"
+          >
+            <div className="space-y-5">
+              {experiences.map((exp, index) => (
+                <div
+                  key={exp.id}
+                  className="p-5 rounded-xl border border-slate-200 bg-[#f8fafd] space-y-4 relative"
+                >
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                      <Briefcase className="w-3.5 h-3.5 text-[#2478b8]" />
+                      Experience #{index + 1}
+                    </span>
+                    {experiences.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveExperience(exp.id)}
+                        className="text-red-500 hover:text-red-700 text-xs font-semibold inline-flex items-center gap-1 cursor-pointer p-1"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span>Remove</span>
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <FormField label="Employer / Company Name *" required>
+                      <FormInput
+                        type="text"
+                        placeholder="Company or employer name"
+                        value={exp.employer}
+                        onChange={(e) => handleExperienceChange(exp.id, "employer", e.target.value)}
+                        required
+                      />
+                    </FormField>
+
+                    <FormField label="Job Role / Responsibilities *" required>
+                      <FormInput
+                        type="text"
+                        placeholder="e.g. Heavy Truck Driver, Fleet Driver, Chauffeur"
+                        value={exp.role}
+                        onChange={(e) => handleExperienceChange(exp.id, "role", e.target.value)}
+                        required
+                      />
+                    </FormField>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <FormField label="Start Date *" required>
+                      <FormInput
+                        type="date"
+                        value={exp.start_date}
+                        onChange={(e) => handleExperienceChange(exp.id, "start_date", e.target.value)}
+                        required
+                      />
+                    </FormField>
+
+                    <div>
+                      <FormField label={exp.currently_working ? "End Date (Currently Working)" : "End Date *"} required={!exp.currently_working}>
+                        <FormInput
+                          type="date"
+                          value={exp.end_date}
+                          disabled={exp.currently_working}
+                          onChange={(e) => handleExperienceChange(exp.id, "end_date", e.target.value)}
+                          required={!exp.currently_working}
+                        />
+                      </FormField>
+                      <label className="flex items-center gap-2 mt-2 cursor-pointer text-xs text-slate-700">
+                        <input
+                          type="checkbox"
+                          checked={exp.currently_working}
+                          onChange={(e) => {
+                            const checked = e.target.checked;
+                            handleExperienceChange(exp.id, "currently_working", checked);
+                            if (checked) {
+                              handleExperienceChange(exp.id, "end_date", "");
+                            }
+                          }}
+                          className="rounded border-slate-300 text-[#2478b8] focus:ring-[#2478b8]"
+                        />
+                        <span>Currently working here</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              <button
+                type="button"
+                onClick={handleAddExperience}
+                className="w-full py-3 border-2 border-dashed border-[#2478b8]/40 hover:border-[#2478b8] bg-blue-50/50 hover:bg-blue-50 text-[#2478b8] rounded-xl font-bold text-sm inline-flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>+ Add Another Employer / Work Experience</span>
+              </button>
+            </div>
           </FormSection>
         </div>
       )}

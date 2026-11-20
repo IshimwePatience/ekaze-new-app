@@ -2880,9 +2880,29 @@ const createCompanyWorker = async (req, res, next) => {
 
     const isFullRegistration = getVal('registration_mode') === 'full' || Boolean(getVal('education_level') || getVal('bio') || getVal('referee_name'));
 
+    let parsedExperiences = [];
+    try {
+      if (typeof b.past_experiences === 'string') {
+        parsedExperiences = JSON.parse(b.past_experiences);
+      } else if (Array.isArray(b.past_experiences)) {
+        parsedExperiences = b.past_experiences;
+      } else if (Array.isArray(b.work_experiences)) {
+        parsedExperiences = b.work_experiences;
+      }
+    } catch (e) {
+      parsedExperiences = [];
+    }
+
     const extendedProfileData = {
       marital_status: getVal('marital_status') || 'Single',
       education_level: getVal('education_level') || (isFullRegistration ? 'Secondary / A-Level' : null),
+      education_option: getVal('education_option', 'education_field') || null,
+      education_field: getVal('education_field', 'education_option') || null,
+      driving_licence_type: getVal('driving_licence_type', 'licence_category') || 'C',
+      driving_licence_number: getVal('driving_licence_number', 'permit_number') || null,
+      driving_licence_expiry: getVal('driving_licence_expiry', 'permit_expiry_date') || null,
+      past_experiences: parsedExperiences,
+      previous_employers: parsedExperiences,
       years_of_experience: Number(getVal('experience_years')) || 2,
       preferred_work_type: getVal('work_type') || 'full_time',
       available_from: getVal('available_from') || '08:00',
