@@ -1,4 +1,4 @@
-import scaniaHeroTruck from "@/assets/scania_truck_africa_hero.jpg";
+import scaniaHeroTruck from "@/assets/scania_hero_new.jpg";
 
 const Hero = () => {
   return (

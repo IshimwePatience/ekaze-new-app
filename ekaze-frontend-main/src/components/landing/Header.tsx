@@ -160,9 +160,7 @@ const Header = () => {
   const navLinks = [
     { label: t("nav.home"), href: "#hero" },
     { label: language === "kin" ? "Ibyiciro by'Abashoferi" : "Driver Categories", href: "#features" },
-    // PREVIOUS: { label: "Integrations", href: "#integrations" },
     { label: language === "kin" ? "Serivisi" : "Services", href: "#services" },
-    { label: language === "kin" ? "Shaka Umushoferi" : "Find Driver", href: "/search-worker" },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -282,31 +280,28 @@ const Header = () => {
               <a
                 href="#features"
                 onClick={(e) => handleNavClick(e, "#features")}
-                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer drop-shadow-xs ${
-                  isActiveLink("#features")
-                    ? "text-[#60a5fa]"
-                    : isHomePage
-                      ? "text-white/95 hover:text-[#60a5fa]"
-                      : "text-slate-800 hover:text-[#2478b8]"
-                }`}
+                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer drop-shadow-xs ${isActiveLink("#features")
+                  ? "text-[#60a5fa]"
+                  : isHomePage
+                    ? "text-white/95 hover:text-[#60a5fa]"
+                    : "text-slate-800 hover:text-[#2478b8]"
+                  }`}
               >
                 {language === "kin" ? "Abashoferi" : "Fleet & Drivers"}
               </a>
               <button
                 type="button"
                 onClick={() => navigate("/who-we-are")}
-                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${
-                  isHomePage ? "text-white/95 hover:text-[#60a5fa]" : "text-slate-800 hover:text-[#2478b8]"
-                }`}
+                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${isHomePage ? "text-white/95 hover:text-[#60a5fa]" : "text-slate-800 hover:text-[#2478b8]"
+                  }`}
               >
                 {language === "kin" ? "Ibiciro" : "Pricing"}
               </button>
               <button
                 type="button"
                 onClick={() => setIsHelpOpen(true)}
-                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${
-                  isHomePage ? "text-white/95 hover:text-[#60a5fa]" : "text-slate-800 hover:text-[#2478b8]"
-                }`}
+                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${isHomePage ? "text-white/95 hover:text-[#60a5fa]" : "text-slate-800 hover:text-[#2478b8]"
+                  }`}
               >
                 {language === "kin" ? "Ubufasha" : "Support"}
               </button>
@@ -318,9 +313,8 @@ const Header = () => {
                 widthClass="w-28 min-w-[7rem]"
                 trigger={
                   <button
-                    className={`bg-transparent hover:text-[#60a5fa] transition-all cursor-pointer flex items-center gap-1.5 px-2 py-0.5 border-0 shadow-none outline-none drop-shadow-xs ${
-                      isHomePage ? "text-white" : "text-slate-800"
-                    }`}
+                    className={`bg-transparent hover:text-[#60a5fa] transition-all cursor-pointer flex items-center gap-1.5 px-2 py-0.5 border-0 shadow-none outline-none drop-shadow-xs ${isHomePage ? "text-white" : "text-slate-800"
+                      }`}
                   >
                     <Languages className="w-3.5 h-3.5 text-[#60a5fa]" />
                     <span className="text-xs font-bold tracking-tight">
@@ -417,9 +411,8 @@ const Header = () => {
                       </div>
                       <span>Log In</span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 text-[#2478b8] transition-transform duration-200 ${
-                          isLoginDropdownOpen ? "rotate-180" : ""
-                        }`}
+                        className={`w-3.5 h-3.5 text-[#2478b8] transition-transform duration-200 ${isLoginDropdownOpen ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
                   </div>

@@ -166,6 +166,16 @@ const WorkerIncidentManagement = () => {
       <div className="pt-1 pb-2 px-0">
         <PageHeaderBreadcrumb title="Incident Management">
           <div className="flex items-center gap-2">
+            {/* Export PDF styled as plain text button like Import Excel */}
+            <button
+              type="button"
+              className="text-xs text-slate-500 hover:text-slate-800 transition-colors cursor-pointer bg-transparent border-0 px-2 py-1 font-medium"
+              onClick={handleExport}
+            >
+              Export PDF
+            </button>
+
+            {/* Report Incident - Primary Blue Button */}
             <Button
               size="sm"
               onClick={() => setIsCreateModalOpen(true)}
@@ -173,14 +183,6 @@ const WorkerIncidentManagement = () => {
             >
               <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
               <span>Report Incident</span>
-            </Button>
-            <Button
-              size="sm"
-              onClick={handleExport}
-              className="bg-[#2478b8] hover:bg-[#1b6296] text-white text-xs font-semibold px-3 py-1.5 rounded shadow-2xs flex items-center gap-1.5 cursor-pointer"
-            >
-              <Download className="w-3.5 h-3.5 stroke-[2.5]" />
-              <span>Export PDF</span>
             </Button>
           </div>
         </PageHeaderBreadcrumb>
