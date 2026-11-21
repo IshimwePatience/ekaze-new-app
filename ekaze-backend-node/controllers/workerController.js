@@ -964,39 +964,6 @@ const getWorkerEmployments = async (req, res, next) => {
       }
     }
 
-    // Also include past company experiences if present
-    const extProfile = (typeof worker.extended_profile === 'string')
-      ? JSON.parse(worker.extended_profile || '{}')
-      : (worker.extended_profile || {});
-    const pastExps = extProfile.past_experiences || extProfile.work_experiences || [];
-    if (Array.isArray(pastExps)) {
-      pastExps.forEach((exp, idx) => {
-        const compName = exp.employer || exp.company_name || exp.company || 'Previous Employer';
-        transformed.push({
-          id: `past-exp-${idx + 1}`,
-          is_past_experience: true,
-          company_name: compName,
-          role: exp.role || exp.job_role || exp.job_title || 'Driver',
-          start_date: exp.start_date || null,
-          end_date: exp.end_date || null,
-          status: 'completed',
-          monthly_salary: 0,
-          agreed_salary: 0,
-          duration_days: 30,
-          employer: {
-            id: idx + 8000,
-            name: compName,
-            phone: '—',
-            email: '—',
-            district: '—',
-            profile_photo: null
-          },
-          created_at: exp.start_date || new Date().toISOString(),
-          terminated_at: exp.end_date || null
-        });
-      });
-    }
-
     return res.status(200).json({
       success: true,
       data: {
