@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
+import api from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,6 +41,7 @@ import {
   Pencil,
   Languages,
   Loader2,
+  Star,
 } from "lucide-react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { CharacterIllustration } from "@/components/common/CharacterIllustration";
@@ -251,6 +253,51 @@ export const UserProfile = () => {
   const billingTransactions = rawTxList.filter(
     (tx: any) => tx.status === 'successful' || tx.status === 'completed' || tx.status === 'paid'
   );
+
+  const resolvePhotoUrl = (p: string | null | undefined) => {
+    if (!p) return null;
+    if (p.startsWith("http://") || p.startsWith("https://") || p.startsWith("data:")) return p;
+    const base = import.meta.env.VITE_API_URL?.replace(/\/api\/?$/, "") || "http://localhost:5000";
+    return `${base}${p.startsWith("/") ? "" : "/"}${p}`;
+  };
+
+  const formatRatingDate = (isoString?: string) => {
+    if (!isoString) return "Recently";
+    try {
+      return format(new Date(isoString), "MMM dd, yyyy 'at' h:mm a");
+    } catch {
+      return isoString;
+    }
+  };
+
+  const { data: ratingsData, isLoading: isLoadingRatings } = useQuery({
+    queryKey: ["worker", "ratings", user?.id],
+    queryFn: async () => {
+      try {
+        const res = await api.get("/worker/ratings");
+        const list = res.data?.data?.data || res.data?.data || [];
+        if (Array.isArray(list) && list.length > 0) return list;
+      } catch (err) {
+        console.warn("Failed to fetch worker ratings endpoint:", err);
+      }
+
+      // Fallback to worker profile ratings from DB
+      const ext = fullWorkerData?.extended_profile;
+      const parsedExt = typeof ext === "string" ? JSON.parse(ext || "{}") : (ext || {});
+      if (Array.isArray(parsedExt.ratings)) {
+        return parsedExt.ratings;
+      }
+      return [];
+    },
+    enabled: isWorker && activeSideTab === "ratings",
+    staleTime: 10000,
+  });
+
+  const workerRatingsList = Array.isArray(ratingsData)
+    ? ratingsData
+    : Array.isArray(fullWorkerData?.extended_profile?.ratings)
+      ? fullWorkerData.extended_profile.ratings
+      : [];
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isMfaModalOpen, setIsMfaModalOpen] = useState(false);
@@ -670,7 +717,7 @@ export const UserProfile = () => {
     setPasswordData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!passwordData.currentPassword) {
       toast({
@@ -698,14 +745,26 @@ export const UserProfile = () => {
     }
 
     setIsUpdatingPassword(true);
-    setTimeout(() => {
-      setIsUpdatingPassword(false);
+    try {
+      const res = await api.put("/auth/change-password", {
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+        confirmPassword: passwordData.confirmPassword,
+      });
       setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
       toast({
         title: "Password Updated",
-        description: "Your account password has been changed successfully.",
+        description: res.data?.message || "Your account password has been changed successfully.",
       });
-    }, 600);
+    } catch (err: any) {
+      toast({
+        variant: "destructive",
+        title: "Update Failed",
+        description: err?.response?.data?.message || "Failed to update password. Please check your current password.",
+      });
+    } finally {
+      setIsUpdatingPassword(false);
+    }
   };
 
   const getUserInitial = () => {
@@ -734,6 +793,7 @@ export const UserProfile = () => {
     { id: "notifications", label: "Notifications", count: unreadCount },
     { id: "password", label: "Password & Authentication" },
     { id: "mfa", label: "Two-Factor Auth (MFA)" },
+    ...(isWorker ? [{ id: "ratings", label: "Ratings" }] : []),
     ...(isCompanyOrEmployer ? [{ id: "billing", label: "Plan & Billing" }] : []),
   ];
 
@@ -1562,6 +1622,106 @@ export const UserProfile = () => {
                 </p>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* ── TAB: RATINGS (GRIDS ONLY FROM DB) ── */}
+        {activeSideTab === "ratings" && (
+          <div className="w-full">
+            {isLoadingRatings ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 pt-2">
+                {[1, 2].map((i) => (
+                  <div key={i} className="flex items-start gap-5 sm:gap-6 p-2">
+                    <Skeleton className="w-20 h-20 sm:w-24 sm:h-24 rounded-full shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-14 w-full rounded" />
+                      <Skeleton className="h-4 w-28 rounded" />
+                      <Skeleton className="h-5 w-40 rounded" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : workerRatingsList.length === 0 ? (
+              <div className="py-12 flex flex-col items-center justify-center text-center">
+                <CharacterIllustration type="default" className="w-28 h-28 mb-3" />
+                <h3 className="text-base font-bold text-slate-900">No ratings yet</h3>
+                <p className="text-xs text-slate-500 mt-1 max-w-sm">
+                  You have not received any company performance ratings in the system yet.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 pt-2">
+                {workerRatingsList.map((rev: any, idx: number) => {
+                  const companyName = rev.company_name || rev.reviewer_name || "Company";
+                  const score = Number(rev.rating) || 5;
+                  const quoteText = rev.comment || rev.review || "Reliable driver with good performance.";
+                  const initial = companyName.charAt(0).toUpperCase();
+                  const photoUrl = resolvePhotoUrl(rev.reviewer_photo || rev.company_logo || rev.logo || rev.photo);
+
+                  return (
+                    <div
+                      key={rev.id || idx}
+                      className="flex items-start gap-5 sm:gap-6 p-2 rounded-xl"
+                    >
+                      {/* Left Circular Avatar with Red Background/Border (matching screenshot) */}
+                      <div className="shrink-0">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#c9302c] p-1 flex items-center justify-center overflow-hidden shadow-sm">
+                          {photoUrl ? (
+                            <img
+                              src={photoUrl}
+                              alt={companyName}
+                              className="w-full h-full rounded-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = "none";
+                              }}
+                            />
+                          ) : (
+                            <div className="w-full h-full rounded-full bg-[#b82a26] flex items-center justify-center text-white font-bold text-2xl sm:text-3xl">
+                              {initial}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Right Testimonial & Company Information */}
+                      <div className="flex-1 space-y-2">
+                        {/* Quote Paragraph */}
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
+                          &ldquo;{quoteText}&rdquo;
+                        </p>
+
+                        {/* Star Rating */}
+                        <div className="flex items-center gap-1 pt-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-3.5 h-3.5 ${
+                                i < score
+                                  ? "text-amber-400 fill-amber-400"
+                                  : "text-slate-200"
+                              }`}
+                            />
+                          ))}
+                          <span className="text-xs font-bold text-slate-700 ml-1">
+                            {score}.0
+                          </span>
+                        </div>
+
+                        {/* Company Title in Bold Red & Subtitle */}
+                        <div className="pt-1">
+                          <h4 className="text-sm sm:text-base font-bold text-[#c9302c]">
+                            {companyName}
+                          </h4>
+                          <p className="text-xs text-slate-400 font-normal">
+                            Company in System &bull; {formatRatingDate(rev.created_at)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
 

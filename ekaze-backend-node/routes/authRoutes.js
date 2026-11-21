@@ -65,4 +65,15 @@ router.post('/mfa/disable', protect, authController.disableMfa);
 // Set Initial Password on First Login
 router.post('/set-initial-password', protectOptional, authController.setInitialPassword);
 
+// Forgot Password & Reset Password (supports both /forgot-password and /password/forgot)
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/password/forgot', authController.forgotPassword);
+router.post('/reset-password', authController.resetPassword);
+router.post('/password/reset', authController.resetPassword);
+
+// Change Password (authenticated)
+router.put('/change-password', protect, authController.changePassword);
+router.post('/change-password', protect, authController.changePassword);
+router.put('/password', protect, authController.changePassword);
+
 module.exports = router;

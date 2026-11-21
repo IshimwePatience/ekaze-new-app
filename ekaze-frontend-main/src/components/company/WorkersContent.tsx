@@ -551,6 +551,17 @@ const WorkersContent = () => {
     return statusMap[status] || status;
   };
 
+  const isCardGenerated = (worker: any) => {
+    return Boolean(
+      worker.card_paid ||
+      worker.card_paid_at ||
+      worker.business_card_path ||
+      worker.card_generated ||
+      worker.has_card ||
+      worker.is_card_generated
+    );
+  };
+
   const getExperienceLevelText = (level: string) => {
     const levelMap: Record<string, string> = {
       beginner: t("company.workersContent.beginner") || "Beginner",
@@ -826,7 +837,7 @@ const WorkersContent = () => {
                     {t("company.workersContent.experience") || "Experience"}
                   </TableHead>
                   <TableHead className="text-xs font-semibold text-slate-900 font-sans">
-                    {t("company.workersContent.status") || "Status"}
+                    Card Generated
                   </TableHead>
                   <TableHead className="text-xs font-semibold text-slate-900 font-sans whitespace-nowrap">
                     {activeTab === "suspended" ? "Date Suspended" : "Date Registered"}
@@ -900,12 +911,10 @@ const WorkersContent = () => {
                         </span>
                       </TableCell>
 
-                      {/* Status */}
+                      {/* Card Generated */}
                       <TableCell className="py-3 whitespace-nowrap">
                         <span className="text-xs font-normal text-slate-700 font-sans">
-                          {isWorkerSuspended(worker)
-                            ? `Suspended on ${format(new Date(worker.suspended_at || worker.updated_at || Date.now()), "MMM dd, yyyy 'at' hh:mm a")}`
-                            : getStatusText(worker.availability_status || "available")}
+                          {isCardGenerated(worker) ? "Yes" : "No"}
                         </span>
                       </TableCell>
 

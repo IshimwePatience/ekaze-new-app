@@ -26,7 +26,7 @@ const upload = multer({ storage });
 router.get('/dashboard', protect, authorize('worker'), workerController.getWorkerDashboard);
 router.get('/profile', protect, authorize('worker'), workerController.getWorkerProfile);
 router.get('/employments', protectOptional, workerController.getWorkerEmployments);
-router.get('/ratings', protect, authorize('worker'), workerController.getWorkerRatings);
+router.get('/ratings', protectOptional, workerController.getWorkerRatings);
 
 // Transactions endpoints for worker
 router.get('/transactions/statistics', protect, authorize('worker'), workerController.getWorkerTransactionStatistics);

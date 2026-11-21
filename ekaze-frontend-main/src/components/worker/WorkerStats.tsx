@@ -180,41 +180,13 @@ const WorkerStats = () => {
             </div>
 
             <div className="pt-3 flex items-center gap-3 flex-wrap">
-              {isHired ? (
-                <Button
-                  size="sm"
-                  disabled={true}
-                  className="px-4 py-1.5 text-xs font-semibold rounded shadow-none bg-slate-100 border border-slate-300 text-slate-500 cursor-not-allowed flex items-center gap-1.5"
-                >
-                  <Lock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Hired (Active Contract)</span>
-                </Button>
-              ) : (
-                <Button
-                  size="sm"
-                  variant={worker.availability_status === 'available' ? "default" : "destructive"}
-                  onClick={handleToggleClick}
-                  disabled={updateAvailability.isPending}
-                  className={`px-4 py-1.5 text-xs font-semibold rounded shadow-2xs transition-colors cursor-pointer ${worker.availability_status === 'available'
-                    ? "bg-[#2478b8] hover:bg-[#1b6296] text-white"
-                    : "bg-red-600 hover:bg-red-700 text-white"
-                    }`}
-                >
-                  {updateAvailability.isPending
-                    ? t("worker.workerStats.updating")
-                    : worker.availability_status === 'available'
-                      ? "Available for Hire (Set Unavailable)"
-                      : "Set to Available"}
-                </Button>
-              )}
-
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => navigateTo('profile')}
                 className="px-4 py-1.5 border border-[#2478b8] text-[#2478b8] hover:bg-blue-50 text-xs font-semibold rounded shadow-2xs transition-colors cursor-pointer"
               >
-                Edit Profile
+                View Profile
               </Button>
             </div>
           </div>
@@ -236,21 +208,6 @@ const WorkerStats = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* GCP Quick Action Pills Row */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-        <button
-          onClick={isHired ? undefined : handleToggleClick}
-          disabled={isHired || updateAvailability.isPending}
-          className={`px-3 py-1.5 rounded border text-xs font-normal flex items-center gap-1.5 transition-colors shadow-2xs shrink-0 ${isHired
-            ? "bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed"
-            : "border-slate-300 bg-white hover:bg-slate-50 text-slate-700 cursor-pointer"
-            }`}
-        >
-          {isHired ? <Lock className="w-3.5 h-3.5 text-slate-400" /> : <Plus className="w-3.5 h-3.5 text-slate-500" />}
-          <span>{isHired ? "Status Locked (Hired)" : "Toggle Availability Status"}</span>
-        </button>
       </div>
 
       {/* GCP Resource Cards Grid */}

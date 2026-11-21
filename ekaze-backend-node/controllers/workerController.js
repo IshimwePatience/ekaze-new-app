@@ -1899,47 +1899,86 @@ const terminateWorkerEmploymentContract = async (req, res, next) => {
 
 const getWorkerRatings = async (req, res, next) => {
   try {
-    const worker = await Worker.findOne({ where: { user_id: req.user.id } });
-    const workerId = worker ? worker.id : null;
+    const userId = req.user?.id;
+    let worker = null;
+    if (userId) {
+      worker = await Worker.findOne({
+        where: { user_id: userId },
+        include: [{ model: User, as: 'user' }]
+      }).catch(() => null);
 
-    let ratingsList = [];
-    if (worker && Array.isArray(worker.extended_profile?.ratings)) {
-      ratingsList = worker.extended_profile.ratings;
-    }
-
-    if (ratingsList.length === 0 && workerId) {
-      const employments = await Employment.findAll({
-        where: { worker_id: workerId },
-        include: [
-          {
-            model: Employer,
-            as: 'employer',
-            include: [{ model: User, as: 'user' }]
-          }
-        ],
-        order: [['created_at', 'DESC']]
-      }).catch(() => []);
-
-      for (const emp of employments) {
-        const empUser = emp.employer?.user;
-        ratingsList.push({
-          id: emp.id,
-          rater_name: empUser?.name || 'Verified Employer',
-          rater_photo: empUser?.profile_photo || null,
-          rating: Number(worker?.rating || 5.0),
-          comment: 'Reliable, punctual, and verified household professional.',
-          created_at: emp.updated_at || emp.created_at || new Date().toISOString()
-        });
+      if (!worker) {
+        worker = await Worker.findByPk(userId, {
+          include: [{ model: User, as: 'user' }]
+        }).catch(() => null);
       }
     }
+
+    if (!worker) {
+      const workerIdParam = req.query?.worker_id || req.query?.workerId;
+      if (workerIdParam) {
+        worker = await Worker.findByPk(workerIdParam, {
+          include: [{ model: User, as: 'user' }]
+        }).catch(() => null);
+      }
+    }
+
+    if (!worker) {
+      return res.status(200).json({
+        success: true,
+        data: [],
+        total_reviews: 0,
+        average_rating: 5.0
+      });
+    }
+
+    const ext = (typeof worker.extended_profile === 'string')
+      ? JSON.parse(worker.extended_profile || '{}')
+      : (worker.extended_profile || {});
+
+    const ratings = Array.isArray(ext.ratings) ? ext.ratings : [];
+
+    // Enrich ratings with company logo / profile photo if missing
+    const enrichedRatings = await Promise.all(
+      ratings.map(async (r) => {
+        let photo = r.reviewer_photo || r.company_logo || r.logo || null;
+        if (!photo) {
+          let comp = null;
+          if (r.company_id) {
+            comp = await Company.findByPk(r.company_id, {
+              include: [{ model: User, as: 'user' }]
+            }).catch(() => null);
+          }
+          if (!comp && (r.company_name || r.reviewer_name)) {
+            const nameToFind = r.company_name || r.reviewer_name;
+            comp = await Company.findOne({
+              where: { company_name: nameToFind },
+              include: [{ model: User, as: 'user' }]
+            }).catch(() => null);
+            if (!comp) {
+              const u = await User.findOne({ where: { name: nameToFind } }).catch(() => null);
+              if (u) {
+                photo = u.profile_photo;
+              }
+            }
+          }
+          if (comp) {
+            photo = comp.logo || comp.user?.profile_photo || null;
+          }
+        }
+        return {
+          ...r,
+          reviewer_photo: photo,
+          company_logo: photo
+        };
+      })
+    );
 
     return res.status(200).json({
       success: true,
-      data: {
-        current_page: 1,
-        data: ratingsList,
-        total: ratingsList.length
-      }
+      data: enrichedRatings,
+      total_reviews: enrichedRatings.length,
+      average_rating: worker.rating ? parseFloat(worker.rating) : 5.0
     });
   } catch (error) {
     next(error);
