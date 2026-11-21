@@ -66,6 +66,12 @@ import { downloadInvoicePdf } from "@/utils/pdfGenerator";
 import { EditUserFormPage } from "@/components/admin/EditUserFormPage";
 import { CompanyRegisterWorkerPage } from "@/components/company/CompanyRegisterWorkerPage";
 import {
+  DedicatedFormPage,
+  FormSection,
+  FormField,
+  FormInput,
+} from "@/components/common/DedicatedFormPage";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -807,7 +813,117 @@ export const UserProfile = () => {
     { id: "system", label: "System Announcements" },
   ];
 
-  if (isEditingProfile && !isCompany) {
+  if (isEditingProfile) {
+    if (isCompany) {
+      const compObj = user?.company || user?.role_profile || {};
+      const compName = compObj.company_name || formData.companyName || formData.name || user.name || "Company";
+      const compReg = compObj.registration_number || `REG-${user.id || "001"}`;
+      const compTin = compObj.tin_number || `TIN-${user.id || "001"}`;
+      const compContact = compObj.contact_person || formData.name || user.name || "N/A";
+      const compEmail = formData.email || user.email || "N/A";
+      const compPhone = formData.phone || user.phone || "N/A";
+      const compProvince = formData.province || user.province || "N/A";
+      const compDistrict = formData.district || user.district || "N/A";
+      const compSector = formData.sector || user.sector || "N/A";
+      const compCell = formData.cell || user.cell || "N/A";
+      const compVillage = formData.village || user.village || "N/A";
+      const compAddress = user.address || compObj.physical_address || fullLocationString || "N/A";
+      const compStatus = compObj.verification_status || user.status || "active";
+      const compLogo = profilePhoto || resolvePhotoUrl(compObj.logo || user.profile_photo);
+
+      return (
+        <DedicatedFormPage
+          onBack={() => {
+            setIsEditingProfile(false);
+            if (searchParams.has("edit")) {
+              const next = new URLSearchParams(searchParams);
+              next.delete("edit");
+              setSearchParams(next);
+            }
+          }}
+          backLabel="Back to Profile"
+          title={`Company Profile: ${compName}`}
+          subtitle="View verified company identity, contact information, and business registration details"
+          summaryTitle="Company Summary"
+          summaryItems={[
+            { label: "Company Name", value: compName, highlight: true },
+            { label: "Registration No", value: compReg },
+            { label: "TIN Number", value: compTin },
+            { label: "Official Email", value: compEmail },
+            { label: "Official Phone", value: compPhone },
+            { label: "Location", value: `${compDistrict}, ${compProvince}` },
+            { label: "Status", value: compStatus.toUpperCase(), highlight: compStatus === "active" || compStatus === "approved" },
+          ]}
+          profileAvatar={{
+            src: compLogo,
+            name: compName,
+            role: "Verified Transport & Fleet Company",
+          }}
+          primaryActionLabel={undefined}
+          onPrimaryAction={undefined}
+        >
+          <div className="space-y-6 text-left animate-in fade-in duration-200">
+            <FormSection id="company-identity" title="1. Business Identity & Registration">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField label="Company / Business Name">
+                  <FormInput value={compName} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+                <FormField label="Registration Number">
+                  <FormInput value={compReg} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+                <FormField label="TIN Number">
+                  <FormInput value={compTin} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+                <FormField label="Verification Status">
+                  <div className="h-10 px-3 flex items-center rounded-md border border-slate-200 bg-slate-50">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 capitalize">
+                      ● {compStatus}
+                    </span>
+                  </div>
+                </FormField>
+              </div>
+            </FormSection>
+
+            <FormSection id="company-contact" title="2. Contact & Representative">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField label="Contact Person / Representative">
+                  <FormInput value={compContact} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+                <FormField label="Official Email Address">
+                  <FormInput value={compEmail} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+                <FormField label="Official Phone Number">
+                  <FormInput value={compPhone} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+              </div>
+            </FormSection>
+
+            <FormSection id="company-location" title="3. Office Location & Address">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <FormField label="Province">
+                  <FormInput value={compProvince} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+                <FormField label="District">
+                  <FormInput value={compDistrict} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+                <FormField label="Sector">
+                  <FormInput value={compSector} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+                <FormField label="Cell">
+                  <FormInput value={compCell} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+                <FormField label="Village">
+                  <FormInput value={compVillage} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+                <FormField label="Physical / Street Address">
+                  <FormInput value={compAddress} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                </FormField>
+              </div>
+            </FormSection>
+          </div>
+        </DedicatedFormPage>
+      );
+    }
     if (isWorker) {
       return (
         <CompanyRegisterWorkerPage
@@ -947,37 +1063,35 @@ export const UserProfile = () => {
                 {/* Header: User Profile on Left, Edit Profile Button on Right */}
                 <div className="flex items-center justify-between pb-6 border-b border-slate-100">
                   <h2 className="text-lg font-bold text-slate-900 tracking-tight">User Profile</h2>
-                  {!isCompany && (
-                    isWorker ? (
-                      <button
-                        type="button"
-                        onClick={() => setIsEditingProfile(true)}
-                        className="inline-flex items-center justify-center h-8 px-4 rounded-[3px] bg-[#EBECF0] hover:bg-[#DFE1E6] active:bg-[#D5D8DE] border border-[#DFE1E6] transition-colors shadow-none cursor-pointer select-none text-[14px] font-medium text-[#172B4D]"
+                  {(isWorker || isCompany) ? (
+                    <button
+                      type="button"
+                      onClick={() => setIsEditingProfile(true)}
+                      className="inline-flex items-center justify-center h-8 px-4 rounded-[3px] bg-[#EBECF0] hover:bg-[#DFE1E6] active:bg-[#D5D8DE] border border-[#DFE1E6] transition-colors shadow-none cursor-pointer select-none text-[14px] font-medium text-[#172B4D]"
+                    >
+                      View
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setIsEditingProfile(true)}
+                      className="inline-flex items-center gap-2 h-8 px-3 rounded-[3px] bg-[#EBECF0] hover:bg-[#DFE1E6] active:bg-[#D5D8DE] border border-[#DFE1E6] transition-colors shadow-none cursor-pointer select-none"
+                      style={{
+                        backgroundColor: "#EBECF0",
+                        borderColor: "#DFE1E6",
+                        borderRadius: "3px",
+                        height: "32px",
+                        padding: "0 12px",
+                      }}
+                    >
+                      <JiraEditPencilIcon />
+                      <span
+                        className="text-[14px] font-medium leading-none"
+                        style={{ color: "#172B4D" }}
                       >
-                        View
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => setIsEditingProfile(true)}
-                        className="inline-flex items-center gap-2 h-8 px-3 rounded-[3px] bg-[#EBECF0] hover:bg-[#DFE1E6] active:bg-[#D5D8DE] border border-[#DFE1E6] transition-colors shadow-none cursor-pointer select-none"
-                        style={{
-                          backgroundColor: "#EBECF0",
-                          borderColor: "#DFE1E6",
-                          borderRadius: "3px",
-                          height: "32px",
-                          padding: "0 12px",
-                        }}
-                      >
-                        <JiraEditPencilIcon />
-                        <span
-                          className="text-[14px] font-medium leading-none"
-                          style={{ color: "#172B4D" }}
-                        >
-                          Edit Profile
-                        </span>
-                      </button>
-                    )
+                        Edit Profile
+                      </span>
+                    </button>
                   )}
                 </div>
 
