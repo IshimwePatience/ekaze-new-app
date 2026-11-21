@@ -60,6 +60,7 @@ import { useUnreadCount } from "@/hooks/useNotifications";
 import { Download, FileText } from "lucide-react";
 import { downloadInvoicePdf } from "@/utils/pdfGenerator";
 import { EditUserFormPage } from "@/components/admin/EditUserFormPage";
+import { CompanyRegisterWorkerPage } from "@/components/company/CompanyRegisterWorkerPage";
 import {
   Dialog,
   DialogContent,
@@ -222,6 +223,21 @@ export const UserProfile = () => {
     enabled: isCompanyOrEmployer && activeSideTab === "billing",
   });
   const downloadReceiptMutation = useDownloadReceipt();
+
+  const { data: workerProfileRes } = useQuery({
+    queryKey: ["worker", "profile", user?.id],
+    queryFn: async () => {
+      try {
+        const res = await api.get("/worker/profile");
+        return res.data?.data || res.data;
+      } catch {
+        return null;
+      }
+    },
+    enabled: isWorker,
+    staleTime: 30000,
+  });
+  const fullWorkerData = workerProfileRes || (user as any)?.worker || (user as any)?.role_profile || user;
 
   const rawTxList = Array.isArray(txData?.data?.data)
     ? txData.data.data
@@ -730,6 +746,22 @@ export const UserProfile = () => {
   ];
 
   if (isEditingProfile && !isCompany) {
+    if (isWorker) {
+      return (
+        <CompanyRegisterWorkerPage
+          initialWorker={fullWorkerData}
+          readOnly={true}
+          onBack={() => {
+            setIsEditingProfile(false);
+            if (searchParams.has("edit")) {
+              const next = new URLSearchParams(searchParams);
+              next.delete("edit");
+              setSearchParams(next);
+            }
+          }}
+        />
+      );
+    }
     return (
       <EditUserFormPage
         user={user}
@@ -854,26 +886,36 @@ export const UserProfile = () => {
                 <div className="flex items-center justify-between pb-6 border-b border-slate-100">
                   <h2 className="text-lg font-bold text-slate-900 tracking-tight">User Profile</h2>
                   {!isCompany && (
-                    <button
-                      type="button"
-                      onClick={() => setIsEditingProfile(true)}
-                      className="inline-flex items-center gap-2 h-8 px-3 rounded-[3px] bg-[#EBECF0] hover:bg-[#DFE1E6] active:bg-[#D5D8DE] border border-[#DFE1E6] transition-colors shadow-none cursor-pointer select-none"
-                      style={{
-                        backgroundColor: "#EBECF0",
-                        borderColor: "#DFE1E6",
-                        borderRadius: "3px",
-                        height: "32px",
-                        padding: "0 12px",
-                      }}
-                    >
-                      <JiraEditPencilIcon />
-                      <span
-                        className="text-[14px] font-medium leading-none"
-                        style={{ color: "#172B4D" }}
+                    isWorker ? (
+                      <button
+                        type="button"
+                        onClick={() => setIsEditingProfile(true)}
+                        className="inline-flex items-center justify-center h-8 px-4 rounded-[3px] bg-[#EBECF0] hover:bg-[#DFE1E6] active:bg-[#D5D8DE] border border-[#DFE1E6] transition-colors shadow-none cursor-pointer select-none text-[14px] font-medium text-[#172B4D]"
                       >
-                        Edit Profile
-                      </span>
-                    </button>
+                        View
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setIsEditingProfile(true)}
+                        className="inline-flex items-center gap-2 h-8 px-3 rounded-[3px] bg-[#EBECF0] hover:bg-[#DFE1E6] active:bg-[#D5D8DE] border border-[#DFE1E6] transition-colors shadow-none cursor-pointer select-none"
+                        style={{
+                          backgroundColor: "#EBECF0",
+                          borderColor: "#DFE1E6",
+                          borderRadius: "3px",
+                          height: "32px",
+                          padding: "0 12px",
+                        }}
+                      >
+                        <JiraEditPencilIcon />
+                        <span
+                          className="text-[14px] font-medium leading-none"
+                          style={{ color: "#172B4D" }}
+                        >
+                          Edit Profile
+                        </span>
+                      </button>
+                    )
                   )}
                 </div>
 

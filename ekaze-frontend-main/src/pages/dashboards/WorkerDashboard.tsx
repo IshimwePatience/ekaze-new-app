@@ -51,9 +51,9 @@ const WorkerDashboard = () => {
 
   const getInitialTab = (): TabType => {
     const urlTab = searchParams.get("tab") as TabType;
-    if (urlTab && urlTab !== ("payments" as any) && urlTab !== ("experience" as any)) return urlTab;
+    if (urlTab && urlTab !== ("payments" as any) && urlTab !== ("experience" as any) && urlTab !== ("schedule" as any) && urlTab !== ("schedules" as any)) return urlTab;
     const localTab = localStorage.getItem("worker_active_tab") as TabType;
-    if (localTab && localTab !== ("payments" as any) && localTab !== ("experience" as any)) return localTab;
+    if (localTab && localTab !== ("payments" as any) && localTab !== ("experience" as any) && localTab !== ("schedule" as any) && localTab !== ("schedules" as any)) return localTab;
     return "dashboard";
   };
 
@@ -61,7 +61,7 @@ const WorkerDashboard = () => {
 
   useEffect(() => {
     const urlTab = searchParams.get("tab");
-    if (urlTab === "payments" || urlTab === "experience") {
+    if (urlTab === "payments" || urlTab === "experience" || urlTab === "schedule" || urlTab === "schedules") {
       setActiveTab("dashboard");
       localStorage.setItem("worker_active_tab", "dashboard");
       setSearchParams({ tab: "dashboard" }, { replace: true });

@@ -148,13 +148,8 @@ export const DashboardSidebar = ({
             ],
           },
           {
-            category: "CALENDAR & PROFILE",
+            category: "PROFILE",
             items: [
-              {
-                id: "schedule",
-                label: "Calendar",
-                icon: ConsoleCalendarIcon,
-              },
               { id: "profile", label: "My Profile", icon: ConsoleSlidersIcon },
             ],
           },

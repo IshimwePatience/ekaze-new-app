@@ -920,6 +920,83 @@ const getWorkerEmployments = async (req, res, next) => {
       };
     }));
 
+    if (worker.company_id) {
+      const company = await Company.findByPk(worker.company_id, {
+        include: [{ model: User, as: 'user' }]
+      }).catch(() => null);
+
+      if (company) {
+        const isWorkerSuspended = Boolean(
+          worker.is_suspended ||
+          worker.status === 'suspended' ||
+          req.user?.status === 'suspended' ||
+          worker?.extended_profile?.is_suspended === true
+        );
+        const companyUser = company.user;
+        const companyRecord = {
+          id: `company-${company.id}`,
+          is_company: true,
+          company_id: company.id,
+          worker_id: worker.id,
+          monthly_salary: worker.expected_salary || worker.salary || 0,
+          agreed_salary: worker.expected_salary || worker.salary || 0,
+          start_date: worker.created_at || company.created_at || new Date().toISOString(),
+          end_date: isWorkerSuspended ? (worker.suspended_at || new Date().toISOString()) : null,
+          status: isWorkerSuspended ? 'terminated' : 'active',
+          duration_days: Math.max(1, Math.floor((Date.now() - new Date(worker.created_at || Date.now()).getTime()) / (1000 * 60 * 60 * 24))),
+          role: worker.driving_licence_type ? `Driver (Permit Cat. ${worker.driving_licence_type})` : (worker.job_role || 'Fleet Driver'),
+          employer: {
+            id: company.id,
+            name: company.company_name || companyUser?.name || 'Partner Company',
+            phone: company.contact_phone || company.phone || companyUser?.phone || '—',
+            email: company.contact_email || company.email || companyUser?.email || '—',
+            district: company.district || companyUser?.district || 'Kigali',
+            profile_photo: company.logo || companyUser?.profile_photo || null,
+            logo: company.logo,
+            is_company: true
+          },
+          created_at: worker.created_at || new Date().toISOString(),
+          updated_at: worker.updated_at || new Date().toISOString(),
+          terminated_at: isWorkerSuspended ? (worker.suspended_at || worker.updated_at || new Date().toISOString()) : null
+        };
+
+        transformed.unshift(companyRecord);
+      }
+    }
+
+    // Also include past company experiences if present
+    const extProfile = (typeof worker.extended_profile === 'string')
+      ? JSON.parse(worker.extended_profile || '{}')
+      : (worker.extended_profile || {});
+    const pastExps = extProfile.past_experiences || extProfile.work_experiences || [];
+    if (Array.isArray(pastExps)) {
+      pastExps.forEach((exp, idx) => {
+        const compName = exp.employer || exp.company_name || exp.company || 'Previous Employer';
+        transformed.push({
+          id: `past-exp-${idx + 1}`,
+          is_past_experience: true,
+          company_name: compName,
+          role: exp.role || exp.job_role || exp.job_title || 'Driver',
+          start_date: exp.start_date || null,
+          end_date: exp.end_date || null,
+          status: 'completed',
+          monthly_salary: 0,
+          agreed_salary: 0,
+          duration_days: 30,
+          employer: {
+            id: idx + 8000,
+            name: compName,
+            phone: '—',
+            email: '—',
+            district: '—',
+            profile_photo: null
+          },
+          created_at: exp.start_date || new Date().toISOString(),
+          terminated_at: exp.end_date || null
+        });
+      });
+    }
+
     return res.status(200).json({
       success: true,
       data: {

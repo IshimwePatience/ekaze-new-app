@@ -104,9 +104,43 @@ const WorkHistory = () => {
       try {
         const res = await api.get("/worker/employments");
         const list = res.data?.data?.data || res.data?.data;
-        if (Array.isArray(list)) return list;
+        if (Array.isArray(list) && list.length > 0) return list;
       } catch (err) {
         console.warn("Worker employments fetch warning:", err);
+      }
+
+      // Check worker profile for assigned company
+      try {
+        const profRes = await api.get("/worker/profile");
+        const prof = profRes.data?.data || profRes.data;
+        if (prof?.company) {
+          const isSusp = Boolean(prof.is_suspended || prof.status === "suspended" || user?.status === "suspended");
+          return [
+            {
+              id: `company-${prof.company.id}`,
+              is_company: true,
+              company_id: prof.company.id,
+              worker_id: prof.id,
+              monthly_salary: prof.expected_salary || prof.salary || 0,
+              agreed_salary: prof.expected_salary || prof.salary || 0,
+              start_date: prof.created_at || new Date().toISOString(),
+              end_date: isSusp ? (prof.suspended_at || new Date().toISOString()) : null,
+              status: isSusp ? "terminated" : "active",
+              duration_days: Math.max(1, Math.round((Date.now() - new Date(prof.created_at || Date.now()).getTime()) / (1000 * 60 * 60 * 24))),
+              role: prof.driving_licence_type ? `Driver (Permit Cat. ${prof.driving_licence_type})` : "Fleet Driver",
+              employer: {
+                id: prof.company.id,
+                name: prof.company.company_name || "Partner Company",
+                phone: prof.company.contact_phone || prof.company.phone || "—",
+                email: prof.company.contact_email || prof.company.email || "—",
+                district: prof.company.district || "Kigali",
+                profile_photo: prof.company.logo || null,
+              },
+            },
+          ];
+        }
+      } catch (e) {
+        // ignore
       }
 
       // Fallback to worker dashboard

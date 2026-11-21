@@ -22,10 +22,11 @@ interface WorkExperienceItem {
 
 interface CompanyRegisterWorkerPageProps {
   onBack: () => void;
-  onSubmit: (data: NewWorkerRegistrationPayload) => void;
+  onSubmit?: (data: NewWorkerRegistrationPayload) => void;
   isLoading?: boolean;
   companyId?: number;
   initialWorker?: any;
+  readOnly?: boolean;
 }
 
 // ── Comprehensive International Country Codes ──────────────────────────────
@@ -86,10 +87,11 @@ const PERMIT_CATEGORIES = [
 
 export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps> = ({
   onBack,
-  onSubmit,
+  onSubmit = () => {},
   isLoading = false,
   companyId,
   initialWorker,
+  readOnly = false,
 }) => {
   const { toast } = useToast();
   const isEditMode = Boolean(initialWorker);
@@ -587,16 +589,22 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
   return (
     <DedicatedFormPage
       onBack={onBack}
-      backLabel="Back to drivers"
-      title={isEditMode ? "Edit Driver Details" : "Driver Registration"}
+      backLabel={readOnly ? "Back to profile" : "Back to drivers"}
+      title={readOnly ? (fullName ? `Driver Profile: ${fullName}` : "Driver Profile") : (isEditMode ? "Edit Driver Details" : "Driver Registration")}
       subtitle={
-        isEditMode
+        readOnly
+          ? "Driver profile and professional credentials verified by company."
+          : isEditMode
           ? "Update driver profile and professional credentials."
           : "Register verified commercial fleet driver into company roster."
       }
       steps={STEPS}
       currentStep={currentStep - 1}
       onStepClick={(stepIndex) => {
+        if (readOnly) {
+          setCurrentStep(stepIndex + 1);
+          return;
+        }
         if (stepIndex === 1 && !validateStep1()) return;
         if (stepIndex === 2 && (!validateStep1() || !validateStep2())) return;
         setCurrentStep(stepIndex + 1);
@@ -613,10 +621,14 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
         src: photoPreview,
         name: fullName || "Driver Account",
         role: `Driver - Category ${permitCategory}`,
-        onPhotoChange: handlePhotoUpload,
+        onPhotoChange: readOnly ? undefined : handlePhotoUpload,
       }}
       primaryActionLabel={
-        currentStep === 3
+        readOnly
+          ? currentStep < 3
+            ? "Next"
+            : undefined
+          : currentStep === 3
           ? isLoading
             ? isEditMode
               ? "Saving changes..."
@@ -626,7 +638,13 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
             : "Register Driver"
           : "Continue"
       }
-      onPrimaryAction={handleNextStep}
+      onPrimaryAction={
+        readOnly
+          ? currentStep < 3
+            ? () => setCurrentStep(currentStep + 1)
+            : undefined
+          : handleNextStep
+      }
       isLoading={isLoading}
       secondaryActionLabel={currentStep > 1 ? "Back" : undefined}
       onSecondaryAction={currentStep > 1 ? () => setCurrentStep(currentStep - 1) : undefined}
@@ -868,7 +886,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                     <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                       Experience #{index + 1}
                     </span>
-                    {experiences.length > 1 && (
+                    {!readOnly && experiences.length > 1 && (
                       <button
                         type="button"
                         onClick={() => handleRemoveExperience(exp.id)}
@@ -886,6 +904,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                         type="text"
                         placeholder="Company or employer name"
                         value={exp.employer}
+                        disabled={readOnly}
                         onChange={(e) => handleExperienceChange(exp.id, "employer", e.target.value)}
                         required
                       />
@@ -896,6 +915,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                         type="text"
                         placeholder="e.g. Heavy Truck Driver, Fleet Driver, Chauffeur"
                         value={exp.role}
+                        disabled={readOnly}
                         onChange={(e) => handleExperienceChange(exp.id, "role", e.target.value)}
                         required
                       />
@@ -907,6 +927,7 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                       <FormInput
                         type="date"
                         value={exp.start_date}
+                        disabled={readOnly}
                         onChange={(e) => handleExperienceChange(exp.id, "start_date", e.target.value)}
                         required
                       />
@@ -917,16 +938,18 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                         <FormInput
                           type="date"
                           value={exp.end_date}
-                          disabled={exp.currently_working}
+                          disabled={readOnly || exp.currently_working}
                           onChange={(e) => handleExperienceChange(exp.id, "end_date", e.target.value)}
                           required={!exp.currently_working}
                         />
                       </FormField>
-                      <label className="flex items-center gap-2 mt-2 cursor-pointer text-xs text-slate-700">
+                      <label className={`flex items-center gap-2 mt-2 text-xs text-slate-700 ${readOnly ? "cursor-default" : "cursor-pointer"}`}>
                         <input
                           type="checkbox"
                           checked={exp.currently_working}
+                          disabled={readOnly}
                           onChange={(e) => {
+                            if (readOnly) return;
                             const checked = e.target.checked;
                             handleExperienceChange(exp.id, "currently_working", checked);
                             if (checked) {
@@ -942,15 +965,17 @@ export const CompanyRegisterWorkerPage: React.FC<CompanyRegisterWorkerPageProps>
                 </div>
               ))}
 
-              <div className="pt-1">
-                <button
-                  type="button"
-                  onClick={handleAddExperience}
-                  className="text-xs text-slate-500 hover:text-slate-800 transition-colors cursor-pointer bg-transparent border-0 p-0 font-normal outline-none"
-                >
-                  add another work expirience
-                </button>
-              </div>
+              {!readOnly && (
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={handleAddExperience}
+                    className="text-xs text-slate-500 hover:text-slate-800 transition-colors cursor-pointer bg-transparent border-0 p-0 font-normal outline-none"
+                  >
+                    add another work expirience
+                  </button>
+                </div>
+              )}
             </div>
           </FormSection>
         </div>
