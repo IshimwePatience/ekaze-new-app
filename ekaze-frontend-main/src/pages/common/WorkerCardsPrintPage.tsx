@@ -154,20 +154,39 @@ export const WorkerCardsPrintPage: React.FC = () => {
       if (!cardElements.length) return;
 
       const isPortrait = orientation === 'portrait';
-      const pdf = new jsPDF({
-        orientation: isPortrait ? 'portrait' : 'landscape',
-        unit: 'mm',
-        format: 'a4',
-      });
+      let pdf: jsPDF;
+      let pageWidth: number;
+      let pageHeight: number;
 
-      const pageWidth = isPortrait ? 210 : 297;
-      const pageHeight = isPortrait ? 297 : 210;
-      const margin = 16;
-      const maxW = pageWidth - margin * 2;
-      const maxH = pageHeight - margin * 2;
+      if (!isPortrait) {
+        // Landscape card exact dimensions requested:
+        // W: 25.68 cm = 256.8 mm (10.11 Inc)
+        // H: 16.2 cm = 162.0 mm (6.377 Inc)
+        pageWidth = 256.8;
+        pageHeight = 162.0;
+        pdf = new jsPDF({
+          orientation: 'landscape',
+          unit: 'mm',
+          format: [pageWidth, pageHeight],
+        });
+      } else {
+        pageWidth = 210;
+        pageHeight = 297;
+        pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4',
+        });
+      }
 
       for (let i = 0; i < cardElements.length; i++) {
-        if (i > 0) pdf.addPage();
+        if (i > 0) {
+          if (!isPortrait) {
+            pdf.addPage([pageWidth, pageHeight], 'landscape');
+          } else {
+            pdf.addPage('a4', 'portrait');
+          }
+        }
         const cardEl = cardElements[i] as HTMLElement;
         const canvas = await html2canvas(cardEl, {
           scale: 3,
@@ -176,15 +195,24 @@ export const WorkerCardsPrintPage: React.FC = () => {
           backgroundColor: '#ffffff',
         });
         const imgData = canvas.toDataURL('image/png');
-        let rW = maxW;
-        let rH = (canvas.height * rW) / canvas.width;
-        if (rH > maxH) {
-          rH = maxH;
-          rW = (canvas.width * rH) / canvas.height;
+
+        if (!isPortrait) {
+          // Exact full card bleed to 25.68 cm x 16.2 cm
+          pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
+        } else {
+          const margin = 16;
+          const maxW = pageWidth - margin * 2;
+          const maxH = pageHeight - margin * 2;
+          let rW = maxW;
+          let rH = (canvas.height * rW) / canvas.width;
+          if (rH > maxH) {
+            rH = maxH;
+            rW = (canvas.width * rH) / canvas.height;
+          }
+          const posX = (pageWidth - rW) / 2;
+          const posY = (pageHeight - rH) / 2;
+          pdf.addImage(imgData, 'PNG', posX, posY, rW, rH, undefined, 'FAST');
         }
-        const posX = (pageWidth - rW) / 2;
-        const posY = (pageHeight - rH) / 2;
-        pdf.addImage(imgData, 'PNG', posX, posY, rW, rH, undefined, 'FAST');
       }
 
       const singleWorkerName = cards[0]?.name
@@ -211,9 +239,17 @@ export const WorkerCardsPrintPage: React.FC = () => {
       }}
     >
       <style>{`
-        @page {
-          size: A4 ${orientation};
-          margin: 8mm;
+        @media print {
+          @page {
+            size: ${orientation === 'landscape' ? '25.68cm 16.2cm' : 'a4 portrait'};
+            margin: 0;
+          }
+          ${orientation === 'landscape' ? `
+            .card-face-front, .card-face-back {
+              width: 25.68cm !important;
+              height: 16.2cm !important;
+            }
+          ` : ''}
         }
       `}</style>
 
@@ -326,6 +362,13 @@ export const WorkerCardsPrintPage: React.FC = () => {
               </button>
             </div>
 
+            {orientation === 'landscape' && (
+              <div className="hidden md:flex items-center gap-1.5 text-[11.5px] font-semibold text-slate-600 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full">
+                <span className="text-[#0073bb]">Dimensions:</span>
+                <span>W: 25.68 cm × H: 16.2 cm (10.11" × 6.377")</span>
+              </div>
+            )}
+
             {/* Save Buttons on the Right */}
             <div className="flex items-center gap-3 shrink-0">
               {/* Save Front PDF button */}
@@ -388,7 +431,10 @@ export const WorkerCardsPrintPage: React.FC = () => {
         ) : (
           <div id="cards-print-container" className="flex flex-col items-center gap-10 w-full max-w-5xl print:gap-8 print:w-full">
             {cards.map((worker) => {
-              const verifyUrl = `http://localhost:8080/verify-worker/${worker.id}`;
+              const baseOrigin = typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('localhost')
+                ? window.location.origin
+                : 'https://ekaze.benofinance.rw';
+              const verifyUrl = `${baseOrigin}/verify-worker/${worker.id}`;
 
               if (orientation === 'landscape') {
                 /* ═══════════════════════════════════════════════════
@@ -404,7 +450,10 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       <div className="absolute -top-3 w-10 h-3.5 bg-gradient-to-b from-slate-400 to-slate-300 rounded-t border border-slate-500 border-b-0 shadow-inner" />
                       <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
 
-                      <div className="card-face-front w-[460px] h-[280px] rounded-[14px] relative overflow-hidden bg-[#03142c] text-white shadow-xl border border-slate-800/80 select-none flex print:shadow-none">
+                      <div
+                        className="card-face-front w-[475px] h-[300px] rounded-[14px] relative overflow-hidden bg-[#03142c] text-white shadow-xl border border-slate-800/80 select-none flex print:shadow-none"
+                        style={{ aspectRatio: '25.68 / 16.2' }}
+                      >
                         {/* Left Side: Photo, Logo, 10-digit Ekaze ID */}
                         <div className="w-[160px] shrink-0 px-2 py-3.5 flex flex-col items-center justify-between z-10 border-r border-slate-700/60 bg-[#03142c]">
                           <div className="flex items-center">
@@ -492,7 +541,10 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       <div className="absolute -top-3 w-10 h-3.5 bg-gradient-to-b from-slate-400 to-slate-300 rounded-t border border-slate-500 border-b-0 shadow-inner" />
                       <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
 
-                      <div className="card-face-back w-[460px] h-[280px] rounded-[14px] relative overflow-hidden bg-white text-[#16191f] shadow-xl border border-slate-200 select-none flex print:shadow-none">
+                      <div
+                        className="card-face-back w-[475px] h-[300px] rounded-[14px] relative overflow-hidden bg-white text-[#16191f] shadow-xl border border-slate-200 select-none flex print:shadow-none"
+                        style={{ aspectRatio: '25.68 / 16.2' }}
+                      >
                       {/* Left Side: Logo, Contact List & Notice */}
                       <div className="flex-1 p-5 flex flex-col justify-between z-10">
                         <div className="flex items-center">
@@ -560,7 +612,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                             rel="noreferrer"
                             className="text-[10px] font-bold text-white tracking-tight hover:underline"
                           >
-                            www.ekaze.rw
+                            ekaze.benofinance.rw
                           </a>
                         </div>
                       </div>
@@ -775,7 +827,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                               rel="noreferrer"
                               className="text-[10px] font-bold text-white tracking-tight hover:underline"
                             >
-                              www.ekaze.rw
+                              ekaze.benofinance.rw
                             </a>
                           </div>
                         </div>

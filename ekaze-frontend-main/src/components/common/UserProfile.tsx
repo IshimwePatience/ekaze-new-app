@@ -817,18 +817,15 @@ export const UserProfile = () => {
     if (isCompany) {
       const compObj = user?.company || user?.role_profile || {};
       const compName = compObj.company_name || formData.companyName || formData.name || user.name || "Company";
-      const compReg = compObj.registration_number || `REG-${user.id || "001"}`;
-      const compTin = compObj.tin_number || `TIN-${user.id || "001"}`;
+      const compReg = compObj.registration_number || user.registration_number || (user.id ? `REG-${String(user.id).padStart(4, '0')}` : "");
+      const compTin = compObj.tin_number || compObj.tin || user.tin_number || user.tin || user.national_id || user.passport_number || compObj.registration_number || "";
       const compContact = compObj.contact_person || formData.name || user.name || "N/A";
       const compEmail = formData.email || user.email || "N/A";
       const compPhone = formData.phone || user.phone || "N/A";
       const compProvince = formData.province || user.province || "N/A";
       const compDistrict = formData.district || user.district || "N/A";
       const compSector = formData.sector || user.sector || "N/A";
-      const compCell = formData.cell || user.cell || "N/A";
-      const compVillage = formData.village || user.village || "N/A";
       const compAddress = user.address || compObj.physical_address || fullLocationString || "N/A";
-      const compStatus = compObj.verification_status || user.status || "active";
       const compLogo = profilePhoto || resolvePhotoUrl(compObj.logo || user.profile_photo);
 
       return (
@@ -847,12 +844,11 @@ export const UserProfile = () => {
           summaryTitle="Company Summary"
           summaryItems={[
             { label: "Company Name", value: compName, highlight: true },
-            { label: "Registration No", value: compReg },
-            { label: "TIN Number", value: compTin },
+            ...(compReg ? [{ label: "Registration No", value: compReg }] : []),
+            ...(compTin ? [{ label: "TIN Number", value: compTin }] : []),
             { label: "Official Email", value: compEmail },
             { label: "Official Phone", value: compPhone },
             { label: "Location", value: `${compDistrict}, ${compProvince}` },
-            { label: "Status", value: compStatus.toUpperCase(), highlight: compStatus === "active" || compStatus === "approved" },
           ]}
           profileAvatar={{
             src: compLogo,
@@ -869,17 +865,10 @@ export const UserProfile = () => {
                   <FormInput value={compName} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
                 </FormField>
                 <FormField label="Registration Number">
-                  <FormInput value={compReg} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
+                  <FormInput value={compReg || "N/A"} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
                 </FormField>
                 <FormField label="TIN Number">
-                  <FormInput value={compTin} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
-                </FormField>
-                <FormField label="Verification Status">
-                  <div className="h-10 px-3 flex items-center rounded-md border border-slate-200 bg-slate-50">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 capitalize">
-                      ● {compStatus}
-                    </span>
-                  </div>
+                  <FormInput value={compTin || "N/A"} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
                 </FormField>
               </div>
             </FormSection>
@@ -908,12 +897,6 @@ export const UserProfile = () => {
                 </FormField>
                 <FormField label="Sector">
                   <FormInput value={compSector} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
-                </FormField>
-                <FormField label="Cell">
-                  <FormInput value={compCell} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
-                </FormField>
-                <FormField label="Village">
-                  <FormInput value={compVillage} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />
                 </FormField>
                 <FormField label="Physical / Street Address">
                   <FormInput value={compAddress} disabled readOnly className="bg-slate-50 cursor-not-allowed font-medium text-slate-800" />

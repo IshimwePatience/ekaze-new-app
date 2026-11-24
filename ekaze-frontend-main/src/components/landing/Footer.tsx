@@ -12,7 +12,7 @@ const Footer = () => {
   const currentLanguage = languages.find((l) => l.code === language);
 
   return (
-    <footer className="w-full bg-gray-50 text-slate-800 pt-10 border-t border-slate-200 pb-0 overflow-hidden">
+    <footer className="w-full bg-gray-50 text-slate-800 pt-10 pb-12 border-t border-slate-200">
       <div className="container mx-auto px-6 lg:px-12 space-y-8">
 
         {/* Middle Row: Language Selector Pill on Left, Social Circles on Right */}
@@ -25,9 +25,9 @@ const Footer = () => {
             trigger={
               <button
                 type="button"
-                className="bg-white hover:bg-slate-100 text-slate-800 font-semibold px-4 py-2 rounded-full text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer border border-slate-200 shadow-2xs select-none"
+                className="bg-white hover:bg-slate-100 hover:border-[#005973]/40 text-slate-800 font-semibold px-4 py-2 rounded-full text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer border border-slate-200 shadow-2xs select-none"
               >
-                <Languages className="w-4 h-4 text-[#2478b8]" />
+                <Languages className="w-4 h-4 text-[#005973]" />
                 <span>{currentLanguage?.label || "English"}</span>
               </button>
             }
@@ -50,7 +50,7 @@ const Footer = () => {
                 key={item.name}
                 href="#"
                 aria-label={item.name}
-                className="w-9 h-9 rounded-full bg-white text-slate-700 hover:bg-[#2478b8] hover:text-white border border-slate-200 flex items-center justify-center transition-all shadow-2xs"
+                className="w-9 h-9 rounded-full bg-white text-slate-700 hover:bg-[#005973] hover:text-white border border-slate-200 flex items-center justify-center transition-all shadow-2xs"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d={item.svg} />
@@ -65,24 +65,14 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-200 text-xs sm:text-sm font-medium text-slate-600">
           <p>© {new Date().getFullYear()} ekaze.rw, a Beno Finance Ltd brand</p>
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-slate-700 font-semibold">
-            <a href="/who-we-are" className="hover:text-[#2478b8] transition-colors">Pricing</a>
-            <a href="/terms-of-service" className="hover:text-[#2478b8] transition-colors">Terms of Service</a>
-            <a href="/terms-and-conditions" className="hover:text-[#2478b8] transition-colors">General Terms and Conditions</a>
-            <a href="/privacy-policy" className="hover:text-[#2478b8] transition-colors">Privacy Policy</a>
-            <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('open-cookie-preferences'))} className="hover:text-[#2478b8] transition-colors cursor-pointer">Cookie Policy</button>
+            <a href="/who-we-are" className="hover:text-[#005973] transition-colors">Pricing</a>
+            <a href="/terms-of-service" className="hover:text-[#005973] transition-colors">Terms of Service</a>
+            <a href="/terms-and-conditions" className="hover:text-[#005973] transition-colors">General Terms and Conditions</a>
+            <a href="/privacy-policy" className="hover:text-[#005973] transition-colors">Privacy Policy</a>
+            <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('open-cookie-preferences'))} className="hover:text-[#005973] transition-colors cursor-pointer">Cookie Policy</button>
           </div>
         </div>
 
-      </div>
-
-      {/* Massive Wordmark in Brand Blue */}
-      <div className="w-full overflow-hidden select-none pointer-events-none mt-6 sm:mt-10 flex items-end justify-center leading-none">
-        <span
-          style={{ fontFamily: '"Outfit", "Plus Jakarta Sans", "Inter", sans-serif' }}
-          className="text-[#2478b8] font-black text-[15.5vw] leading-[0.76] tracking-tighter uppercase block w-full text-center whitespace-nowrap select-none"
-        >
-          ekazefleet
-        </span>
       </div>
     </footer>
   );

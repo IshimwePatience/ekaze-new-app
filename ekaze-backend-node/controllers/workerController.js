@@ -4107,7 +4107,7 @@ const verifyWorkerCardPublic = async (req, res, next) => {
     const cleanedIdStr = String(rawParam).replace(/[^0-9]/g, '');
     const numericId = parseInt(cleanedIdStr, 10);
 
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:8080';
+    const frontendUrl = process.env.FRONTEND_URL || 'https://ekaze.benofinance.rw';
     if (isNaN(numericId)) {
       if (req.headers.accept?.includes('application/json') || req.query.format === 'json') {
         return res.status(404).json({ success: false, verified: false, message: 'Invalid worker ID or card number.' });

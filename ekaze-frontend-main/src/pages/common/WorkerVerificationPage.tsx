@@ -110,7 +110,8 @@ export const WorkerVerificationPage: React.FC = () => {
       const cleanId = String(id || '10').replace(/[^0-9]/g, '');
 
       try {
-        const res = await fetch(`http://localhost:5000/api/v1/workers/verify/${cleanId || '10'}?format=json`, {
+        const apiBase = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('localhost') ? `${window.location.origin}/api/v1` : 'http://localhost:5000/api/v1');
+        const res = await fetch(`${apiBase}/workers/verify/${cleanId || '10'}?format=json`, {
           headers: { Accept: 'application/json' },
         });
         const data = await res.json();
@@ -156,7 +157,10 @@ export const WorkerVerificationPage: React.FC = () => {
     fetchWorkerVerification();
   }, [id]);
 
-  const verifyUrl = `http://localhost:8080/verify-worker/${worker?.id || id || '10'}`;
+  const baseOrigin = typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('localhost')
+    ? window.location.origin
+    : 'https://ekaze.benofinance.rw';
+  const verifyUrl = `${baseOrigin}/verify-worker/${worker?.id || id || '10'}`;
 
   return (
     <div

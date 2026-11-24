@@ -767,7 +767,7 @@ const generateBusinessCards = async (req, res, next) => {
     }
 
     const idsParam = workerIds.join(',');
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:8080';
+    const frontendUrl = process.env.FRONTEND_URL || 'https://ekaze.benofinance.rw';
     const pdfUrl = `${frontendUrl}/company/workers/print-cards?ids=${idsParam}`;
 
     return res.status(200).json({
@@ -865,7 +865,7 @@ const getWorkersCardsData = async (req, res, next) => {
 const printBusinessCards = async (req, res, next) => {
   try {
     const rawIds = req.query.ids || '';
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:8080';
+    const frontendUrl = process.env.FRONTEND_URL || 'https://ekaze.benofinance.rw';
     return res.redirect(302, `${frontendUrl}/company/workers/print-cards?ids=${encodeURIComponent(rawIds)}`);
   } catch (error) {
     next(error);

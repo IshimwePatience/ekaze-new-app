@@ -19,7 +19,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import logo from "@/assets/reallogo.png";
+import logo from "@/assets/dashboard logo.png";
 import { useLogout, useAuth } from "@/hooks/useAuth";
 import { ROUTES } from "@/constants/routes";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -265,62 +265,72 @@ const Header = () => {
 
   return (
     <>
-      {/* MTN-Style Two-Tier Floating Header: Transparent over Hero (No Black Background) */}
+      {/* Flat Minimal Navbar — remove.bg style */}
       <header
-        className={`${isHomePage ? "fixed top-0 left-0 right-0" : "sticky top-0"
-          } z-50 w-full bg-transparent transition-all duration-300 pointer-events-none`}
+        className={`sticky top-0 z-50 w-full bg-white border-b border-slate-200 transition-shadow duration-300 ${
+          scrolled ? "shadow-xs" : ""
+        }`}
       >
-        {/* Tier 1: Top Utility Bar (Transparent, hides cleanly on scroll so only the yellow pill floats) */}
-        <div
-          className={`container mx-auto max-w-6xl px-4 sm:px-6 transition-all duration-300 overflow-hidden pointer-events-auto ${scrolled ? "max-h-0 opacity-0 py-0" : "max-h-14 opacity-100 pt-2.5 pb-1.5"
-            }`}
-        >
-          <div className="flex items-center justify-between text-xs sm:text-[13px]">
-            <div className="flex items-center gap-4 sm:gap-7 overflow-x-auto no-scrollbar">
+        <div className="w-full max-w-full px-4 sm:px-8 lg:px-12">
+          <div className="flex items-center justify-between h-[64px] sm:h-[68px]">
+            {/* Left: Logo + Nav Links */}
+            <div className="flex items-center gap-6 lg:gap-10">
               <a
-                href="#features"
-                onClick={(e) => handleNavClick(e, "#features")}
-                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer drop-shadow-xs ${isActiveLink("#features")
-                  ? "text-[#60a5fa]"
-                  : isHomePage
-                    ? "text-white/95 hover:text-[#60a5fa]"
-                    : "text-slate-800 hover:text-[#2478b8]"
-                  }`}
+                href="/"
+                onClick={(e) => handleNavClick(e, "#hero")}
+                className="flex items-center shrink-0 hover:opacity-85 transition-opacity cursor-pointer"
               >
-                {language === "kin" ? "Abashoferi" : "Fleet & Drivers"}
+                <img src={logo} alt="Ekaze" className="h-7 md:h-8 w-auto" />
               </a>
-              <button
-                type="button"
-                onClick={() => navigate("/who-we-are")}
-                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${isHomePage ? "text-white/95 hover:text-[#60a5fa]" : "text-slate-800 hover:text-[#2478b8]"
-                  }`}
-              >
-                {language === "kin" ? "Ibiciro" : "Pricing"}
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsHelpOpen(true)}
-                className={`font-semibold whitespace-nowrap transition-colors cursor-pointer bg-transparent border-0 p-0 drop-shadow-xs ${isHomePage ? "text-white/95 hover:text-[#60a5fa]" : "text-slate-800 hover:text-[#2478b8]"
-                  }`}
-              >
-                {language === "kin" ? "Ubufasha" : "Support"}
-              </button>
+
+              {/* Desktop Nav Links */}
+              <nav className="hidden md:flex items-center gap-5 lg:gap-7">
+                {navLinks.map((link) => {
+                  const active = isActiveLink(link.href);
+                  return (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      onClick={(e) => handleNavClick(e, link.href)}
+                      className={`text-[14px] transition-colors cursor-pointer ${
+                        active
+                          ? "text-slate-900 font-semibold"
+                          : "text-slate-600 hover:text-slate-900 font-medium"
+                      }`}
+                    >
+                      {link.label}
+                    </a>
+                  );
+                })}
+                <button
+                  type="button"
+                  onClick={() => navigate("/who-we-are")}
+                  className="text-[14px] font-medium transition-colors cursor-pointer bg-transparent border-0 p-0 text-slate-600 hover:text-slate-900"
+                >
+                  {language === "kin" ? "Ibiciro" : "Pricing"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsHelpOpen(true)}
+                  className="text-[14px] font-medium transition-colors cursor-pointer bg-transparent border-0 p-0 text-slate-600 hover:text-slate-900"
+                >
+                  {language === "kin" ? "Ubufasha" : "Support"}
+                </button>
+              </nav>
             </div>
 
-            {/* Right Side: Language Selector */}
-            <div className="flex items-center shrink-0 ml-3">
+            {/* Right: Language + Auth */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              {/* Language Selector */}
               <CustomDropdown
                 widthClass="w-28 min-w-[7rem]"
                 trigger={
-                  <button
-                    className={`bg-transparent hover:text-[#60a5fa] transition-all cursor-pointer flex items-center gap-1.5 px-2 py-0.5 border-0 shadow-none outline-none drop-shadow-xs ${isHomePage ? "text-white" : "text-slate-800"
-                      }`}
-                  >
-                    <Languages className="w-3.5 h-3.5 text-[#60a5fa]" />
+                  <button className="bg-transparent hover:text-[#005973] transition-all cursor-pointer flex items-center gap-1.5 px-2 py-1 border-0 shadow-none outline-none text-slate-600">
+                    <Languages className="w-3.5 h-3.5 text-[#005973]" />
                     <span className="text-xs font-bold tracking-tight">
                       {currentLanguage?.short || (language === "kin" ? "KIN" : "EN")}
                     </span>
-                    <span className="text-[#60a5fa] text-[9px] transform scale-y-75 font-bold">▼</span>
+                    <span className="text-[#005973] text-[9px] transform scale-y-75 font-bold">▼</span>
                   </button>
                 }
                 items={languages.map((lang) => ({
@@ -329,151 +339,121 @@ const Header = () => {
                   onClick: () => setLanguage(lang.code),
                 }))}
               />
-            </div>
-          </div>
-        </div>
 
-        {/* Tier 2: Floating Rounded Blue Pill Navbar (#2478b8 with crisp white text) */}
-        <div className={`container mx-auto max-w-6xl px-4 sm:px-6 pointer-events-auto transition-all duration-300 ${scrolled ? "py-2.5" : "pb-3 pt-1"}`}>
-          <div className="w-full h-[60px] sm:h-[64px] bg-[#2478b8] text-white rounded-xl sm:rounded-2xl shadow-lg border border-sky-400/25 px-4 sm:px-7 flex items-center justify-between">
-            {/* Left Group: Brand Logo + Navigation Links */}
-            <div className="flex items-center gap-5 lg:gap-8">
-              <a
-                href="/"
-                onClick={(e) => handleNavClick(e, "#hero")}
-                className="flex items-center shrink-0 hover:opacity-90 transition-opacity cursor-pointer"
-              >
-                <img src={logo} alt="Ekaze" className="h-7 md:h-8 w-auto brightness-0 invert" />
-              </a>
-
-              {/* Desktop Nav Links */}
-              <nav className="hidden md:flex items-center gap-1 lg:gap-2">
-                {navLinks.map((link) => {
-                  const active = isActiveLink(link.href);
-                  return (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      onClick={(e) => handleNavClick(e, link.href)}
-                      className={`relative px-3.5 py-2 text-sm md:text-[14.5px] rounded-xl transition-all duration-200 cursor-pointer inline-flex items-center gap-1 ${active
-                        ? "bg-white/20 text-white font-bold shadow-2xs"
-                        : "text-white/90 hover:text-white hover:bg-white/10 font-semibold"
-                        }`}
-                    >
-                      <span>{link.label}</span>
-                    </a>
-                  );
-                })}
-              </nav>
-            </div>
-
-            {/* Right Group: Auth / Profile Controls */}
-            <div className="hidden md:flex items-center gap-3">
-              {isAuthenticated ? (
-                <CustomDropdown
-                  widthClass="w-48"
-                  trigger={
-                    <Button
-                      variant="ghost"
-                      className="h-9 gap-2 px-3 rounded-full transition-all shadow-none bg-white/15 hover:bg-white/25 text-white cursor-pointer"
-                    >
-                      <div className="h-6 w-6 rounded-full bg-white flex items-center justify-center">
-                        <span className="text-[10px] font-bold text-[#2478b8]">{getUserInitials()}</span>
-                      </div>
-                      <span className="text-xs font-semibold">{user?.name}</span>
-                      <ChevronDown className="h-3.5 w-3.5 text-white/80" />
-                    </Button>
-                  }
-                  items={[
-                    {
-                      label: t("auth.dashboard"),
-                      onClick: () => navigate(getDashboardRoute()),
-                    },
-                    "separator",
-                    {
-                      label: isLoggingOut ? t("auth.loggingOut") : t("auth.logout"),
-                      danger: true,
-                      disabled: isLoggingOut,
-                      onClick: () => logout(),
-                    },
-                  ]}
-                />
-              ) : (
-                <div className="relative">
-                  <div className="flex items-center gap-2.5">
+              {/* Auth Controls — Desktop */}
+              <div className="hidden md:flex items-center gap-3">
+                {isAuthenticated ? (
+                  <CustomDropdown
+                    widthClass="w-48"
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        className="h-9 gap-2 px-3 rounded-full transition-all shadow-none hover:bg-slate-100 text-slate-700 cursor-pointer"
+                      >
+                        <div className="h-6 w-6 rounded-full bg-[#2478b8] flex items-center justify-center">
+                          <span className="text-[10px] font-bold text-white">{getUserInitials()}</span>
+                        </div>
+                        <span className="text-xs font-semibold">{user?.name}</span>
+                        <ChevronDown className="h-3.5 w-3.5 text-slate-400" />
+                      </Button>
+                    }
+                    items={[
+                      {
+                        label: t("auth.dashboard"),
+                        onClick: () => navigate(getDashboardRoute()),
+                      },
+                      "separator",
+                      {
+                        label: isLoggingOut ? t("auth.loggingOut") : t("auth.logout"),
+                        danger: true,
+                        disabled: isLoggingOut,
+                        onClick: () => logout(),
+                      },
+                    ]}
+                  />
+                ) : (
+                  <div className="relative flex items-center">
                     <button
                       type="button"
                       onClick={() => setIsLoginDropdownOpen(!isLoginDropdownOpen)}
-                      className="border border-white bg-white hover:bg-blue-50 text-[#2478b8] font-bold text-sm px-4 py-2 rounded-full transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                      className="text-[13.5px] font-medium text-slate-800 bg-[#ebedf0] hover:bg-[#dfe2e7] px-4 py-1.5 rounded-full transition-all cursor-pointer"
                     >
-                      <div className="w-5 h-5 rounded-full bg-[#2478b8] text-white flex items-center justify-center">
-                        <User className="w-3 h-3 fill-white" />
-                      </div>
-                      <span>Log In</span>
-                      <ChevronDown
-                        className={`w-3.5 h-3.5 text-[#2478b8] transition-transform duration-200 ${isLoginDropdownOpen ? "rotate-180" : ""
-                          }`}
-                      />
+                      Log in
                     </button>
+
+                    {/* Login Dropdown Card */}
+                    <LoginDropdown
+                      isOpen={isLoginDropdownOpen}
+                      onClose={() => {
+                        setIsLoginDropdownOpen(false);
+                        if (location.search.includes("login=true")) {
+                          const params = new URLSearchParams(location.search);
+                          params.delete("login");
+                          const remaining = params.toString();
+                          navigate(remaining ? `${location.pathname}?${remaining}` : location.pathname, { replace: true });
+                        }
+                      }}
+                      onOpenRegister={() => {
+                        setIsLoginDropdownOpen(false);
+                        setIsRegisterDropdownOpen(true);
+                      }}
+                    />
                   </div>
+                )}
+              </div>
 
-                  {/* Login Dropdown Card */}
-                  <LoginDropdown
-                    isOpen={isLoginDropdownOpen}
-                    onClose={() => {
-                      setIsLoginDropdownOpen(false);
-                      if (location.search.includes("login=true")) {
-                        const params = new URLSearchParams(location.search);
-                        params.delete("login");
-                        const remaining = params.toString();
-                        navigate(remaining ? `${location.pathname}?${remaining}` : location.pathname, { replace: true });
-                      }
-                    }}
-                    onOpenRegister={() => {
-                      setIsLoginDropdownOpen(false);
-                      setIsRegisterDropdownOpen(true);
-                    }}
-                  />
-                </div>
-              )}
+              {/* Mobile Menu Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden h-9 w-9 rounded-lg text-slate-700 hover:bg-slate-100"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
             </div>
-
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden h-9 w-9 rounded-lg bg-white/15 text-white hover:bg-white/25"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
           </div>
         </div>
 
         {/* Mobile Dropdown */}
         {isMenuOpen && (
-          <div className="md:hidden pointer-events-auto border border-sky-400/25 mx-4 mb-3 rounded-xl p-4 space-y-2 bg-[#1b6296] text-white shadow-xl">
+          <div className="md:hidden border-t border-slate-100 px-4 py-3 space-y-1 bg-white shadow-lg">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`block text-sm py-2 px-3.5 rounded-xl cursor-pointer transition-colors ${isActiveLink(link.href)
-                  ? "bg-white/20 text-white font-bold"
-                  : "text-white/90 hover:text-white hover:bg-white/10 font-medium"
-                  }`}
+                className={`block text-sm py-2.5 px-3.5 rounded-lg cursor-pointer transition-colors ${
+                  isActiveLink(link.href)
+                    ? "bg-slate-100 text-[#1a1a2e] font-semibold"
+                    : "text-[#5a6068] hover:text-[#1a1a2e] hover:bg-slate-50 font-medium"
+                }`}
               >
                 {link.label}
               </a>
             ))}
+            <button
+              type="button"
+              onClick={() => { navigate("/who-we-are"); setIsMenuOpen(false); }}
+              className="block w-full text-left text-sm py-2.5 px-3.5 rounded-lg cursor-pointer transition-colors bg-transparent border-0 text-[#5a6068] hover:text-[#1a1a2e] hover:bg-slate-50 font-medium"
+            >
+              {language === "kin" ? "Ibiciro" : "Pricing"}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setIsHelpOpen(true); setIsMenuOpen(false); }}
+              className="block w-full text-left text-sm py-2.5 px-3.5 rounded-lg cursor-pointer transition-colors bg-transparent border-0 text-[#5a6068] hover:text-[#1a1a2e] hover:bg-slate-50 font-medium"
+            >
+              {language === "kin" ? "Ubufasha" : "Support"}
+            </button>
             {!isAuthenticated && (
-              <div className="pt-2 border-t border-white/15 flex flex-col gap-2">
+              <div className="pt-2 border-t border-slate-100 flex flex-col">
                 <button
                   type="button"
                   onClick={() => { setIsLoginDropdownOpen(true); setIsMenuOpen(false); }}
-                  className="text-center text-sm font-bold py-2.5 rounded-xl bg-white text-[#2478b8] hover:bg-blue-50 cursor-pointer"
+                  className="text-center text-sm font-medium py-2 px-4 rounded-full bg-[#ebedf0] text-slate-800 hover:bg-[#dfe2e7] cursor-pointer"
                 >
-                  Log In
+                  Log in
                 </button>
               </div>
             )}
