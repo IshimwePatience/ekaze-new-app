@@ -124,9 +124,9 @@ const OverviewSidebar = () => {
             <div className="h-12 bg-gradient-to-br from-primary via-primary/80 to-primary/60" />
             <div className="absolute -bottom-6 left-1/2 -translate-x-1/2">
               <div className="relative group">
-                <div className="w-14 h-14 rounded-lg border-[3px] border-background bg-background overflow-hidden">
+                <div className="w-14 h-14 rounded-lg border-[3px] border-background bg-background overflow-hidden p-0.5 flex items-center justify-center">
                   {displayLogo ? (
-                    <img src={displayLogo} alt={company.business_name} className="w-full h-full object-cover" />
+                    <img src={displayLogo} alt={company.business_name} className="w-full h-full object-contain object-center" />
                   ) : (
                     <div className="w-full h-full bg-primary/10 flex items-center justify-center">
                       <Building2 className="h-7 w-7 text-primary" />

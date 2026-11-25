@@ -381,12 +381,12 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       {/* Top Row: Centered "Service Card" Title with Company Logo on Left */}
                       <div className="relative flex items-center justify-center z-10 pt-0.5 px-1 w-full min-h-[42px]">
                         <div className="absolute left-1 top-0">
-                          <div className="w-9 h-9 rounded-full border border-slate-200 bg-white shadow-xs overflow-hidden flex items-center justify-center shrink-0">
+                          <div className="w-9 h-9 rounded-full border border-slate-200 bg-white shadow-xs overflow-hidden flex items-center justify-center shrink-0 p-0.5">
                             {worker.company_logo ? (
                               <img
                                 src={getFullPhotoUrl(worker.company_logo)}
                                 alt={worker.company}
-                                className="w-full h-full object-cover object-center"
+                                className="w-full h-full object-contain object-center"
                                 onError={(e) => {
                                   (e.target as HTMLImageElement).src = logo;
                                 }}
@@ -406,12 +406,12 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       {/* Middle Content: Photo on Left, Details on Right (No Location) */}
                       <div className="flex items-start gap-3 px-1 z-10 -mt-1">
                         {/* Photo with rounded rectangular border */}
-                        <div className="w-[114px] h-[114px] rounded-[16px] border-[2px] border-slate-900 overflow-hidden shrink-0 bg-slate-100 shadow-sm">
+                        <div className="w-[114px] h-[114px] rounded-[16px] border-[2px] border-slate-900 overflow-hidden shrink-0 bg-slate-100 shadow-sm flex items-center justify-center">
                           <img
                             src={getFullPhotoUrl(worker.photo)}
                             alt={worker.name}
-                            className="w-full h-full object-cover object-center"
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            className="w-full h-full object-cover object-top"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }}
                             onError={(e) => {
                               (e.target as HTMLImageElement).src =
                                 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';

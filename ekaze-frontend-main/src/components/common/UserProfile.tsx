@@ -1082,12 +1082,12 @@ export const UserProfile = () => {
                 <div className="flex flex-col sm:flex-row items-start gap-8 pt-2 text-left">
                   {/* Left Column: Avatar & Edit Profile Picture */}
                   <div className="flex flex-col items-center shrink-0">
-                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-[#E2E8F0] border border-slate-300/80 shadow-2xs flex items-center justify-center">
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-white border border-slate-300/80 shadow-2xs flex items-center justify-center p-1">
                       {profilePhoto ? (
                         <img
                           src={profilePhoto}
                           alt="Profile Avatar"
-                          className="w-full h-full object-cover"
+                          className={`w-full h-full ${isCompany ? "object-contain" : "object-cover object-top"}`}
                           onError={() => setProfilePhoto(null)}
                         />
                       ) : (
