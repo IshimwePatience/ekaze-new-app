@@ -464,8 +464,8 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       </div>
 
                       {/* Bottom Row: Card ID No & QR Code */}
-                      <div className="flex items-end justify-between px-2 z-10 pb-0.5">
-                        <div className="text-[11px] font-bold text-slate-900">
+                      <div className="flex items-end justify-between px-2.5 z-10 pb-1">
+                        <div className="text-[11px] font-bold text-slate-900 mb-2.5">
                           Card ID No: {worker.card_number}
                         </div>
 
