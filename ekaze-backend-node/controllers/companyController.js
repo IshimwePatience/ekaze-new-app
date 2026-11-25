@@ -796,7 +796,11 @@ const getWorkersCardsData = async (req, res, next) => {
       where: { id: workerIds },
       include: [
         { model: User, as: 'user' },
-        { model: Company, as: 'company' }
+        {
+          model: Company,
+          as: 'company',
+          include: [{ model: User, as: 'user' }]
+        }
       ]
     });
 
@@ -806,7 +810,10 @@ const getWorkersCardsData = async (req, res, next) => {
 
     let reqCompany = null;
     if (req.user && req.user.role === 'company') {
-      reqCompany = await Company.findOne({ where: { user_id: req.user.id } });
+      reqCompany = await Company.findOne({
+        where: { user_id: req.user.id },
+        include: [{ model: User, as: 'user' }]
+      });
     }
 
     const host = req.get('host') || 'ekaze.benofinance.rw';
@@ -829,9 +836,41 @@ const getWorkersCardsData = async (req, res, next) => {
       const district = raw.user?.district || raw.district || 'Gasabo';
       const province = raw.user?.province || raw.province || 'Kigali';
       const companyName = raw.company?.company_name || reqCompany?.company_name || 'Agency Workforce';
+      const companyLogo = raw.company?.user?.profile_photo || raw.company?.logo || reqCompany?.user?.profile_photo || reqCompany?.logo || null;
       const profession = (Array.isArray(raw.skills) && raw.skills.length > 0)
         ? raw.skills.slice(0, 2).join(', ').toUpperCase()
         : (Array.isArray(raw.professions) && raw.professions.length > 0 ? raw.professions.slice(0, 2).join(', ').toUpperCase() : 'DRIVER / PROFESSIONAL');
+
+      // Calculate issue date and 1-year expiration date
+      const now = new Date();
+      const issueDateStr = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+      const expDate = new Date(now);
+      expDate.setFullYear(expDate.getFullYear() + 1);
+      const expiryDateStr = `${String(expDate.getDate()).padStart(2, '0')}/${String(expDate.getMonth() + 1).padStart(2, '0')}/${expDate.getFullYear()}`;
+
+      // Date of birth
+      let dobStr = '01/01/1995';
+      if (raw.user?.date_of_birth) {
+        const d = new Date(raw.user.date_of_birth);
+        if (!isNaN(d.getTime())) {
+          dobStr = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+        }
+      } else if (nationalId && nationalId.length === 16) {
+        const year = nationalId.substring(1, 5);
+        dobStr = `01/01/${year}`;
+      }
+
+      // Gender
+      let genderStr = 'Gore/Female';
+      const rawGender = (raw.user?.gender || '').toLowerCase();
+      if (rawGender === 'male') {
+        genderStr = 'Gabo/Male';
+      } else if (rawGender === 'female') {
+        genderStr = 'Gore/Female';
+      } else if (nationalId && nationalId.length === 16) {
+        const genderDigit = nationalId.charAt(5);
+        genderStr = genderDigit === '7' ? 'Gabo/Male' : 'Gore/Female';
+      }
 
       return {
         id: raw.id,
@@ -846,9 +885,12 @@ const getWorkersCardsData = async (req, res, next) => {
         district,
         province,
         company: companyName,
+        company_logo: companyLogo,
         profession,
-        issue_date: '12/04/2026',
-        expiry_date: '12/04/2028',
+        gender: genderStr,
+        date_of_birth: dobStr,
+        issue_date: issueDateStr,
+        expiry_date: expiryDateStr,
         verify_url: `${frontendUrl}/verify-worker/${raw.id}`
       };
     });

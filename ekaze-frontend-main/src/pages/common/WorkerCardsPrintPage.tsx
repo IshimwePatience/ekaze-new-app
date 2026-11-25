@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { QRCode } from 'antd';
-import { Printer, ChevronDown, Check, Download, Loader2 } from 'lucide-react';
+import { Printer, ChevronDown, Check, Download, Loader2, MapPin } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
-import logo from '@/assets/reallogo.png';
+import logo from '@/assets/dashboard logo.png';
+import idCardBgFront from '@/assets/id card bg.jpeg';
+import idCardBgBack from '@/assets/back bg.jpeg';
 import { api } from '@/lib/api';
 
 const getFullPhotoUrl = (photoUrl?: string) => {
@@ -83,7 +85,10 @@ interface WorkerCardData {
   district: string;
   province: string;
   company: string;
+  company_logo?: string;
   profession: string;
+  gender?: string;
+  date_of_birth?: string;
   issue_date: string;
   expiry_date: string;
   verify_url: string;
@@ -107,7 +112,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
 
   const [cards, setCards] = useState<WorkerCardData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('portrait');
+  const orientation = 'landscape';
   const [lang, setLang] = useState<'eng' | 'kin'>('eng');
   const [downloadingSide, setDownloadingSide] = useState<'front' | 'back' | null>(null);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
@@ -153,39 +158,17 @@ export const WorkerCardsPrintPage: React.FC = () => {
       const cardElements = container.querySelectorAll(selector);
       if (!cardElements.length) return;
 
-      const isPortrait = orientation === 'portrait';
-      let pdf: jsPDF;
-      let pageWidth: number;
-      let pageHeight: number;
-
-      if (!isPortrait) {
-        // Landscape card exact dimensions requested:
-        // W: 25.68 cm = 256.8 mm (10.11 Inc)
-        // H: 16.2 cm = 162.0 mm (6.377 Inc)
-        pageWidth = 256.8;
-        pageHeight = 162.0;
-        pdf = new jsPDF({
-          orientation: 'landscape',
-          unit: 'mm',
-          format: [pageWidth, pageHeight],
-        });
-      } else {
-        pageWidth = 210;
-        pageHeight = 297;
-        pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'mm',
-          format: 'a4',
-        });
-      }
+      const pageWidth = 256.8;
+      const pageHeight = 162.0;
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: [pageWidth, pageHeight],
+      });
 
       for (let i = 0; i < cardElements.length; i++) {
         if (i > 0) {
-          if (!isPortrait) {
-            pdf.addPage([pageWidth, pageHeight], 'landscape');
-          } else {
-            pdf.addPage('a4', 'portrait');
-          }
+          pdf.addPage([pageWidth, pageHeight], 'landscape');
         }
         const cardEl = cardElements[i] as HTMLElement;
         const canvas = await html2canvas(cardEl, {
@@ -195,24 +178,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
           backgroundColor: '#ffffff',
         });
         const imgData = canvas.toDataURL('image/png');
-
-        if (!isPortrait) {
-          // Exact full card bleed to 25.68 cm x 16.2 cm
-          pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
-        } else {
-          const margin = 16;
-          const maxW = pageWidth - margin * 2;
-          const maxH = pageHeight - margin * 2;
-          let rW = maxW;
-          let rH = (canvas.height * rW) / canvas.width;
-          if (rH > maxH) {
-            rH = maxH;
-            rW = (canvas.width * rH) / canvas.height;
-          }
-          const posX = (pageWidth - rW) / 2;
-          const posY = (pageHeight - rH) / 2;
-          pdf.addImage(imgData, 'PNG', posX, posY, rW, rH, undefined, 'FAST');
-        }
+        pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
       }
 
       const singleWorkerName = cards[0]?.name
@@ -220,8 +186,8 @@ export const WorkerCardsPrintPage: React.FC = () => {
         : 'worker';
 
       const fileName = cards.length === 1
-        ? `ekaze-${side}-${singleWorkerName}.pdf`
-        : `ekaze-workers-${side}.pdf`;
+        ? `service-card-${side}-${singleWorkerName}.pdf`
+        : `service-cards-${side}.pdf`;
 
       pdf.save(fileName);
     } catch (err) {
@@ -241,15 +207,13 @@ export const WorkerCardsPrintPage: React.FC = () => {
       <style>{`
         @media print {
           @page {
-            size: ${orientation === 'landscape' ? '25.68cm 16.2cm' : 'a4 portrait'};
+            size: 25.68cm 16.2cm;
             margin: 0;
           }
-          ${orientation === 'landscape' ? `
-            .card-face-front, .card-face-back {
-              width: 25.68cm !important;
-              height: 16.2cm !important;
-            }
-          ` : ''}
+          .card-face-front, .card-face-back {
+            width: 25.68cm !important;
+            height: 16.2cm !important;
+          }
         }
       `}</style>
 
@@ -312,7 +276,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Action Toolbar: Compact Height with Orientation Switcher & Print Button */}
+        {/* Action Toolbar: Service Card (Landscape) & Print Button */}
         <div className="max-w-4xl mx-auto mt-2 px-4">
           <div
             className="bg-white rounded-[14px] border border-[#d5dbdb] shadow-[0_1px_1px_0_rgba(0,28,36,0.25),0_1px_12px_0_rgba(0,28,36,0.08)] py-3 px-5 sm:py-3.5 sm:px-6 flex items-center justify-between gap-3"
@@ -320,54 +284,10 @@ export const WorkerCardsPrintPage: React.FC = () => {
               fontFamily: "'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
             }}
           >
-            {/* Orientation Switcher Pill (Portrait / Landscape) on the Left */}
-            <div
-              className="inline-flex rounded-full border border-[#0073bb] p-0.5 bg-white h-[36px] items-center shrink-0"
-              style={{
-                fontFamily: "'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-              }}
-            >
-              <button
-                type="button"
-                onClick={() => setOrientation('portrait')}
-                className={`h-[28px] px-3.5 rounded-full text-[13px] font-bold transition-all cursor-pointer border-none flex items-center gap-1.5 ${orientation === 'portrait'
-                  ? 'bg-[#0073bb] text-white shadow-sm'
-                  : 'bg-transparent text-[#0073bb] hover:bg-[#f2f8fd]'
-                  }`}
-                style={{
-                  fontFamily: "'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-                }}
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-                  <rect x="5" y="2" width="14" height="20" rx="2" />
-                </svg>
-                <span>{lang === 'kin' ? 'Uruhagararo' : 'Portrait'}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setOrientation('landscape')}
-                className={`h-[28px] px-3.5 rounded-full text-[13px] font-bold transition-all cursor-pointer border-none flex items-center gap-1.5 ${orientation === 'landscape'
-                  ? 'bg-[#0073bb] text-white shadow-sm'
-                  : 'bg-transparent text-[#0073bb] hover:bg-[#f2f8fd]'
-                  }`}
-                style={{
-                  fontFamily: "'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-                }}
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                </svg>
-                <span>{lang === 'kin' ? 'Urubariro' : 'Landscape'}</span>
-              </button>
+            {/* Service Card (Landscape) Title on the Left */}
+            <div className="text-[14px] font-bold text-slate-800">
+              Service Card (Landscape)
             </div>
-
-            {orientation === 'landscape' && (
-              <div className="hidden md:flex items-center gap-1.5 text-[11.5px] font-semibold text-slate-600 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full">
-                <span className="text-[#0073bb]">Dimensions:</span>
-                <span>W: 25.68 cm × H: 16.2 cm (10.11" × 6.377")</span>
-              </div>
-            )}
 
             {/* Save Buttons on the Right */}
             <div className="flex items-center gap-3 shrink-0">
@@ -436,400 +356,197 @@ export const WorkerCardsPrintPage: React.FC = () => {
                 : 'https://ekaze.benofinance.rw';
               const verifyUrl = `${baseOrigin}/verify-worker/${worker.id}`;
 
-              if (orientation === 'landscape') {
-                /* ═══════════════════════════════════════════════════
-                   LANDSCAPE (HORIZONTAL) BADGES
-                   ═══════════════════════════════════════════════════ */
-                return (
-                  <div
-                    key={worker.id}
-                    className="worker-card-row flex flex-wrap justify-center items-center gap-8 w-full print:page-break-after-always print:mb-8"
-                  >
-                    {/* Front Face (Landscape) */}
-                    <div className="relative flex flex-col items-center bg-white p-3.5 pt-4 rounded-[18px] shadow-[0_14px_34px_rgba(3,20,44,0.14)] border border-slate-200/80">
-                      <div className="absolute -top-3 w-10 h-3.5 bg-gradient-to-b from-slate-400 to-slate-300 rounded-t border border-slate-500 border-b-0 shadow-inner" />
-                      <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
-
-                      <div
-                        className="card-face-front w-[475px] h-[300px] rounded-[14px] relative overflow-hidden bg-[#03142c] text-white shadow-xl border border-slate-800/80 select-none flex print:shadow-none"
-                        style={{ aspectRatio: '25.68 / 16.2' }}
-                      >
-                        {/* Left Side: Photo, Logo, 10-digit Ekaze ID */}
-                        <div className="w-[160px] shrink-0 px-2 py-3.5 flex flex-col items-center justify-between z-10 border-r border-slate-700/60 bg-[#03142c]">
-                          <div className="flex items-center">
-                            <img src={logo} alt="Ekaze" className="h-[20px] w-auto object-contain" />
-                          </div>
-
-                          <div
-                            className="w-[105px] h-[105px] rounded-full p-1.5 flex items-center justify-center my-0.5"
-                            style={{
-                              background:
-                                'radial-gradient(circle, rgba(0, 209, 255, 0.85) 0%, rgba(0, 163, 196, 0.45) 50%, rgba(3, 20, 44, 0) 70%)',
-                            }}
-                          >
-                            <img
-                              src={getFullPhotoUrl(worker.photo)}
-                              alt={worker.name}
-                              className="w-[92px] h-[92px] rounded-full object-cover border-2 border-white shadow-xl bg-slate-800"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src =
-                                  'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';
-                              }}
-                            />
-                          </div>
-
-                          <span className="text-[11px] font-sans font-bold text-white tracking-normal text-center whitespace-nowrap">
-                            Ekaze ID Nº {formatEkazeId(worker.id, worker.ekaze_id)}
-                          </span>
-                        </div>
-
-                        {/* Right Side: Details, Swoosh, Dot Matrix - Centered in the middle */}
-                        <div className="flex-1 px-6 py-4 relative overflow-hidden flex flex-col justify-center gap-4 z-10">
-                          {/* Curving Swoosh */}
-                          <svg className="absolute top-0 right-0 w-full h-[150px] z-0 pointer-events-none" viewBox="0 0 300 150" preserveAspectRatio="none">
-                            <defs>
-                              <linearGradient id="tealSwooshLand" x1="0%" y1="0%" x2="100%" y2="80%">
-                                <stop offset="0%" stopColor="#00a3c4" />
-                                <stop offset="45%" stopColor="#008faf" stopOpacity="0.95" />
-                                <stop offset="85%" stopColor="#05284e" stopOpacity="0.7" />
-                                <stop offset="100%" stopColor="#03142c" stopOpacity="0" />
-                              </linearGradient>
-                            </defs>
-                            <path d="M 0,0 L 300,0 L 300,60 C 200,120 100,60 0,110 Z" fill="url(#tealSwooshLand)" />
-                          </svg>
-
-                          <div className="relative z-10">
-                            <h2 className="text-[19px] font-normal text-white uppercase tracking-wide leading-tight">
-                              {worker.name}
-                            </h2>
-                            <p className="text-[11px] font-semibold text-slate-300 uppercase tracking-widest mt-0.5">
-                              {formatProfession(worker.profession)}
-                            </p>
-                            <div className="w-20 h-[2.5px] bg-[#ffd000] rounded-sm mt-1.5" />
-                          </div>
-
-                          <div className="relative z-10 flex flex-col gap-2 text-[11px] text-slate-300">
-                            <div>
-                              <span className="text-slate-300 block text-[11px] font-normal tracking-normal mb-0.5">Company:</span>
-                              <span className="font-semibold text-white text-[12px] block leading-tight">{worker.company}</span>
-                            </div>
-                            <div className="flex items-center gap-6">
-                              <div>
-                                <span className="text-slate-300 block text-[11px] font-normal tracking-normal mb-0.5">Phone:</span>
-                                <span className="font-semibold text-white text-[12px] block leading-tight">{worker.company_phone || '+250 788 123 456'}</span>
-                              </div>
-                              <div>
-                                <span className="text-slate-300 block text-[11px] font-normal tracking-normal mb-0.5">Location:</span>
-                                <span className="font-semibold text-white text-[12px] block leading-tight">{worker.company_address || `${worker.district}, ${worker.province}`}</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Bottom Right Lime Bar & Dots */}
-                          <div className="absolute bottom-3 right-4 grid grid-cols-4 gap-1 z-10">
-                            {Array.from({ length: 12 }).map((_, i) => (
-                              <span key={i} className="w-1 h-1 bg-[#cbf310] rounded-full" />
-                            ))}
-                          </div>
-                          <div className="absolute bottom-3 right-0 w-1.5 h-8 bg-[#cbf310] rounded-l z-10" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Back Face (Landscape) */}
-                    <div className="relative flex flex-col items-center bg-white p-3.5 pt-4 rounded-[18px] shadow-[0_14px_34px_rgba(3,20,44,0.14)] border border-slate-200/80">
-                      <div className="absolute -top-3 w-10 h-3.5 bg-gradient-to-b from-slate-400 to-slate-300 rounded-t border border-slate-500 border-b-0 shadow-inner" />
-                      <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
-
-                      <div
-                        className="card-face-back w-[475px] h-[300px] rounded-[14px] relative overflow-hidden bg-white text-[#16191f] shadow-xl border border-slate-200 select-none flex print:shadow-none"
-                        style={{ aspectRatio: '25.68 / 16.2' }}
-                      >
-                      {/* Left Side: Logo, Contact List & Notice */}
-                      <div className="flex-1 p-5 flex flex-col justify-between z-10">
-                        <div className="flex items-center">
-                          <img src={logo} alt="Ekaze" className="h-[22px] w-auto object-contain" />
-                        </div>
-
-                        <div className="flex flex-col gap-2.5 text-[11.5px] text-slate-800">
-                            <div className="flex items-center gap-2.5">
-                              <div className="w-6 h-6 rounded-full bg-[#03142c] flex items-center justify-center shrink-0">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="#ffffff">
-                                  <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-                                </svg>
-                              </div>
-                              <span className="font-semibold text-[11.5px] text-slate-800">{worker.company_phone || '+250 788 123 456'}</span>
-                            </div>
-
-                            <div className="flex items-center gap-2.5">
-                              <div className="w-6 h-6 rounded-full bg-[#03142c] flex items-center justify-center shrink-0">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="#ffffff">
-                                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                                </svg>
-                              </div>
-                              <span className="font-semibold text-[11.5px] text-slate-800">{worker.company_address || `${worker.district}, ${worker.province}`}</span>
-                            </div>
-
-                            <div className="flex items-center gap-2.5">
-                              <div className="w-6 h-6 rounded-full bg-[#03142c] flex items-center justify-center shrink-0">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="#ffffff">
-                                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                                </svg>
-                              </div>
-                              <span className="font-semibold text-[11.5px] text-slate-800">{worker.company_email || 'contact@kigalisecurity.rw'}</span>
-                            </div>
-                          </div>
-
-                          <p className="text-[9.5px] text-slate-500 leading-snug">
-                            If found, please return to {worker.company} or any Ekaze counter.
-                          </p>
-                        </div>
-
-                        {/* Right Side: QR Code & Verification link */}
-                        <div className="w-[170px] shrink-0 p-4 flex flex-col items-center justify-center z-10 bg-[#03142c] text-white rounded-r-[14px]">
-                          <a
-                            href={verifyUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="w-[72px] h-[72px] bg-white p-1 rounded-md shadow-md flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
-                            title={`Scan or click to verify worker credentials (${verifyUrl})`}
-                          >
-                            <QRCode value={verifyUrl} size={64} bordered={false} color="#03142c" />
-                          </a>
-                          <span className="text-[7.5px] font-extrabold tracking-wider text-[#cbf310] uppercase mt-1.5">
-                            SCAN TO VERIFY
-                          </span>
-
-                          <div className="grid grid-cols-4 gap-1 my-2">
-                            {Array.from({ length: 8 }).map((_, i) => (
-                              <span key={i} className="w-1 h-1 bg-[#cbf310] rounded-full" />
-                            ))}
-                          </div>
-
-                          <a
-                            href={verifyUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-[10px] font-bold text-white tracking-tight hover:underline"
-                          >
-                            ekaze.benofinance.rw
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-
-              /* ═══════════════════════════════════════════════════
-                 PORTRAIT (VERTICAL) BADGES (DEFAULT)
-                 ═══════════════════════════════════════════════════ */
               return (
                 <div
                   key={worker.id}
                   className="worker-card-row flex flex-wrap justify-center items-center gap-8 w-full print:page-break-after-always print:mb-8"
                 >
-                  {/* Front Face (Portrait) */}
+                  {/* Front Face (Landscape) */}
                   <div className="relative flex flex-col items-center bg-white p-3.5 pt-4 rounded-[18px] shadow-[0_14px_34px_rgba(3,20,44,0.14)] border border-slate-200/80">
-                    <div className="absolute -top-3 w-8 h-3.5 bg-gradient-to-b from-slate-400 to-slate-300 rounded-t border border-slate-500 border-b-0 shadow-inner" />
-                    <div className="w-12 h-2.5 bg-slate-200 rounded-md border border-slate-300 mb-2.5 shadow-inner" />
+                    <div className="absolute -top-3 w-10 h-3.5 bg-gradient-to-b from-slate-400 to-slate-300 rounded-t border border-slate-500 border-b-0 shadow-inner" />
+                    <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
 
-                    <div className="card-face-front w-[300px] h-[476px] rounded-[14px] relative overflow-hidden bg-[#03142c] text-white shadow-xl select-none print:shadow-none">
-                      <div className="absolute top-5 left-5 z-10 flex items-center">
-                      <img src={logo} alt="Ekaze" className="h-[22px] w-auto object-contain" />
-                    </div>
+                    <div
+                      className="card-face-front w-[475px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-xl border border-slate-200 select-none flex flex-col justify-between print:shadow-none p-4"
+                      style={{
+                        aspectRatio: '25.68 / 16.2',
+                        backgroundImage: `url(${idCardBgFront})`,
+                        backgroundSize: '100% 100%',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                      }}
+                    >
+                      {/* Top Row: Company Profile Picture / Logo & "Service Card" Title */}
+                      <div className="flex items-center justify-between z-10 pt-1 px-1">
+                        <div className="flex items-center gap-2">
+                          <div className="w-11 h-11 rounded-full border-2 border-slate-300 bg-white shadow-xs overflow-hidden flex items-center justify-center shrink-0">
+                            {worker.company_logo ? (
+                              <img
+                                src={getFullPhotoUrl(worker.company_logo)}
+                                alt={worker.company}
+                                className="w-full h-full object-cover object-center"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = logo;
+                                }}
+                              />
+                            ) : (
+                              <img src={logo} alt="Ekaze" className="w-8 h-8 object-contain p-0.5" />
+                            )}
+                          </div>
+                        </div>
 
-                      <svg className="absolute top-0 left-0 w-full h-[170px] z-[1]" viewBox="0 0 300 170" preserveAspectRatio="none">
-                        <defs>
-                          <linearGradient id="tealSwoosh" x1="0%" y1="0%" x2="100%" y2="80%">
-                            <stop offset="0%" stopColor="#00a3c4" />
-                            <stop offset="45%" stopColor="#008faf" stopOpacity="0.95" />
-                            <stop offset="85%" stopColor="#05284e" stopOpacity="0.7" />
-                            <stop offset="100%" stopColor="#03142c" stopOpacity="0" />
-                          </linearGradient>
-                        </defs>
-                        <path d="M 0,0 L 300,0 L 300,75 C 220,180 120,120 0,165 Z" fill="url(#tealSwoosh)" />
-                      </svg>
+                        {/* Title: Service Card */}
+                        <div className="text-[22px] font-black italic tracking-wide text-[#03142c] pr-12">
+                          Service Card
+                        </div>
+                      </div>
 
-                      <div
-                        className="absolute top-[155px] left-6 w-11 h-4 opacity-20 z-[2]"
-                        style={{
-                          background: 'repeating-linear-gradient(-45deg, #ffffff, #ffffff 1.5px, transparent 1.5px, transparent 4px)',
-                        }}
-                      />
-                      <div
-                        className="absolute top-[265px] right-7 w-12 h-5 opacity-20 z-[2]"
-                        style={{
-                          background: 'repeating-linear-gradient(-45deg, #ffffff, #ffffff 1.5px, transparent 1.5px, transparent 4px)',
-                        }}
-                      />
-
-                      <div className="absolute top-[105px] left-1/2 -translate-x-1/2 z-[5]">
-                        <div
-                          className="w-[176px] h-[176px] rounded-full p-2 flex items-center justify-center"
-                          style={{
-                            background:
-                              'radial-gradient(circle, rgba(0, 209, 255, 0.85) 0%, rgba(0, 163, 196, 0.45) 50%, rgba(3, 20, 44, 0) 70%)',
-                          }}
-                        >
+                      {/* Middle Content: Photo on Left, Details on Right (No Location) */}
+                      <div className="flex items-start gap-3.5 px-1 z-10 -mt-1">
+                        {/* Photo with rounded rectangular border */}
+                        <div className="w-[124px] h-[124px] rounded-[16px] border-[2px] border-slate-900 overflow-hidden shrink-0 bg-slate-100 shadow-sm">
                           <img
                             src={getFullPhotoUrl(worker.photo)}
                             alt={worker.name}
-                            className="w-[156px] h-[156px] rounded-full object-cover border-4 border-white shadow-2xl bg-slate-800"
+                            className="w-full h-full object-cover object-center"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src =
                                 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';
                             }}
                           />
                         </div>
-                      </div>
 
-                      <div className="absolute bottom-[54px] left-0 w-full flex flex-col items-center text-center px-5 z-[6]">
-                        <span className="text-[12.5px] font-sans font-bold text-white tracking-normal whitespace-nowrap mb-1">
-                          Ekaze ID Nº {formatEkazeId(worker.id, worker.ekaze_id)}
-                        </span>
-                        <h2 className="text-[19px] font-normal text-white uppercase tracking-wide leading-tight mb-1">
-                          {worker.name}
-                        </h2>
-                        <p className="text-[11px] font-semibold text-slate-300 uppercase tracking-widest mb-2">
-                          {formatProfession(worker.profession)}
-                        </p>
-                        <div className="w-24 h-[2.5px] bg-[#ffd000] rounded-sm mb-2" />
-                        <div className="text-[11px] text-slate-300 font-normal max-w-[260px] truncate">
-                          Company: <span className="font-semibold text-white ml-1">{worker.company}</span>
+                        {/* Details (No Location) */}
+                        <div className="flex-1 flex flex-col justify-center min-w-0 pr-1">
+                          {/* Amazina/Names */}
+                          <div className="mb-1">
+                            <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Amazina/Names:</div>
+                            <div className="text-[14px] font-extrabold text-slate-900 leading-tight truncate">
+                              {worker.name}
+                            </div>
+                          </div>
+
+                          {/* Itariki y'amavuko/ Date of Birth */}
+                          <div className="mb-1">
+                            <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Itariki y'amavuko/ Date of Birth:</div>
+                            <div className="text-[12px] font-bold text-slate-800 leading-tight">
+                              {worker.date_of_birth || '01/10/1999'}
+                            </div>
+                          </div>
+
+                          {/* Gender & Expiration row */}
+                          <div className="grid grid-cols-2 gap-2 mb-1">
+                            <div>
+                              <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Igitsina/Gender:</div>
+                              <div className="text-[12px] font-bold text-slate-800 leading-tight">
+                                {worker.gender || 'Gore/Female'}
+                              </div>
+                            </div>
+                            <div>
+                              <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Izarangira/Expiration:</div>
+                              <div className="text-[12px] font-bold text-slate-800 leading-tight">
+                                {worker.expiry_date}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Ikigo/Company */}
+                          <div>
+                            <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Ikigo/Company:</div>
+                            <div className="text-[12px] font-bold text-slate-800 leading-tight truncate">
+                              {worker.company}
+                            </div>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="absolute bottom-5 right-5 grid grid-cols-4 gap-1.5 z-[6]">
-                        {Array.from({ length: 12 }).map((_, i) => (
-                          <span key={i} className="w-1 h-1 bg-[#cbf310] rounded-full" />
-                        ))}
-                      </div>
+                      {/* Bottom Row: Card ID No & QR Code */}
+                      <div className="flex items-end justify-between px-1 z-10 pb-0.5">
+                        <div className="text-[11.5px] font-bold text-slate-900 pl-1">
+                          Card ID No: {worker.card_number}
+                        </div>
 
-                      <div className="absolute bottom-4 right-0 w-1.5 h-10 bg-[#cbf310] rounded-l z-[6]" />
+                        <div className="p-1 bg-white rounded-[8px] shadow-sm border border-slate-200/90 inline-flex items-center justify-center">
+                          <QRCode value={verifyUrl} size={48} bordered={false} />
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Back Face (Portrait) */}
+                  {/* Back Face (Landscape) */}
                   <div className="relative flex flex-col items-center bg-white p-3.5 pt-4 rounded-[18px] shadow-[0_14px_34px_rgba(3,20,44,0.14)] border border-slate-200/80">
-                    <div className="absolute -top-3 w-8 h-3.5 bg-gradient-to-b from-slate-400 to-slate-300 rounded-t border border-slate-500 border-b-0 shadow-inner" />
-                    <div className="w-12 h-2.5 bg-slate-200 rounded-md border border-slate-300 mb-2.5 shadow-inner" />
+                    <div className="absolute -top-3 w-10 h-3.5 bg-gradient-to-b from-slate-400 to-slate-300 rounded-t border border-slate-500 border-b-0 shadow-inner" />
+                    <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
 
-                    <div className="card-face-back w-[300px] h-[476px] rounded-[14px] relative overflow-hidden bg-white text-[#16191f] shadow-xl border border-slate-200 select-none print:shadow-none">
-                      <div className="absolute top-0 left-0 w-full h-[125px] z-[1]">
-                        <svg className="w-full h-full" viewBox="0 0 300 125" preserveAspectRatio="none">
-                          <path d="M 0,0 L 300,0 L 300,105 C 210,135 120,60 0,120 Z" fill="#d3f5f5" />
-                          <path d="M 0,0 L 300,0 L 300,90 C 200,120 110,45 0,105 Z" fill="#03142c" />
-                        </svg>
+                    <div
+                      className="card-face-back w-[475px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-xl border border-slate-200 select-none flex flex-col justify-between print:shadow-none p-3.5"
+                      style={{
+                        aspectRatio: '25.68 / 16.2',
+                        backgroundImage: `url(${idCardBgBack})`,
+                        backgroundSize: '100% 100%',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                      }}
+                    >
+                      {/* Top: Terms of Use Title */}
+                      <div className="text-center pt-1 z-10">
+                        <h3 className="text-[20px] font-black italic tracking-wide text-[#03142c]">
+                          Terms of Use
+                        </h3>
+                      </div>
 
-                        <div className="absolute top-3.5 right-4 grid grid-cols-3 gap-1.5 z-[2]">
-                          {Array.from({ length: 15 }).map((_, i) => (
-                            <span key={i} className="w-1 h-1 bg-[#cbf310] rounded-full" />
-                          ))}
+                      {/* Middle: 2x2 Grid of Rule Cards */}
+                      <div className="grid grid-cols-2 gap-2.5 px-3 z-10 -mt-1">
+                        {/* Rule 1 */}
+                        <div className="bg-white/95 rounded-[10px] border border-slate-200 shadow-xs p-2 flex items-start gap-2">
+                          <div className="w-4 h-4 rounded-full bg-[#005973] text-white flex items-center justify-center text-[9px] font-bold shrink-0 mt-0.5">
+                            1
+                          </div>
+                          <p className="text-[9.5px] text-slate-700 leading-tight font-medium">
+                            This card identifies the holder as a verified professional affiliated with {worker.company}.
+                          </p>
+                        </div>
+
+                        {/* Rule 2 */}
+                        <div className="bg-white/95 rounded-[10px] border border-slate-200 shadow-xs p-2 flex items-start gap-2">
+                          <div className="w-4 h-4 rounded-full bg-[#005973] text-white flex items-center justify-center text-[9px] font-bold shrink-0 mt-0.5">
+                            2
+                          </div>
+                          <p className="text-[9.5px] text-slate-700 leading-tight font-medium">
+                            Carry it while working and show it whenever requested.
+                          </p>
+                        </div>
+
+                        {/* Rule 3 */}
+                        <div className="bg-white/95 rounded-[10px] border border-slate-200 shadow-xs p-2 flex items-start gap-2">
+                          <div className="w-4 h-4 rounded-full bg-[#005973] text-white flex items-center justify-center text-[9px] font-bold shrink-0 mt-0.5">
+                            3
+                          </div>
+                          <p className="text-[9.5px] text-slate-700 leading-tight font-medium">
+                            It is not transferable and is valid until the expiration date shown on the front.
+                          </p>
+                        </div>
+
+                        {/* Rule 4 */}
+                        <div className="bg-white/95 rounded-[10px] border border-slate-200 shadow-xs p-2 flex items-start gap-2">
+                          <div className="w-4 h-4 rounded-full bg-[#005973] text-white flex items-center justify-center text-[9px] font-bold shrink-0 mt-0.5">
+                            4
+                          </div>
+                          <p className="text-[9.5px] text-slate-700 leading-tight font-medium">
+                            Report a lost or damaged card to Beno Finance, Kimihurura immediately.
+                          </p>
                         </div>
                       </div>
 
-                      <div className="absolute top-[132px] left-1/2 -translate-x-1/2 z-[5] flex items-center justify-center">
-                        <img src={logo} alt="Ekaze" className="h-[24px] w-auto object-contain" />
-                      </div>
-
-                      <div className="absolute top-[174px] left-0 w-full px-6 flex flex-col gap-2.5 z-[5]">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-6 h-6 rounded-full bg-[#03142c] flex items-center justify-center shrink-0">
-                            <svg viewBox="0 0 24 24" width="12" height="12" fill="#ffffff">
-                              <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-                            </svg>
-                          </div>
-                          <span className="text-[11.5px] font-semibold text-slate-800">{worker.company_phone || '+250 788 123 456'}</span>
+                      {/* Bottom Section: Blue Return Banner + Powered by Beno Finance */}
+                      <div className="px-3 pb-0.5 z-10 flex flex-col gap-1.5">
+                        <div className="w-full bg-[#005973] text-white py-1.5 px-3 rounded-[7px] flex items-center gap-2 text-[10.5px] font-medium shadow-xs">
+                          <MapPin className="w-3.5 h-3.5 shrink-0" />
+                          <span>If found, please return to Beno Finance, Kimihurura.</span>
                         </div>
 
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-6 h-6 rounded-full bg-[#03142c] flex items-center justify-center shrink-0">
-                            <svg viewBox="0 0 24 24" width="12" height="12" fill="#ffffff">
-                              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                            </svg>
-                          </div>
-                          <span className="text-[11.5px] font-semibold text-slate-800">
-                            {worker.company_address || `${worker.district}, ${worker.province}`}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-6 h-6 rounded-full bg-[#03142c] flex items-center justify-center shrink-0">
-                            <svg viewBox="0 0 24 24" width="12" height="12" fill="#ffffff">
-                              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                            </svg>
-                          </div>
-                          <span className="text-[11.5px] font-semibold text-slate-800">{worker.company_email || 'contact@kigalisecurity.rw'}</span>
-                        </div>
-
-                        <p className="text-[9.5px] text-slate-500 leading-snug mt-1">
-                          If found, please return to {worker.company} or any Ekaze counter.
-                        </p>
-                      </div>
-
-                      <div className="absolute bottom-0 left-0 w-full h-[115px] z-[2]">
-                        <svg className="w-full h-full" viewBox="0 0 300 115" preserveAspectRatio="none">
-                          <path d="M 0,45 C 90,0 200,60 300,10 L 300,115 L 0,115 Z" fill="#d3f5f5" />
-                          <path d="M 0,60 C 100,15 210,75 300,25 L 300,115 L 0,115 Z" fill="#03142c" />
-                        </svg>
-
-                        <div className="absolute bottom-2.5 left-0 w-full px-5 flex items-end justify-between z-[5]">
-                          <div className="flex flex-col items-center">
-                            <a
-                              href={verifyUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="w-[60px] h-[60px] bg-white p-1 rounded-md shadow-md flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
-                              title={`Scan or click to verify worker credentials (${verifyUrl})`}
-                            >
-                              <QRCode value={verifyUrl} size={52} bordered={false} color="#03142c" />
-                            </a>
-                            <span className="text-[7px] font-extrabold tracking-wider text-[#cbf310] uppercase mt-1">
-                              SCAN TO VERIFY
-                            </span>
-                          </div>
-
-                          <div className="flex flex-col items-end gap-1">
-                            <div className="grid grid-cols-4 gap-1.5">
-                              {Array.from({ length: 12 }).map((_, i) => (
-                                <span key={i} className="w-1 h-1 bg-[#cbf310] rounded-full" />
-                              ))}
-                            </div>
-
-                            <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
-                                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="#03142c" strokeWidth="2.5">
-                                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                                  <circle cx="12" cy="12" r="4" />
-                                </svg>
-                              </span>
-                              <span className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
-                                <svg viewBox="0 0 24 24" width="9" height="9" fill="#03142c">
-                                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                                </svg>
-                              </span>
-                              <span className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
-                                <svg viewBox="0 0 24 24" width="9" height="9" fill="#03142c">
-                                  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
-                                </svg>
-                              </span>
-                              <span className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
-                                <svg viewBox="0 0 24 24" width="9" height="9" fill="#03142c">
-                                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                                </svg>
-                              </span>
-                            </div>
-
-                            <a
-                              href={verifyUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-[10px] font-bold text-white tracking-tight hover:underline"
-                            >
-                              ekaze.benofinance.rw
-                            </a>
-                          </div>
+                        <div className="text-[9px] text-slate-500 font-semibold select-none pl-1">
+                          Powered by <span className="font-bold text-slate-700">Beno Finance</span>
                         </div>
                       </div>
                     </div>
