@@ -502,8 +502,8 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       <div className="grid grid-cols-2 gap-2.5 px-2.5 z-10 -mt-0.5">
                         {/* Rule 1 */}
                         <div className="bg-white/95 rounded-[12px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
-                          <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center shrink-0 mt-0.5 pb-[1px] select-none">
-                            <span className="text-[10px] font-bold leading-none text-center">1</span>
+                          <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center shrink-0 mt-0.5 select-none">
+                            <span className="text-[10px] font-bold leading-none text-center relative -top-[2px] inline-block">1</span>
                           </div>
                           <p className="text-[10px] text-slate-700 leading-snug font-medium">
                             This card identifies the holder as a verified professional affiliated with {worker.company}.
@@ -512,8 +512,8 @@ export const WorkerCardsPrintPage: React.FC = () => {
 
                         {/* Rule 2 */}
                         <div className="bg-white/95 rounded-[12px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
-                          <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center shrink-0 mt-0.5 pb-[1px] select-none">
-                            <span className="text-[10px] font-bold leading-none text-center">2</span>
+                          <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center shrink-0 mt-0.5 select-none">
+                            <span className="text-[10px] font-bold leading-none text-center relative -top-[2px] inline-block">2</span>
                           </div>
                           <p className="text-[10px] text-slate-700 leading-snug font-medium">
                             Carry it while working and show it whenever requested.
@@ -522,8 +522,8 @@ export const WorkerCardsPrintPage: React.FC = () => {
 
                         {/* Rule 3 */}
                         <div className="bg-white/95 rounded-[12px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
-                          <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center shrink-0 mt-0.5 pb-[1px] select-none">
-                            <span className="text-[10px] font-bold leading-none text-center">3</span>
+                          <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center shrink-0 mt-0.5 select-none">
+                            <span className="text-[10px] font-bold leading-none text-center relative -top-[2px] inline-block">3</span>
                           </div>
                           <p className="text-[10px] text-slate-700 leading-snug font-medium">
                             It is not transferable and is valid until the expiration date shown on the front.
@@ -532,8 +532,8 @@ export const WorkerCardsPrintPage: React.FC = () => {
 
                         {/* Rule 4 */}
                         <div className="bg-white/95 rounded-[12px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
-                          <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center shrink-0 mt-0.5 pb-[1px] select-none">
-                            <span className="text-[10px] font-bold leading-none text-center">4</span>
+                          <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center shrink-0 mt-0.5 select-none">
+                            <span className="text-[10px] font-bold leading-none text-center relative -top-[2px] inline-block">4</span>
                           </div>
                           <p className="text-[10px] text-slate-700 leading-snug font-medium">
                             Report a lost or damaged card to {worker.company} immediately.
@@ -545,7 +545,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       <div className="px-2.5 pb-0.5 z-10 flex flex-col gap-1">
                         <div className="w-full bg-[#005470] text-white h-[28px] px-3 rounded-[8px] flex items-center gap-2 shadow-xs">
                           <MapPin className="w-3.5 h-3.5 shrink-0 text-white" />
-                          <span className="text-[10.5px] font-medium text-white leading-none">
+                          <span className="text-[10.5px] font-medium text-white leading-none relative -top-[2.5px] inline-block">
                             If found, please return to {worker.company}.
                           </span>
                         </div>
