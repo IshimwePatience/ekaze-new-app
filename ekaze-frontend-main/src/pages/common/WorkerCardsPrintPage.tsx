@@ -176,6 +176,8 @@ export const WorkerCardsPrintPage: React.FC = () => {
           useCORS: true,
           logging: false,
           backgroundColor: '#ffffff',
+          scrollX: 0,
+          scrollY: 0,
         });
         const imgData = canvas.toDataURL('image/png');
         pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
@@ -367,7 +369,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                     <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
 
                     <div
-                      className="card-face-front w-[475px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-xl border border-slate-200 select-none flex flex-col justify-between print:shadow-none p-4"
+                      className="card-face-front w-[476px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-xl border border-slate-200 select-none flex flex-col justify-between print:shadow-none p-3"
                       style={{
                         aspectRatio: '25.68 / 16.2',
                         backgroundImage: `url(${idCardBgFront})`,
@@ -376,10 +378,10 @@ export const WorkerCardsPrintPage: React.FC = () => {
                         backgroundPosition: 'center',
                       }}
                     >
-                      {/* Top Row: Company Profile Picture / Logo & "Service Card" Title */}
-                      <div className="flex items-center justify-between z-10 pt-1 px-1">
-                        <div className="flex items-center gap-2">
-                          <div className="w-11 h-11 rounded-full border-2 border-slate-300 bg-white shadow-xs overflow-hidden flex items-center justify-center shrink-0">
+                      {/* Top Row: Centered "Service Card" Title with Company Logo on Left */}
+                      <div className="relative flex items-center justify-center z-10 pt-1 px-1 w-full min-h-[40px]">
+                        <div className="absolute left-1 top-0">
+                          <div className="w-10 h-10 rounded-full border border-slate-300 bg-white shadow-xs overflow-hidden flex items-center justify-center shrink-0">
                             {worker.company_logo ? (
                               <img
                                 src={getFullPhotoUrl(worker.company_logo)}
@@ -390,25 +392,26 @@ export const WorkerCardsPrintPage: React.FC = () => {
                                 }}
                               />
                             ) : (
-                              <img src={logo} alt="Ekaze" className="w-8 h-8 object-contain p-0.5" />
+                              <img src={logo} alt="Ekaze" className="w-7 h-7 object-contain p-0.5" />
                             )}
                           </div>
                         </div>
 
-                        {/* Title: Service Card */}
-                        <div className="text-[22px] font-black italic tracking-wide text-[#03142c] pr-12">
+                        {/* Title: Service Card — Centered */}
+                        <div className="text-[20px] font-black italic tracking-wide text-[#03142c] text-center">
                           Service Card
                         </div>
                       </div>
 
                       {/* Middle Content: Photo on Left, Details on Right (No Location) */}
-                      <div className="flex items-start gap-3.5 px-1 z-10 -mt-1">
+                      <div className="flex items-start gap-3 px-1 z-10 -mt-1">
                         {/* Photo with rounded rectangular border */}
-                        <div className="w-[124px] h-[124px] rounded-[16px] border-[2px] border-slate-900 overflow-hidden shrink-0 bg-slate-100 shadow-sm">
+                        <div className="w-[114px] h-[114px] rounded-[14px] border-[2px] border-slate-900 overflow-hidden shrink-0 bg-slate-100 shadow-sm">
                           <img
                             src={getFullPhotoUrl(worker.photo)}
                             alt={worker.name}
                             className="w-full h-full object-cover object-center"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             onError={(e) => {
                               (e.target as HTMLImageElement).src =
                                 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';
@@ -417,34 +420,34 @@ export const WorkerCardsPrintPage: React.FC = () => {
                         </div>
 
                         {/* Details (No Location) */}
-                        <div className="flex-1 flex flex-col justify-center min-w-0 pr-1">
+                        <div className="flex-1 flex flex-col justify-center min-w-0 pr-1 space-y-0.5">
                           {/* Amazina/Names */}
-                          <div className="mb-1">
-                            <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Amazina/Names:</div>
-                            <div className="text-[14px] font-extrabold text-slate-900 leading-tight truncate">
+                          <div>
+                            <div className="text-[9px] text-slate-500 font-semibold leading-tight">Amazina/Names:</div>
+                            <div className="text-[13px] font-black text-slate-900 leading-tight truncate">
                               {worker.name}
                             </div>
                           </div>
 
                           {/* Itariki y'amavuko/ Date of Birth */}
-                          <div className="mb-1">
-                            <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Itariki y'amavuko/ Date of Birth:</div>
-                            <div className="text-[12px] font-bold text-slate-800 leading-tight">
+                          <div>
+                            <div className="text-[9px] text-slate-500 font-semibold leading-tight">Itariki y'amavuko/ Date of Birth:</div>
+                            <div className="text-[11.5px] font-bold text-slate-800 leading-tight">
                               {worker.date_of_birth || '01/10/1999'}
                             </div>
                           </div>
 
                           {/* Gender & Expiration row */}
-                          <div className="grid grid-cols-2 gap-2 mb-1">
+                          <div className="grid grid-cols-2 gap-2">
                             <div>
-                              <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Igitsina/Gender:</div>
-                              <div className="text-[12px] font-bold text-slate-800 leading-tight">
+                              <div className="text-[9px] text-slate-500 font-semibold leading-tight">Igitsina/Gender:</div>
+                              <div className="text-[11.5px] font-bold text-slate-800 leading-tight">
                                 {worker.gender || 'Gore/Female'}
                               </div>
                             </div>
                             <div>
-                              <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Izarangira/Expiration:</div>
-                              <div className="text-[12px] font-bold text-slate-800 leading-tight">
+                              <div className="text-[9px] text-slate-500 font-semibold leading-tight">Izarangira/Expiration:</div>
+                              <div className="text-[11.5px] font-bold text-slate-800 leading-tight">
                                 {worker.expiry_date}
                               </div>
                             </div>
@@ -452,8 +455,8 @@ export const WorkerCardsPrintPage: React.FC = () => {
 
                           {/* Ikigo/Company */}
                           <div>
-                            <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Ikigo/Company:</div>
-                            <div className="text-[12px] font-bold text-slate-800 leading-tight truncate">
+                            <div className="text-[9px] text-slate-500 font-semibold leading-tight">Ikigo/Company:</div>
+                            <div className="text-[11.5px] font-bold text-slate-800 leading-tight truncate">
                               {worker.company}
                             </div>
                           </div>
@@ -461,13 +464,13 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       </div>
 
                       {/* Bottom Row: Card ID No & QR Code */}
-                      <div className="flex items-end justify-between px-1 z-10 pb-0.5">
-                        <div className="text-[11.5px] font-bold text-slate-900 pl-1">
+                      <div className="flex items-end justify-between px-2 z-10 pb-0.5">
+                        <div className="text-[11px] font-bold text-slate-900">
                           Card ID No: {worker.card_number}
                         </div>
 
-                        <div className="p-1 bg-white rounded-[8px] shadow-sm border border-slate-200/90 inline-flex items-center justify-center">
-                          <QRCode value={verifyUrl} size={48} bordered={false} />
+                        <div className="p-0.5 bg-white rounded-[5px] shadow-sm border border-slate-200/90 inline-flex items-center justify-center">
+                          <QRCode value={verifyUrl} size={42} bordered={false} />
                         </div>
                       </div>
                     </div>
@@ -479,7 +482,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                     <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
 
                     <div
-                      className="card-face-back w-[475px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-xl border border-slate-200 select-none flex flex-col justify-between print:shadow-none p-3.5"
+                      className="card-face-back w-[476px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-xl border border-slate-200 select-none flex flex-col justify-between print:shadow-none p-3"
                       style={{
                         aspectRatio: '25.68 / 16.2',
                         backgroundImage: `url(${idCardBgBack})`,
@@ -496,56 +499,56 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       </div>
 
                       {/* Middle: 2x2 Grid of Rule Cards */}
-                      <div className="grid grid-cols-2 gap-2.5 px-3 z-10 -mt-1">
+                      <div className="grid grid-cols-2 gap-2 px-2.5 z-10 -mt-1">
                         {/* Rule 1 */}
-                        <div className="bg-white/95 rounded-[10px] border border-slate-200 shadow-xs p-2 flex items-start gap-2">
+                        <div className="bg-white/95 rounded-[8px] border border-slate-200 shadow-xs p-2 flex items-start gap-1.5">
                           <div className="w-4 h-4 rounded-full bg-[#005973] text-white flex items-center justify-center text-[9px] font-bold shrink-0 mt-0.5">
                             1
                           </div>
-                          <p className="text-[9.5px] text-slate-700 leading-tight font-medium">
+                          <p className="text-[9px] text-slate-700 leading-tight font-medium">
                             This card identifies the holder as a verified professional affiliated with {worker.company}.
                           </p>
                         </div>
 
                         {/* Rule 2 */}
-                        <div className="bg-white/95 rounded-[10px] border border-slate-200 shadow-xs p-2 flex items-start gap-2">
+                        <div className="bg-white/95 rounded-[8px] border border-slate-200 shadow-xs p-2 flex items-start gap-1.5">
                           <div className="w-4 h-4 rounded-full bg-[#005973] text-white flex items-center justify-center text-[9px] font-bold shrink-0 mt-0.5">
                             2
                           </div>
-                          <p className="text-[9.5px] text-slate-700 leading-tight font-medium">
+                          <p className="text-[9px] text-slate-700 leading-tight font-medium">
                             Carry it while working and show it whenever requested.
                           </p>
                         </div>
 
                         {/* Rule 3 */}
-                        <div className="bg-white/95 rounded-[10px] border border-slate-200 shadow-xs p-2 flex items-start gap-2">
+                        <div className="bg-white/95 rounded-[8px] border border-slate-200 shadow-xs p-2 flex items-start gap-1.5">
                           <div className="w-4 h-4 rounded-full bg-[#005973] text-white flex items-center justify-center text-[9px] font-bold shrink-0 mt-0.5">
                             3
                           </div>
-                          <p className="text-[9.5px] text-slate-700 leading-tight font-medium">
+                          <p className="text-[9px] text-slate-700 leading-tight font-medium">
                             It is not transferable and is valid until the expiration date shown on the front.
                           </p>
                         </div>
 
                         {/* Rule 4 */}
-                        <div className="bg-white/95 rounded-[10px] border border-slate-200 shadow-xs p-2 flex items-start gap-2">
+                        <div className="bg-white/95 rounded-[8px] border border-slate-200 shadow-xs p-2 flex items-start gap-1.5">
                           <div className="w-4 h-4 rounded-full bg-[#005973] text-white flex items-center justify-center text-[9px] font-bold shrink-0 mt-0.5">
                             4
                           </div>
-                          <p className="text-[9.5px] text-slate-700 leading-tight font-medium">
+                          <p className="text-[9px] text-slate-700 leading-tight font-medium">
                             Report a lost or damaged card to Beno Finance, Kimihurura immediately.
                           </p>
                         </div>
                       </div>
 
                       {/* Bottom Section: Blue Return Banner + Powered by Beno Finance */}
-                      <div className="px-3 pb-0.5 z-10 flex flex-col gap-1.5">
-                        <div className="w-full bg-[#005973] text-white py-1.5 px-3 rounded-[7px] flex items-center gap-2 text-[10.5px] font-medium shadow-xs">
+                      <div className="px-2.5 pb-0.5 z-10 flex flex-col gap-1">
+                        <div className="w-full bg-[#005973] text-white py-1.5 px-3 rounded-[6px] flex items-center gap-2 text-[10px] font-medium shadow-xs">
                           <MapPin className="w-3.5 h-3.5 shrink-0" />
                           <span>If found, please return to Beno Finance, Kimihurura.</span>
                         </div>
 
-                        <div className="text-[9px] text-slate-500 font-semibold select-none pl-1">
+                        <div className="text-[8.5px] text-slate-500 font-semibold select-none pl-1">
                           Powered by <span className="font-bold text-slate-700">Beno Finance</span>
                         </div>
                       </div>

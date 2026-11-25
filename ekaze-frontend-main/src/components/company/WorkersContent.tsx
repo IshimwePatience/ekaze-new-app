@@ -746,19 +746,27 @@ const WorkersContent = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <Button
-                size="sm"
-                onClick={handleGenerateCards}
-                disabled={generateCardsMutation.isPending}
-                className="h-7 text-xs bg-[#2478b8] hover:bg-[#1b6296] text-white rounded font-medium flex items-center gap-1.5 cursor-pointer"
-              >
-                {generateCardsMutation.isPending ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                ) : (
-                  <CreditCard className="w-3.5 h-3.5" />
-                )}
-                <span>Generate Business Cards ({selectedIds.size})</span>
-              </Button>
+              {(() => {
+                const selectedWorkers = filteredWorkers.filter((w) => selectedIds.has(w.id));
+                const allSelectedCardsGenerated = selectedWorkers.length > 0 && selectedWorkers.every(isCardGenerated);
+                return (
+                  <Button
+                    size="sm"
+                    onClick={allSelectedCardsGenerated ? () => openPrintCards(Array.from(selectedIds)) : handleGenerateCards}
+                    disabled={generateCardsMutation.isPending}
+                    className="h-7 text-xs bg-[#2478b8] hover:bg-[#1b6296] text-white rounded font-medium flex items-center gap-1.5 cursor-pointer"
+                  >
+                    {generateCardsMutation.isPending ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <CreditCard className="w-3.5 h-3.5" />
+                    )}
+                    <span>
+                      {allSelectedCardsGenerated ? "Get Business Cards" : "Generate Business Cards"} ({selectedIds.size})
+                    </span>
+                  </Button>
+                );
+              })()}
             </div>
           </div>
         )}
@@ -967,8 +975,14 @@ const WorkersContent = () => {
                                 onClick: () => setWorkerToRate(worker),
                               },
                               {
-                                label: "Generate Card",
-                                onClick: () => handleGenerateSingleCard(worker.id),
+                                label: isCardGenerated(worker) ? "Get Card" : "Generate Card",
+                                onClick: () => {
+                                  if (isCardGenerated(worker)) {
+                                    openPrintCards([worker.id]);
+                                  } else {
+                                    handleGenerateSingleCard(worker.id);
+                                  }
+                                },
                               },
                               {
                                 label: "Edit Worker",
