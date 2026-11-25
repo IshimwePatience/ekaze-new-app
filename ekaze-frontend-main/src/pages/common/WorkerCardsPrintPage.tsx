@@ -499,57 +499,57 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       </div>
 
                       {/* Middle: 2x2 Grid of Rule Cards */}
-                      <div className="grid grid-cols-2 gap-2 px-2 z-10 -mt-0.5">
+                      <div className="grid grid-cols-2 gap-2.5 px-2.5 z-10 -mt-0.5">
                         {/* Rule 1 */}
-                        <div className="bg-white/95 rounded-[10px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
+                        <div className="bg-white/95 rounded-[12px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
                           <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
                             1
                           </div>
-                          <p className="text-[9.5px] text-slate-700 leading-snug font-medium">
+                          <p className="text-[10px] text-slate-700 leading-snug font-medium">
                             This card identifies the holder as a verified professional affiliated with {worker.company}.
                           </p>
                         </div>
 
                         {/* Rule 2 */}
-                        <div className="bg-white/95 rounded-[10px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
+                        <div className="bg-white/95 rounded-[12px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
                           <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
                             2
                           </div>
-                          <p className="text-[9.5px] text-slate-700 leading-snug font-medium">
+                          <p className="text-[10px] text-slate-700 leading-snug font-medium">
                             Carry it while working and show it whenever requested.
                           </p>
                         </div>
 
                         {/* Rule 3 */}
-                        <div className="bg-white/95 rounded-[10px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
+                        <div className="bg-white/95 rounded-[12px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
                           <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
                             3
                           </div>
-                          <p className="text-[9.5px] text-slate-700 leading-snug font-medium">
+                          <p className="text-[10px] text-slate-700 leading-snug font-medium">
                             It is not transferable and is valid until the expiration date shown on the front.
                           </p>
                         </div>
 
                         {/* Rule 4 */}
-                        <div className="bg-white/95 rounded-[10px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
+                        <div className="bg-white/95 rounded-[12px] border border-slate-200/90 shadow-xs p-2.5 flex items-start gap-2">
                           <div className="w-5 h-5 rounded-full bg-[#005470] text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
                             4
                           </div>
-                          <p className="text-[9.5px] text-slate-700 leading-snug font-medium">
-                            Report a lost or damaged card to Beno Finance, Kimihurura immediately.
+                          <p className="text-[10px] text-slate-700 leading-snug font-medium">
+                            Report a lost or damaged card to {worker.company} immediately.
                           </p>
                         </div>
                       </div>
 
-                      {/* Bottom Section: Blue Return Banner + Powered by Beno Finance */}
-                      <div className="px-2 pb-0.5 z-10 flex flex-col gap-1">
-                        <div className="w-full bg-[#005470] text-white py-1.5 px-3 rounded-[7px] flex items-center gap-2 text-[10px] font-medium shadow-xs">
+                      {/* Bottom Section: Blue Return Banner + Powered by Beno Holdings */}
+                      <div className="px-2.5 pb-0.5 z-10 flex flex-col gap-1">
+                        <div className="w-full bg-[#005470] text-white py-2 px-3 rounded-[8px] flex items-center gap-2 text-[10.5px] font-medium shadow-xs">
                           <MapPin className="w-3.5 h-3.5 shrink-0" />
-                          <span>If found, please return to Beno Finance, Kimihurura.</span>
+                          <span>If found, please return to {worker.company}.</span>
                         </div>
 
-                        <div className="text-[9px] text-slate-500 font-medium select-none pl-1">
-                          Powered by <span className="font-bold text-slate-800">Beno Finance</span>
+                        <div className="text-[9.5px] text-slate-500 font-medium select-none pl-1">
+                          Powered by <span className="font-bold text-slate-800">Beno Holdings</span>
                         </div>
                       </div>
                     </div>
