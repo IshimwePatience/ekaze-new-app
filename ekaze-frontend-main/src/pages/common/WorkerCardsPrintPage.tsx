@@ -176,16 +176,6 @@ export const WorkerCardsPrintPage: React.FC = () => {
           useCORS: true,
           logging: false,
           backgroundColor: '#ffffff',
-          onclone: (_clonedDoc, clonedEl) => {
-            clonedEl.style.position = 'fixed';
-            clonedEl.style.top = '0';
-            clonedEl.style.left = '0';
-            clonedEl.style.margin = '0';
-            clonedEl.style.boxShadow = 'none';
-            clonedEl.style.border = 'none';
-            clonedEl.style.transform = 'none';
-            clonedEl.style.zIndex = '99999';
-          },
         });
         const imgData = canvas.toDataURL('image/png');
         pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
@@ -369,15 +359,15 @@ export const WorkerCardsPrintPage: React.FC = () => {
               return (
                 <div
                   key={worker.id}
-                  className="worker-card-row flex flex-col lg:flex-row justify-center items-center gap-6 xl:gap-8 w-full print:block print:w-full print:page-break-after-always print:mb-8"
+                  className="worker-card-row flex flex-col xl:flex-row justify-center items-center gap-6 xl:gap-8 w-full print:block print:w-full print:page-break-after-always print:mb-8"
                 >
                   {/* Front Face (Landscape) */}
-                  <div className="relative flex flex-col items-center bg-white p-3.5 pt-4 rounded-[18px] shadow-[0_14px_34px_rgba(3,20,44,0.14)] border border-slate-200/80">
+                  <div className="relative flex flex-col items-center bg-white p-3.5 pt-4 rounded-[18px] shadow-[0_14px_34px_rgba(3,20,44,0.14)] border border-slate-200/80 shrink-0">
                     <div className="absolute -top-3 w-10 h-3.5 bg-gradient-to-b from-slate-400 to-slate-300 rounded-t border border-slate-500 border-b-0 shadow-inner" />
                     <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
 
                     <div
-                      className="card-face-front w-[476px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-none border-0 select-none flex flex-col justify-between print:shadow-none p-3.5 font-sans"
+                      className="card-face-front w-[476px] h-[300px] min-w-[476px] min-h-[300px] max-w-[476px] max-h-[300px] shrink-0 rounded-none relative overflow-hidden bg-white text-slate-900 shadow-none border-0 select-none flex flex-col justify-between print:shadow-none p-3.5 font-sans"
                       style={{
                         backgroundImage: `url(${idCardBgFront})`,
                         backgroundSize: '100% 100%',
@@ -485,12 +475,12 @@ export const WorkerCardsPrintPage: React.FC = () => {
                   </div>
 
                   {/* Back Face (Landscape) */}
-                  <div className="relative flex flex-col items-center bg-white p-3.5 pt-4 rounded-[18px] shadow-[0_14px_34px_rgba(3,20,44,0.14)] border border-slate-200/80">
+                  <div className="relative flex flex-col items-center bg-white p-3.5 pt-4 rounded-[18px] shadow-[0_14px_34px_rgba(3,20,44,0.14)] border border-slate-200/80 shrink-0">
                     <div className="absolute -top-3 w-10 h-3.5 bg-gradient-to-b from-slate-400 to-slate-300 rounded-t border border-slate-500 border-b-0 shadow-inner" />
                     <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
 
                     <div
-                      className="card-face-back w-[476px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-none border-0 select-none flex flex-col justify-between print:shadow-none p-3.5 font-sans"
+                      className="card-face-back w-[476px] h-[300px] min-w-[476px] min-h-[300px] max-w-[476px] max-h-[300px] shrink-0 rounded-none relative overflow-hidden bg-white text-slate-900 shadow-none border-0 select-none flex flex-col justify-between print:shadow-none p-3.5 font-sans"
                       style={{
                         backgroundImage: `url(${idCardBgBack})`,
                         backgroundSize: '100% 100%',
