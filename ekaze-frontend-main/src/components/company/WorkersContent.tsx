@@ -552,14 +552,7 @@ const WorkersContent = () => {
   };
 
   const isCardGenerated = (worker: any) => {
-    return Boolean(
-      worker.card_paid ||
-      worker.card_paid_at ||
-      worker.business_card_path ||
-      worker.card_generated ||
-      worker.has_card ||
-      worker.is_card_generated
-    );
+    return Boolean(worker.card_paid || worker.card_paid_at);
   };
 
   const getExperienceLevelText = (level: string) => {

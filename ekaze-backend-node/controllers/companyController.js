@@ -3116,7 +3116,7 @@ const createCompanyWorker = async (req, res, next) => {
         insurance_provider: getVal('insurance_provider') || (getVal('has_insurance') ? 'RSSB' : null),
         insurance_number: getVal('insurance_number') || resolvedNationalId || null,
         availability_status: 'available',
-        business_card_path: uploadedPhoto,
+        business_card_path: null,
         profile_completed: isFullRegistration,
         extended_profile: extendedProfileData
       }
@@ -3136,7 +3136,7 @@ const createCompanyWorker = async (req, res, next) => {
       work_type_preferences: parsedWorkTypes,
       availability_status: 'available',
       profile_completed: isFullRegistration,
-      business_card_path: uploadedPhoto || workerRecord.business_card_path,
+      business_card_path: workerRecord.business_card_path,
       extended_profile: {
         ...existingExtended,
         ...extendedProfileData,

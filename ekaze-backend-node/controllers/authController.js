@@ -980,7 +980,7 @@ const registerWorker = async (req, res, next) => {
         insurance_provider: getVal(insurance_provider, 'insurance_provider') || null,
         insurance_number: getVal(insurance_number, 'insurance_number') || null,
         availability_status: 'available',
-        business_card_path: uploadedPhoto
+        business_card_path: null
       }
     });
 
@@ -999,7 +999,7 @@ const registerWorker = async (req, res, next) => {
         insurance_type: getVal(insurance_type, 'insurance_type') || workerRecord.insurance_type,
         insurance_provider: getVal(insurance_provider, 'insurance_provider') || workerRecord.insurance_provider,
         insurance_number: getVal(insurance_number, 'insurance_number') || workerRecord.insurance_number,
-        business_card_path: uploadedPhoto || workerRecord.business_card_path
+        business_card_path: workerRecord.business_card_path
       });
     }
 
