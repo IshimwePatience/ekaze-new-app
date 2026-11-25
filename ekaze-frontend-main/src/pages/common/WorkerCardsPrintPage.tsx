@@ -176,17 +176,15 @@ export const WorkerCardsPrintPage: React.FC = () => {
           useCORS: true,
           logging: false,
           backgroundColor: '#ffffff',
-          width: cardEl.offsetWidth,
-          height: cardEl.offsetHeight,
-          onclone: (clonedDoc) => {
-            const allCardFaces = clonedDoc.querySelectorAll('.card-face-front, .card-face-back');
-            allCardFaces.forEach((el) => {
-              const hEl = el as HTMLElement;
-              hEl.style.boxShadow = 'none';
-              hEl.style.border = 'none';
-              hEl.style.transform = 'none';
-              hEl.style.margin = '0';
-            });
+          onclone: (_clonedDoc, clonedEl) => {
+            clonedEl.style.position = 'fixed';
+            clonedEl.style.top = '0';
+            clonedEl.style.left = '0';
+            clonedEl.style.margin = '0';
+            clonedEl.style.boxShadow = 'none';
+            clonedEl.style.border = 'none';
+            clonedEl.style.transform = 'none';
+            clonedEl.style.zIndex = '99999';
           },
         });
         const imgData = canvas.toDataURL('image/png');
@@ -381,7 +379,6 @@ export const WorkerCardsPrintPage: React.FC = () => {
                     <div
                       className="card-face-front w-[476px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-none border-0 select-none flex flex-col justify-between print:shadow-none p-3.5 font-sans"
                       style={{
-                        aspectRatio: '25.68 / 16.2',
                         backgroundImage: `url(${idCardBgFront})`,
                         backgroundSize: '100% 100%',
                         backgroundRepeat: 'no-repeat',
@@ -495,7 +492,6 @@ export const WorkerCardsPrintPage: React.FC = () => {
                     <div
                       className="card-face-back w-[476px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-none border-0 select-none flex flex-col justify-between print:shadow-none p-3.5 font-sans"
                       style={{
-                        aspectRatio: '25.68 / 16.2',
                         backgroundImage: `url(${idCardBgBack})`,
                         backgroundSize: '100% 100%',
                         backgroundRepeat: 'no-repeat',
