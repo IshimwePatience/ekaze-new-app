@@ -305,18 +305,6 @@ const WorkerDetailsModal: React.FC<WorkerDetailsModalProps> = ({
                         </span>
                       </button>
                     )}
-
-                    {worker.availability_status === "available" && (
-                      <button
-                        type="button"
-                        onClick={() => handleAction("delete")}
-                        disabled={deleteWorker.isPending}
-                        className="bg-white hover:bg-slate-50 border border-slate-300 text-red-600 text-xs font-semibold px-4 h-9 rounded-[6px] shadow-2xs transition-colors cursor-pointer flex items-center gap-1.5"
-                      >
-                        <XCircle className="w-3.5 h-3.5" />
-                        <span>{deleteWorker.isPending ? "Removing..." : "Delete Worker"}</span>
-                      </button>
-                    )}
                   </div>
                 </div>
               </div>

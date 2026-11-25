@@ -994,10 +994,6 @@ const WorkersContent = () => {
                                       onClick: () => setWorkerToReactivate(worker),
                                     },
                                   ]),
-                              {
-                                label: "Delete Worker",
-                                onClick: () => setWorkerToDelete(worker),
-                              },
                             ]}
                           />
                         </div>
