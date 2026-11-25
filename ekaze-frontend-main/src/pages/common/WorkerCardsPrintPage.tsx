@@ -176,8 +176,18 @@ export const WorkerCardsPrintPage: React.FC = () => {
           useCORS: true,
           logging: false,
           backgroundColor: '#ffffff',
-          scrollX: 0,
-          scrollY: 0,
+          width: cardEl.offsetWidth,
+          height: cardEl.offsetHeight,
+          onclone: (clonedDoc) => {
+            const allCardFaces = clonedDoc.querySelectorAll('.card-face-front, .card-face-back');
+            allCardFaces.forEach((el) => {
+              const hEl = el as HTMLElement;
+              hEl.style.boxShadow = 'none';
+              hEl.style.border = 'none';
+              hEl.style.transform = 'none';
+              hEl.style.margin = '0';
+            });
+          },
         });
         const imgData = canvas.toDataURL('image/png');
         pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
@@ -369,7 +379,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                     <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
 
                     <div
-                      className="card-face-front w-[476px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-xl border border-slate-200 select-none flex flex-col justify-between print:shadow-none p-3.5 font-sans"
+                      className="card-face-front w-[476px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-none border-0 select-none flex flex-col justify-between print:shadow-none p-3.5 font-sans"
                       style={{
                         aspectRatio: '25.68 / 16.2',
                         backgroundImage: `url(${idCardBgFront})`,
@@ -424,16 +434,16 @@ export const WorkerCardsPrintPage: React.FC = () => {
                         <div className="flex-1 flex flex-col justify-center min-w-0 pr-1 space-y-1">
                           {/* Amazina/Names */}
                           <div>
-                            <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Amazina/Names:</div>
-                            <div className="text-[15px] font-extrabold text-slate-900 leading-tight truncate">
+                            <div className="text-[9.5px] text-slate-500 font-semibold leading-normal">Amazina/Names:</div>
+                            <div className="text-[14.5px] font-extrabold text-slate-900 leading-normal overflow-visible">
                               {worker.name}
                             </div>
                           </div>
 
                           {/* Itariki y'amavuko/ Date of Birth */}
                           <div>
-                            <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Itariki y'amavuko/ Date of Birth:</div>
-                            <div className="text-[12.5px] font-bold text-slate-900 leading-tight">
+                            <div className="text-[9.5px] text-slate-500 font-semibold leading-normal">Itariki y'amavuko/ Date of Birth:</div>
+                            <div className="text-[12px] font-bold text-slate-900 leading-normal">
                               {worker.date_of_birth || '01/10/1999'}
                             </div>
                           </div>
@@ -441,14 +451,14 @@ export const WorkerCardsPrintPage: React.FC = () => {
                           {/* Gender & Expiration row */}
                           <div className="grid grid-cols-2 gap-2">
                             <div>
-                              <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Igitsina/Gender:</div>
-                              <div className="text-[12.5px] font-bold text-slate-900 leading-tight">
+                              <div className="text-[9.5px] text-slate-500 font-semibold leading-normal">Igitsina/Gender:</div>
+                              <div className="text-[12px] font-bold text-slate-900 leading-normal">
                                 {worker.gender || 'Gore/Female'}
                               </div>
                             </div>
                             <div>
-                              <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Izarangira/Expiration:</div>
-                              <div className="text-[12.5px] font-bold text-slate-900 leading-tight">
+                              <div className="text-[9.5px] text-slate-500 font-semibold leading-normal">Izarangira/Expiration:</div>
+                              <div className="text-[12px] font-bold text-slate-900 leading-normal">
                                 {worker.expiry_date}
                               </div>
                             </div>
@@ -456,8 +466,8 @@ export const WorkerCardsPrintPage: React.FC = () => {
 
                           {/* Ikigo/Company */}
                           <div>
-                            <div className="text-[9.5px] text-slate-500 font-semibold leading-tight">Ikigo/Company:</div>
-                            <div className="text-[12.5px] font-bold text-slate-900 leading-tight truncate">
+                            <div className="text-[9.5px] text-slate-500 font-semibold leading-normal">Ikigo/Company:</div>
+                            <div className="text-[12px] font-bold text-slate-900 leading-normal overflow-visible">
                               {worker.company}
                             </div>
                           </div>
@@ -465,12 +475,12 @@ export const WorkerCardsPrintPage: React.FC = () => {
                       </div>
 
                       {/* Bottom Row: Card ID No & QR Code */}
-                      <div className="flex items-end justify-between px-2 z-10 pb-0.5">
-                        <div className="text-[12px] font-extrabold text-slate-900 mb-2">
+                      <div className="flex items-end justify-between px-3 z-10 pb-1">
+                        <div className="text-[12px] font-extrabold text-slate-900 mb-8 pl-1">
                           Card ID No: {worker.card_number}
                         </div>
 
-                        <div className="p-0.5 bg-white rounded-[7px] shadow-sm border border-slate-200/90 inline-flex items-center justify-center">
+                        <div className="p-0.5 bg-white rounded-[7px] shadow-sm border border-slate-200/90 inline-flex items-center justify-center mb-1">
                           <QRCode value={verifyUrl} size={44} bordered={false} />
                         </div>
                       </div>
@@ -483,7 +493,7 @@ export const WorkerCardsPrintPage: React.FC = () => {
                     <div className="w-14 h-2 bg-slate-200 rounded-md border border-slate-300 mb-2 shadow-inner" />
 
                     <div
-                      className="card-face-back w-[476px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-xl border border-slate-200 select-none flex flex-col justify-between print:shadow-none p-3.5 font-sans"
+                      className="card-face-back w-[476px] h-[300px] rounded-none relative overflow-hidden bg-white text-slate-900 shadow-none border-0 select-none flex flex-col justify-between print:shadow-none p-3.5 font-sans"
                       style={{
                         aspectRatio: '25.68 / 16.2',
                         backgroundImage: `url(${idCardBgBack})`,
